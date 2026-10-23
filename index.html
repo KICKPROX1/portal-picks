@@ -21,7 +21,8 @@
             bordercolor: '#232938',
             progreen: '#10b981',
             problue: '#2563eb',
-            proaccent: '#38bdf8'
+            proaccent: '#38bdf8',
+            goldvip: '#f59e0b'
           },
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
@@ -63,11 +64,16 @@
     @keyframes blink {
       50% { opacity: 0; }
     }
+    .vip-blur {
+      filter: blur(5px);
+      user-select: none;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
-  <!-- TOP HEADER EDITORIAL -->
+  <!-- TOP HEADER EDITORIAL CON ACCESO VIP -->
   <header class="h-14 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50">
     <div class="flex items-center gap-3">
       <div class="w-8 h-8 rounded-lg bg-problue flex items-center justify-center font-black text-white text-sm">
@@ -79,25 +85,42 @@
       </div>
     </div>
     
-    <div class="flex items-center gap-3">
-      <div class="hidden sm:flex items-center gap-2 bg-innerbg px-3 py-1 rounded-lg border border-bordercolor text-xs font-mono">
-        <span class="w-2 h-2 rounded-full bg-progreen"></span>
-        <span class="text-slate-300">Win Rate: <strong class="text-white">77.4%</strong></span>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <div class="hidden md:flex items-center gap-2 bg-innerbg px-3 py-1 rounded-lg border border-bordercolor text-xs font-mono">
+        <span class="w-2 h-2 rounded-full bg-progreen animate-pulse"></span>
+        <span class="text-slate-300">Racha: <strong class="text-progreen">5 Verdes Seguidos</strong></span>
         <span class="text-slate-500">|</span>
-        <span class="text-slate-300">ROI: <strong class="text-progreen">+23.8%</strong></span>
+        <span class="text-slate-300">Win Rate: <strong class="text-white">77.4%</strong></span>
       </div>
-      <button onclick="toggleAdminPrompt()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-300 hover:text-white transition-all flex items-center gap-1.5">
-        <span>⚙️ Modo Admin</span>
+
+      <button onclick="openVipModal()" class="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 flex items-center gap-1.5 shadow-md transition-all active:scale-95">
+        <span>👑</span>
+        <span>Membresía VIP</span>
+      </button>
+
+      <button onclick="toggleAdminPrompt()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-400 hover:text-white transition-all">
+        ⚙️
       </button>
     </div>
   </header>
+
+  <!-- BANNER PROMO TELEGRAM / VIP -->
+  <div class="bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border-b border-bordercolor py-2 px-4 text-center text-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-slate-300 flex-wrap">
+      <span class="bg-problue text-white text-[9px] font-mono font-bold px-1.5 py-0.5 rounded uppercase">Comunidad</span>
+      <span>Únete al canal oficial de pronósticos en vivo con alertas al instante:</span>
+      <a href="https://t.me" target="_blank" class="text-proaccent font-bold hover:underline flex items-center gap-1">
+        <span>Canal Gratuito en Telegram</span> →
+      </a>
+    </div>
+  </div>
 
   <!-- WORKSPACE A 3 COLUMNAS -->
   <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-4">
 
     <!-- COLUMNA 1 (IZQUIERDA): FIXTURE & LIGAS -->
     <aside class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
-      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[680px]">
+      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[700px]">
         <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
           <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Jornada de Hoy</span>
           <span class="text-[10px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-proaccent">23 OCT</span>
@@ -230,7 +253,7 @@
     </aside>
 
     <!-- COLUMNA 2 (CENTRAL): FEED INTERACTIVO & ANÁLISIS TÁCTICO -->
-    <section class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden h-[680px]">
+    <section class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden h-[700px]">
       
       <!-- Stream de Mensajes / Análisis -->
       <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4">
@@ -256,7 +279,7 @@
 
     <!-- COLUMNA 3 (DERECHA): BET SLIP / PARLAY BUILDER EN VIVO -->
     <aside class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
-      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[680px]">
+      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[700px]">
         
         <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
           <div class="flex items-center gap-2">
@@ -287,12 +310,19 @@
           </div>
 
           <div class="flex justify-between items-center bg-innerbg p-2.5 rounded-lg border border-bordercolor">
-            <span class="text-slate-300">Retorno Neto:</span>
+            <span class="text-slate-300">Retorno Estimado:</span>
             <span id="slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
           </div>
 
+          <!-- BOTÓN 1-CLICK COPIAR JUGADA -->
+          <button id="copy-slip-btn" onclick="copySlipToClipboard()" class="w-full py-2 bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-200 font-bold rounded-lg text-[11px] flex items-center justify-center gap-1.5 transition-all">
+            <span>📋</span>
+            <span id="copy-btn-label">Copiar Boleto Formateado</span>
+          </button>
+
+          <!-- BOTÓN REGISTRAR -->
           <button onclick="publishSlip()" class="w-full py-2.5 bg-progreen hover:bg-emerald-500 text-slate-950 font-bold rounded-lg uppercase tracking-wider text-[11px] transition-all shadow-md">
-            Confirmar Jugada VIP
+            Confirmar Jugada
           </button>
         </div>
 
@@ -300,6 +330,54 @@
     </aside>
 
   </main>
+
+  <!-- MODAL MEMBRESÍA VIP (PAYWALL) -->
+  <div id="vip-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-amber-500/30 rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+      <button onclick="closeVipModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      
+      <div class="text-center space-y-2 mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center text-2xl mx-auto shadow-lg shadow-amber-500/20">
+          👑
+        </div>
+        <h3 class="text-lg font-bold text-white tracking-tight">Acceso Completo SofaTactics VIP</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Desbloquea los **Picks Bomba**, análisis de cuotas con valor esperado (+EV) y alertas directas antes del inicio.
+        </p>
+      </div>
+
+      <div class="space-y-3 mb-6">
+        <div class="p-3.5 rounded-xl border-2 border-amber-500/60 bg-amber-950/20 flex items-center justify-between cursor-pointer">
+          <div>
+            <span class="text-xs font-bold text-white block">Pase Mensual VIP</span>
+            <span class="text-[11px] text-slate-400">Picks diarios + Soporte 1 a 1</span>
+          </div>
+          <div class="text-right">
+            <span class="text-base font-mono font-black text-amber-400">$29.99</span>
+            <span class="text-[10px] text-slate-400 block">/ mes</span>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-bordercolor bg-innerbg flex items-center justify-between cursor-pointer hover:border-slate-500 transition-all">
+          <div>
+            <span class="text-xs font-bold text-slate-200 block">Pase Semanal</span>
+            <span class="text-[11px] text-slate-400">7 días de acceso a todas las ligas</span>
+          </div>
+          <div class="text-right">
+            <span class="text-base font-mono font-black text-white">$11.99</span>
+            <span class="text-[10px] text-slate-400 block">/ sem</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="alert('Redirigiendo a pasarela de pago segura (Stripe / Whop)...')" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20">
+          Obtener Acceso Inmediato
+        </button>
+        <p class="text-[10px] text-center text-slate-500 font-mono">Cancelación en cualquier momento sin compromisos.</p>
+      </div>
+    </div>
+  </div>
 
   <!-- SCRIPT LOGIC -->
   <script>
@@ -339,9 +417,9 @@
         marketProb: { home: "62.5%", draw: "21.5%", away: "16.0%" },
         modelProb: { home: "68.5%", draw: "18.2%", away: "13.3%" },
         picks: [
-          { name: "Stuttgart ML + Over 1.5", odds: 1.61, tag: "FAVORITO", ev: "+9.8%" },
-          { name: "Stuttgart Hándicap (-1.0)", odds: 1.87, tag: "VALOR +EV", ev: "+14.2%" },
-          { name: "Stuttgart Gana & Ambos Marcan", odds: 2.85, tag: "BOMBA", ev: "+28.0%" }
+          { name: "Stuttgart ML + Over 1.5", odds: 1.61, tag: "GRATIS", ev: "+9.8%", isLocked: false },
+          { name: "Stuttgart Hándicap (-1.0)", odds: 1.87, tag: "VALOR +EV", ev: "+14.2%", isLocked: false },
+          { name: "Stuttgart Gana & Ambos Marcan", odds: 2.85, tag: "VIP EXCLUSIVO", ev: "+28.0%", isLocked: true }
         ]
       },
       "alaves-malaga": {
@@ -361,8 +439,8 @@
         marketProb: { home: "53.2%", draw: "28.5%", away: "18.3%" },
         modelProb: { home: "59.0%", draw: "26.5%", away: "14.5%" },
         picks: [
-          { name: "Menos de 2.5 Goles Totales", odds: 1.80, tag: "FAVORITO", ev: "+11.6%" },
-          { name: "Alavés Gana a Cero", odds: 2.60, tag: "VALOR +EV", ev: "+18.4%" }
+          { name: "Menos de 2.5 Goles Totales", odds: 1.80, tag: "GRATIS", ev: "+11.6%", isLocked: false },
+          { name: "Alavés Gana con Portería a Cero", odds: 2.60, tag: "VIP EXCLUSIVO", ev: "+18.4%", isLocked: true }
         ]
       },
       "ipswich-forest": {
@@ -382,8 +460,8 @@
         marketProb: { home: "35.0%", draw: "30.5%", away: "34.5%" },
         modelProb: { home: "31.0%", draw: "32.0%", away: "37.0%" },
         picks: [
-          { name: "Nottingham Forest o Empate (X2)", odds: 1.71, tag: "FAVORITO", ev: "+7.3%" },
-          { name: "Ambos Marcan: NO", odds: 1.91, tag: "VALOR +EV", ev: "+12.0%" }
+          { name: "Nottingham Forest o Empate (X2)", odds: 1.71, tag: "GRATIS", ev: "+7.3%", isLocked: false },
+          { name: "Ambos Marcan: NO", odds: 1.91, tag: "VIP EXCLUSIVO", ev: "+12.0%", isLocked: true }
         ]
       },
       "necaxa-juarez": {
@@ -403,13 +481,12 @@
         marketProb: { home: "49.5%", draw: "27.5%", away: "23.0%" },
         modelProb: { home: "56.0%", draw: "25.5%", away: "18.5%" },
         picks: [
-          { name: "Necaxa Empate No Acción (DNB)", odds: 1.65, tag: "FAVORITO", ev: "+13.1%" },
-          { name: "Ambos Equipos Anotan (Sí)", odds: 1.83, tag: "VALOR +EV", ev: "+10.5%" }
+          { name: "Necaxa Empate No Acción (DNB)", odds: 1.65, tag: "GRATIS", ev: "+13.1%", isLocked: false },
+          { name: "Ambos Equipos Anotan (Sí)", odds: 1.83, tag: "VIP EXCLUSIVO", ev: "+10.5%", isLocked: true }
         ]
       }
     };
 
-    // Bet slip current state
     let activeSlip = [
       { id: "s1", match: "Stuttgart vs Gladbach", pick: "Stuttgart ML + Over 1.5", odds: 1.61 },
       { id: "s2", match: "Ipswich vs Forest", pick: "Nottingham Forest X2", odds: 1.71 }
@@ -458,6 +535,25 @@
       document.getElementById('slip-payout').innerText = (payout >= 0 ? `+${payout.toFixed(2)}u` : "0.00u");
     }
 
+    function copySlipToClipboard() {
+      if (activeSlip.length === 0) return;
+      const stake = document.getElementById('slip-stake-input').value;
+      const totalOdds = document.getElementById('slip-total-odds').innerText;
+      const payout = document.getElementById('slip-payout').innerText;
+
+      let text = `🔥 *JUGADA CONFIRMADA • SOFATACTICS VIP*\n\n`;
+      activeSlip.forEach(item => {
+        text += `⚽ ${item.match}\n🎯 ${item.pick} (Cuota: ${item.odds.toFixed(2)})\n\n`;
+      });
+      text += `📊 *Cuota Combinada:* ${totalOdds}\n💰 *Stake sugerido:* ${stake}u\n📈 *Retorno estimado:* ${payout}\n\n🌐 Ver radiografía completa en: ${window.location.origin}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn-label');
+        btn.innerText = "¡Copiado al Portapapeles! ✅";
+        setTimeout(() => { btn.innerText = "Copiar Boleto Formateado"; }, 2500);
+      });
+    }
+
     function triggerTacticalPrompt(matchKey, customPrompt = null) {
       if (isTyping) return;
       const data = tacticalDB[matchKey];
@@ -468,7 +564,6 @@
       const stream = document.getElementById('tactical-stream');
       stream.innerHTML = "";
 
-      // Typewriter bubble
       const userBubble = document.createElement('div');
       userBubble.className = "flex justify-end";
       userBubble.innerHTML = `
@@ -489,7 +584,6 @@
           clearInterval(timer);
           target.classList.remove('cursor-blink');
 
-          // Loading pulse
           const loader = document.createElement('div');
           loader.id = "feed-loader";
           loader.className = "text-[11px] font-mono text-proaccent flex items-center gap-2 p-2";
@@ -559,22 +653,49 @@
           </div>
         </div>
 
-        <!-- Picks Selection -->
+        <!-- Picks Selection con PAYWALL BLUR -->
         <div class="space-y-2 pt-1">
-          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Picks Recomendados (+EV)</div>
+          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider flex items-center justify-between">
+            <span>Picks Recomendados (+EV)</span>
+            <span class="text-amber-400 font-bold">👑 Contenido VIP</span>
+          </div>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            ${data.picks.map(p => `
-              <div class="p-2.5 rounded-lg bg-basebg border border-bordercolor flex items-center justify-between">
-                <div>
-                  <div class="text-[9px] font-mono text-proaccent font-bold">${p.tag} · EV: ${p.ev}</div>
-                  <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
-                  <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${p.odds}</span></div>
-                </div>
-                <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-problue hover:bg-blue-500 text-white font-mono text-[10px] font-bold transition-all">
-                  + Boleto
-                </button>
-              </div>
-            `).join('')}
+            ${data.picks.map(p => {
+              if (!p.isLocked) {
+                return `
+                  <div class="p-2.5 rounded-lg bg-basebg border border-bordercolor flex items-center justify-between">
+                    <div>
+                      <div class="text-[9px] font-mono text-proaccent font-bold">${p.tag} · EV: ${p.ev}</div>
+                      <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
+                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${p.odds.toFixed(2)}</span></div>
+                    </div>
+                    <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-problue hover:bg-blue-500 text-white font-mono text-[10px] font-bold transition-all">
+                      + Boleto
+                    </button>
+                  </div>
+                `;
+              } else {
+                return `
+                  <div class="p-2.5 rounded-lg bg-amber-950/20 border border-amber-500/40 relative overflow-hidden flex items-center justify-between">
+                    <div class="vip-blur">
+                      <div class="text-[9px] font-mono text-amber-400 font-bold">${p.tag} · EV: ${p.ev}</div>
+                      <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
+                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${p.odds.toFixed(2)}</span></div>
+                    </div>
+                    <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-between px-3">
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-amber-400 text-sm">🔒</span>
+                        <span class="text-[10px] font-bold text-white uppercase tracking-wider">Pick VIP Exclusivo</span>
+                      </div>
+                      <button onclick="openVipModal()" class="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold font-mono text-[10px] transition-all shadow-md">
+                        Desbloquear
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }
+            }).join('')}
           </div>
         </div>
       `;
@@ -607,6 +728,14 @@
 
     function toggleAdminPrompt() {
       alert("Modo Admin: Gestión de cuotas y resultados vinculados.");
+    }
+
+    function openVipModal() {
+      document.getElementById('vip-modal').classList.remove('hidden');
+    }
+
+    function closeVipModal() {
+      document.getElementById('vip-modal').classList.add('hidden');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
