@@ -51,6 +51,10 @@
     .custom-scroll::-webkit-scrollbar-thumb:hover {
       background: #334155;
     }
+    .team-badge-img {
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
@@ -99,8 +103,11 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="bundesliga-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="selectMatch('stuttgart-gladbach')" class="w-full text-left py-1.5 px-2 rounded-lg bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 flex items-center justify-between hover:bg-cyan-900/50 transition-all font-mono text-[11px]">
-                <span class="truncate">Stuttgart vs Gladbach</span>
+              <button onclick="selectMatch('stuttgart-gladbach')" class="w-full text-left py-2 px-2.5 rounded-lg bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 flex items-center justify-between hover:bg-cyan-900/50 transition-all font-mono text-[11px]">
+                <div class="flex items-center gap-2 truncate">
+                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'STU')">
+                  <span class="truncate">Stuttgart vs Gladbach</span>
+                </div>
                 <span class="text-slate-400 text-[10px]">13:30</span>
               </button>
             </div>
@@ -113,8 +120,11 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="laliga-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="selectMatch('alaves-malaga')" class="w-full text-left py-1.5 px-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <span class="truncate">Alavés vs Málaga</span>
+              <button onclick="selectMatch('alaves-malaga')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+                <div class="flex items-center gap-2 truncate">
+                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'ALA')">
+                  <span class="truncate">Alavés vs Málaga</span>
+                </div>
                 <span class="text-slate-500 text-[10px]">14:00</span>
               </button>
             </div>
@@ -127,8 +137,11 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="premier-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="selectMatch('ipswich-forest')" class="w-full text-left py-1.5 px-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <span class="truncate">Ipswich vs Forest</span>
+              <button onclick="selectMatch('ipswich-forest')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+                <div class="flex items-center gap-2 truncate">
+                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'IPS')">
+                  <span class="truncate">Ipswich vs Forest</span>
+                </div>
                 <span class="text-slate-500 text-[10px]">14:00</span>
               </button>
             </div>
@@ -141,8 +154,11 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="seriea-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="selectMatch('torino-monza')" class="w-full text-left py-1.5 px-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <span class="truncate">Torino vs Monza</span>
+              <button onclick="selectMatch('torino-monza')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+                <div class="flex items-center gap-2 truncate">
+                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/118.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'TOR')">
+                  <span class="truncate">Torino vs Monza</span>
+                </div>
                 <span class="text-slate-500 text-[10px]">13:45</span>
               </button>
             </div>
@@ -155,8 +171,11 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="ligue1-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="selectMatch('brest-nice')" class="w-full text-left py-1.5 px-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <span class="truncate">Brest vs Niza</span>
+              <button onclick="selectMatch('brest-nice')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+                <div class="flex items-center gap-2 truncate">
+                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/282.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'BRE')">
+                  <span class="truncate">Brest vs Niza</span>
+                </div>
                 <span class="text-slate-500 text-[10px]">13:45</span>
               </button>
             </div>
@@ -169,8 +188,11 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="ligamx-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="selectMatch('necaxa-juarez')" class="w-full text-left py-1.5 px-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <span class="truncate">Necaxa vs Juárez</span>
+              <button onclick="selectMatch('necaxa-juarez')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+                <div class="flex items-center gap-2 truncate">
+                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'NEC')">
+                  <span class="truncate">Necaxa vs Juárez</span>
+                </div>
                 <span class="text-slate-500 text-[10px]">20:00</span>
               </button>
             </div>
@@ -244,7 +266,10 @@
           <span class="text-[9px] font-mono uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">ACERTADO</span>
           <span class="text-[10px] font-mono text-slate-400">Cuota 1.45</span>
         </div>
-        <div class="text-xs font-bold text-white">Paris Saint-Germain vs Barcelona</div>
+        <div class="text-xs font-bold text-white flex items-center gap-2">
+          <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/160.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'PSG')">
+          <span>PSG vs Barcelona</span>
+        </div>
         <div class="text-[11px] font-mono text-cyan-300 mt-1">Más de 2.5 Goles</div>
         <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500 font-mono border-t border-white/5 pt-1.5">
           <span>Res: 4 - 2</span>
@@ -257,7 +282,10 @@
           <span class="text-[9px] font-mono uppercase bg-pink-950/60 text-pink-400 border border-pink-500/30 px-2 py-0.5 rounded font-bold">BOMBA ✅</span>
           <span class="text-[10px] font-mono text-slate-400">Cuota 3.05</span>
         </div>
-        <div class="text-xs font-bold text-white">AFC Bournemouth vs AC Milan</div>
+        <div class="text-xs font-bold text-white flex items-center gap-2">
+          <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/349.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'BOU')">
+          <span>Bournemouth vs Milan</span>
+        </div>
         <div class="text-[11px] font-mono text-cyan-300 mt-1">Bournemouth + BTTS</div>
         <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500 font-mono border-t border-white/5 pt-1.5">
           <span>Res: 3 - 1</span>
@@ -270,7 +298,10 @@
           <span class="text-[9px] font-mono uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">ACERTADO</span>
           <span class="text-[10px] font-mono text-slate-400">Cuota 1.83</span>
         </div>
-        <div class="text-xs font-bold text-white">Inter vs Shakhtar Donetsk</div>
+        <div class="text-xs font-bold text-white flex items-center gap-2">
+          <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'INT')">
+          <span>Inter vs Shakhtar Donetsk</span>
+        </div>
         <div class="text-[11px] font-mono text-cyan-300 mt-1">Inter -1.5 Hándicap</div>
         <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500 font-mono border-t border-white/5 pt-1.5">
           <span>Res: 2 - 0</span>
@@ -283,7 +314,10 @@
           <span class="text-[9px] font-mono uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">ACERTADO</span>
           <span class="text-[10px] font-mono text-slate-400">Cuota 1.62</span>
         </div>
-        <div class="text-xs font-bold text-white">Liverpool vs Chelsea</div>
+        <div class="text-xs font-bold text-white flex items-center gap-2">
+          <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/364.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'LIV')">
+          <span>Liverpool vs Chelsea</span>
+        </div>
         <div class="text-[11px] font-mono text-cyan-300 mt-1">Ambos Marcan (Sí)</div>
         <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500 font-mono border-t border-white/5 pt-1.5">
           <span>Res: 2 - 1</span>
@@ -305,13 +339,36 @@
 
   <!-- SCRIPT LOGIC -->
   <script>
+    // Robust Badge Direct CDN map with SVG fallback
+    const badgesCDN = {
+      "VfB Stuttgart": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=100&h=100",
+      "Borussia Mönchengladbach": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=100&h=100",
+      "Deportivo Alavés": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=100&h=100",
+      "Málaga CF": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=100&h=100",
+      "Ipswich Town": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=100&h=100",
+      "Nottingham Forest": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/393.png&w=100&h=100",
+      "Torino": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/118.png&w=100&h=100",
+      "AC Monza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/9900.png&w=100&h=100",
+      "Stade Brestois": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/282.png&w=100&h=100",
+      "OGC Niza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/171.png&w=100&h=100",
+      "Club Necaxa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=100&h=100",
+      "FC Juárez": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17743.png&w=100&h=100"
+    };
+
+    function handleImageError(imgEl, initials) {
+      imgEl.onerror = null;
+      imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%230f172a" stroke="%2338bdf8" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${initials || 'FC'}</text></svg>`;
+    }
+
     const matchesDatabase = {
       "stuttgart-gladbach": {
         query: "Pronóstico VfB Stuttgart vs Borussia Mönchengladbach",
         title: "Análisis VIP: VfB Stuttgart vs Borussia Mönchengladbach",
         radio: "El Stuttgart consolida una estructura de ataque consistente y volumen de disparos superior en casa. El Gladbach muestra fragilidad defensiva en transición al jugar de visita. El modelo matemático detecta un desbalance en las cuotas que sugiere una lectura más optimista para el local.",
         home: "VfB Stuttgart",
+        homeBadge: badgesCDN["VfB Stuttgart"],
         away: "Borussia Mönchengladbach",
+        awayBadge: badgesCDN["Borussia Mönchengladbach"],
         homeForm: ["G", "G", "E", "P", "G"],
         awayForm: ["P", "E", "G", "P", "E"],
         market: {
@@ -345,7 +402,9 @@
         title: "Análisis VIP: Deportivo Alavés vs Málaga CF",
         radio: "Duelo caracterizado por la intensidad física en zonas intermedias y escasas transiciones limpias. El Alavés en Mendizorroza concede muy poco, forzando partidos de marcadores estrechos.",
         home: "Deportivo Alavés",
+        homeBadge: badgesCDN["Deportivo Alavés"],
         away: "Málaga CF",
+        awayBadge: badgesCDN["Málaga CF"],
         homeForm: ["E", "G", "P", "E", "G"],
         awayForm: ["P", "P", "E", "G", "P"],
         market: {
@@ -378,7 +437,9 @@
         title: "Análisis VIP: Ipswich Town vs Nottingham Forest",
         radio: "Forest repliega en bloque bajo y genera peligro por velocidad. Ipswich sufre para romper líneas organizadas.",
         home: "Ipswich Town",
+        homeBadge: badgesCDN["Ipswich Town"],
         away: "Nottingham Forest",
+        awayBadge: badgesCDN["Nottingham Forest"],
         homeForm: ["P", "E", "P", "E", "P"],
         awayForm: ["G", "E", "P", "G", "E"],
         market: {
@@ -405,6 +466,111 @@
           { type: "Pick Principal", title: "Nottingham Forest o Empate (X2)", odds: "1.71", tag: "FAVORITO" },
           { type: "Pick de Valor", title: "Ambos Marcan: NO", odds: "1.91", tag: "VALOR +EV" }
         ]
+      },
+      "torino-monza": {
+        query: "Pronóstico Torino vs AC Monza",
+        title: "Análisis VIP: Torino vs AC Monza",
+        radio: "Propuesta de fútbol táctico de bajo riesgo con marcas individuales. Torino sostiene números defensivos sobresalientes en su estadio.",
+        home: "Torino",
+        homeBadge: badgesCDN["Torino"],
+        away: "AC Monza",
+        awayBadge: badgesCDN["AC Monza"],
+        homeForm: ["G", "P", "E", "G", "P"],
+        awayForm: ["P", "E", "P", "P", "E"],
+        market: {
+          homeName: "Local - Torino",
+          homeProb: "52.0%",
+          homeModel: "58.0%",
+          homeDiff: "+6.0%",
+          homeOdds: "1.92",
+          homeVal: "+10.4%",
+          drawName: "Empate",
+          drawProb: "30.0%",
+          drawModel: "27.0%",
+          drawDiff: "-3.0%",
+          drawOdds: "3.30",
+          drawVal: "-4.2%",
+          awayName: "Visitante - AC Monza",
+          awayProb: "18.0%",
+          awayModel: "15.0%",
+          awayDiff: "-3.0%",
+          awayOdds: "4.40",
+          awayVal: "-16.0%"
+        },
+        picks: [
+          { type: "Pick Principal", title: "Torino Empate No Acción (DNB)", odds: "1.40", tag: "FAVORITO" },
+          { type: "Pick de Valor", title: "Menos de 2.0 Goles Asiático", odds: "2.10", tag: "VALOR +EV" }
+        ]
+      },
+      "brest-nice": {
+        query: "Pronóstico Stade Brestois vs OGC Niza",
+        title: "Análisis VIP: Stade Brestois vs OGC Niza",
+        radio: "Duelo igualado donde Niza ejerce una presión posicional muy eficiente en bloque medio y el Brest acumula desgaste de rotación.",
+        home: "Stade Brestois",
+        homeBadge: badgesCDN["Stade Brestois"],
+        away: "OGC Niza",
+        awayBadge: badgesCDN["OGC Niza"],
+        homeForm: ["E", "P", "G", "E", "P"],
+        awayForm: ["G", "E", "G", "P", "E"],
+        market: {
+          homeName: "Local - Stade Brestois",
+          homeProb: "37.5%",
+          homeModel: "33.0%",
+          homeDiff: "-4.5%",
+          homeOdds: "2.65",
+          homeVal: "-5.0%",
+          drawName: "Empate",
+          drawProb: "31.0%",
+          drawModel: "33.0%",
+          drawDiff: "+2.0%",
+          drawOdds: "3.20",
+          drawVal: "+3.2%",
+          awayName: "Visitante - OGC Niza",
+          awayProb: "31.5%",
+          awayModel: "34.0%",
+          awayDiff: "+2.5%",
+          awayOdds: "2.75",
+          awayVal: "+8.9%"
+        },
+        picks: [
+          { type: "Pick Principal", title: "OGC Niza o Empate (X2)", odds: "1.69", tag: "FAVORITO" },
+          { type: "Pick de Valor", title: "Empate al Descanso", odds: "2.05", tag: "VALOR +EV" }
+        ]
+      },
+      "necaxa-juarez": {
+        query: "Pronóstico Club Necaxa vs FC Juárez",
+        title: "Análisis VIP: Club Necaxa vs FC Juárez",
+        radio: "Duelo directo en la Liga MX. Necaxa hace valer la altura y la localía frente a una zaga de Juárez que suele desordenarse en los segundos tiempos.",
+        home: "Club Necaxa",
+        homeBadge: badgesCDN["Club Necaxa"],
+        away: "FC Juárez",
+        awayBadge: badgesCDN["FC Juárez"],
+        homeForm: ["P", "G", "E", "P", "G"],
+        awayForm: ["P", "P", "P", "G", "P"],
+        market: {
+          homeName: "Local - Club Necaxa",
+          homeProb: "49.5%",
+          homeModel: "56.0%",
+          homeDiff: "+6.5%",
+          homeOdds: "2.02",
+          homeVal: "+13.1%",
+          drawName: "Empate",
+          drawProb: "27.5%",
+          drawModel: "25.5%",
+          drawDiff: "-2.0%",
+          drawOdds: "3.60",
+          drawVal: "-7.3%",
+          awayName: "Visitante - FC Juárez",
+          awayProb: "23.0%",
+          awayModel: "18.5%",
+          awayDiff: "-4.5%",
+          awayOdds: "4.35",
+          awayVal: "-19.5%"
+        },
+        picks: [
+          { type: "Pick Principal", title: "Necaxa DNB", odds: "1.65", tag: "FAVORITO" },
+          { type: "Pick de Valor", title: "Ambos Marcan: Sí", odds: "1.83", tag: "VALOR +EV" }
+        ]
       }
     };
 
@@ -415,9 +581,9 @@
 
     function renderFormDots(formArray) {
       return formArray.map(res => {
-        if (res === 'G') return `<span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>`;
-        if (res === 'E') return `<span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>`;
-        return `<span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>`;
+        if (res === 'G') return `<span class="w-3 h-3 rounded-full bg-emerald-500 inline-block shadow-sm shadow-emerald-500/50"></span>`;
+        if (res === 'E') return `<span class="w-3 h-3 rounded-full bg-amber-500 inline-block shadow-sm shadow-amber-500/50"></span>`;
+        return `<span class="w-3 h-3 rounded-full bg-rose-500 inline-block shadow-sm shadow-rose-500/50"></span>`;
       }).join(' ');
     }
 
@@ -434,13 +600,20 @@
           </div>
         </div>
 
-        <!-- AI RESPONSE CONTAINER (STREET TECH OBSIDIAN CARD) -->
+        <!-- AI RESPONSE CONTAINER -->
         <div class="bg-[#101828] border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl">
           
-          <!-- Header Título -->
-          <div class="flex items-center gap-2 border-b border-white/5 pb-3">
-            <span class="text-sm">⚡</span>
-            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">${data.title}</h3>
+          <!-- Header Título con Escudos Oficiales -->
+          <div class="flex items-center justify-between border-b border-white/5 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="text-sm">⚡</span>
+              <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">${data.title}</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <img src="${data.homeBadge}" class="w-6 h-6 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
+              <span class="text-[10px] font-mono text-slate-500">vs</span>
+              <img src="${data.awayBadge}" class="w-6 h-6 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
+            </div>
           </div>
 
           <!-- Radiografía del Partido -->
@@ -449,15 +622,21 @@
             ${data.radio}
           </div>
 
-          <!-- Forma Reciente -->
+          <!-- Forma Reciente con Escudos -->
           <div class="bg-[#0b1120] p-3.5 rounded-xl border border-white/5 space-y-2">
             <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Forma Reciente</div>
             <div class="flex items-center justify-between text-xs py-1">
-              <span class="font-medium text-slate-200">${data.home}</span>
+              <div class="flex items-center gap-2">
+                <img src="${data.homeBadge}" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
+                <span class="font-medium text-slate-200">${data.home}</span>
+              </div>
               <div class="flex items-center gap-1.5">${renderFormDots(data.homeForm)}</div>
             </div>
             <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
-              <span class="font-medium text-slate-200">${data.away}</span>
+              <div class="flex items-center gap-2">
+                <img src="${data.awayBadge}" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
+                <span class="font-medium text-slate-200">${data.away}</span>
+              </div>
               <div class="flex items-center gap-1.5">${renderFormDots(data.awayForm)}</div>
             </div>
           </div>
@@ -538,6 +717,12 @@
         selectMatch('alaves-malaga');
       } else if (val.includes('ipswich') || val.includes('forest')) {
         selectMatch('ipswich-forest');
+      } else if (val.includes('torino') || val.includes('monza')) {
+        selectMatch('torino-monza');
+      } else if (val.includes('brest') || val.includes('nice') || val.includes('niza')) {
+        selectMatch('brest-nice');
+      } else if (val.includes('necaxa') || val.includes('juarez')) {
+        selectMatch('necaxa-juarez');
       } else {
         selectMatch('stuttgart-gladbach');
       }
@@ -545,7 +730,7 @@
     }
 
     function toggleAdminPrompt() {
-      alert("Acceso administrativo: Puedes gestionar partidos y cuotas en la tabla central.");
+      alert("Panel de Control: Para conectar tu dominio o actualizar pronósticos en directo, los datos están sincronizados en GitHub.");
     }
 
     window.addEventListener('DOMContentLoaded', () => {
