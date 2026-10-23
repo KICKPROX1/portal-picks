@@ -156,7 +156,7 @@
           <p class="text-xs text-slate-400 mt-1">Comparativa estadística probabilística del modelo táctico contra las cuotas de las casas.</p>
         </div>
         <div class="flex items-center gap-2 w-full sm:w-auto">
-          <input id="ai-search-input" type="text" placeholder="Ej: Real Madrid vs Barcelona..." class="w-full sm:w-64 bg-black/50 border border-purple-500/30 rounded-xl px-3 py-2 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-purple-400">
+          <input id="ai-search-input" type="text" placeholder="Ej: Stuttgart vs Gladbach..." class="w-full sm:w-64 bg-black/50 border border-purple-500/30 rounded-xl px-3 py-2 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-purple-400">
           <button onclick="runAiAnalysis()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-xl text-xs font-bold text-white transition-all shrink-0">
             Analizar
           </button>
@@ -167,6 +167,8 @@
       <div class="flex items-center gap-2 overflow-x-auto py-3 custom-scroll text-xs">
         <span class="text-slate-400 text-[11px] uppercase font-mono font-bold shrink-0">Partidos de hoy:</span>
         <button onclick="loadMatchReport('stuttgart-gladbach')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🇩🇪 Stuttgart vs Gladbach</button>
+        <button onclick="loadMatchReport('torino-monza')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🇮🇹 Torino vs Monza</button>
+        <button onclick="loadMatchReport('brest-nice')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🇫🇷 Brest vs Niza</button>
         <button onclick="loadMatchReport('alaves-malaga')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🇪🇸 Alavés vs Málaga</button>
         <button onclick="loadMatchReport('ipswich-forest')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Ipswich vs Forest</button>
         <button onclick="loadMatchReport('necaxa-juarez')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🇲🇽 Necaxa vs Juárez</button>
@@ -195,6 +197,8 @@
         <button onclick="filterLeague('Bundesliga')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="Bundesliga">Bundesliga</button>
         <button onclick="filterLeague('LaLiga')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="LaLiga">LaLiga</button>
         <button onclick="filterLeague('Premier League')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="Premier League">Premier</button>
+        <button onclick="filterLeague('Serie A')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="Serie A">Serie A</button>
+        <button onclick="filterLeague('Ligue 1')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="Ligue 1">Ligue 1</button>
         <button onclick="filterLeague('Liga MX')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="Liga MX">Liga MX</button>
       </div>
     </div>
@@ -329,11 +333,9 @@
 
   <!-- APPLICATION DATA & LOGIC -->
   <script>
-    // State variables
     let isAdminMode = false;
     let activeLeagueFilter = 'ALL';
 
-    // Badge resolver database
     const teamBadges = {
       "Stuttgart": "https://upload.wikimedia.org/wikipedia/commons/e/eb/VfB_Stuttgart_1893_Logo.svg",
       "VfB Stuttgart": "https://upload.wikimedia.org/wikipedia/commons/e/eb/VfB_Stuttgart_1893_Logo.svg",
@@ -346,12 +348,15 @@
       "Ipswich": "https://upload.wikimedia.org/wikipedia/en/4/43/Ipswich_Town.svg",
       "Ipswich Town": "https://upload.wikimedia.org/wikipedia/en/4/43/Ipswich_Town.svg",
       "Nottingham Forest": "https://upload.wikimedia.org/wikipedia/en/e/e5/Nottingham_Forest_F.C._logo.svg",
+      "Torino": "https://upload.wikimedia.org/wikipedia/en/2/2e/Torino_FC_logo.svg",
+      "AC Monza": "https://upload.wikimedia.org/wikipedia/en/2/2e/AC_Monza_logo.svg",
+      "Brest": "https://upload.wikimedia.org/wikipedia/en/0/05/Stade_Brestois_29_logo.svg",
+      "Stade Brestois": "https://upload.wikimedia.org/wikipedia/en/0/05/Stade_Brestois_29_logo.svg",
+      "OGC Niza": "https://upload.wikimedia.org/wikipedia/en/2/2e/OGC_Nice_logo.svg",
       "Necaxa": "https://upload.wikimedia.org/wikipedia/commons/7/75/Club_Necaxa_logo.svg",
       "Club Necaxa": "https://upload.wikimedia.org/wikipedia/commons/7/75/Club_Necaxa_logo.svg",
       "Juárez": "https://upload.wikimedia.org/wikipedia/en/9/91/FC_Juarez_logo.svg",
       "FC Juárez": "https://upload.wikimedia.org/wikipedia/en/9/91/FC_Juarez_logo.svg",
-      "Torino": "https://upload.wikimedia.org/wikipedia/en/2/2e/Torino_FC_logo.svg",
-      "AC Monza": "https://upload.wikimedia.org/wikipedia/en/2/2e/AC_Monza_logo.svg",
       "Atlante FC": "https://upload.wikimedia.org/wikipedia/en/6/67/Atlante_F.C._logo.svg",
       "Atlético de San Luis": "https://upload.wikimedia.org/wikipedia/en/5/52/Atl%C3%A9tico_San_Luis_logo.svg"
     };
@@ -362,7 +367,6 @@
       return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%231a1a2e" stroke="%238b5cf6" stroke-width="2"/><text x="50%" y="54%" font-family="sans-serif" font-weight="bold" font-size="18" fill="%23a78bfa" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
     }
 
-    // Initial Live Matches
     let picksData = [
       {
         id: "pick-1",
@@ -381,6 +385,36 @@
       },
       {
         id: "pick-2",
+        league: "Serie A",
+        homeTeam: "Torino",
+        awayTeam: "AC Monza",
+        matchTime: "Hoy • 1:45 PM CDT",
+        market: "Empate No Acción",
+        selection: "Torino DNB + Menos de 3.5 Goles",
+        oddsUS: "-135",
+        oddsDec: 1.74,
+        stake: 2.0,
+        isVIP: false,
+        status: "pending",
+        tacticalNotes: "El Torino impone un bloque rocoso en casa. Monza le cuesta generar volumen ofensivo en cancha ajena."
+      },
+      {
+        id: "pick-3",
+        league: "Ligue 1",
+        homeTeam: "Stade Brestois",
+        awayTeam: "OGC Niza",
+        matchTime: "Hoy • 1:45 PM CDT",
+        market: "Doble Oportunidad",
+        selection: "OGC Niza o Empate (X2)",
+        oddsUS: "-145",
+        oddsDec: 1.69,
+        stake: 2.5,
+        isVIP: false,
+        status: "pending",
+        tacticalNotes: "Brest acumula desgaste de calendario europeo. Niza cuenta con una de las zagas más sólidas de la liga francesa."
+      },
+      {
+        id: "pick-4",
         league: "LaLiga",
         homeTeam: "Deportivo Alavés",
         awayTeam: "Málaga CF",
@@ -395,7 +429,7 @@
         tacticalNotes: "Mendizorroza es una aduana de juego físico y ritmo cortado. El 80% de los últimos choques del Alavés culminaron con dos goles o menos."
       },
       {
-        id: "pick-3",
+        id: "pick-5",
         league: "Premier League",
         homeTeam: "Ipswich Town",
         awayTeam: "Nottingham Forest",
@@ -410,7 +444,7 @@
         tacticalNotes: "Forest plantea bloques sólidos de visita con rápida salida directa. El Ipswich sufre para quebrar cerrojos defensivos."
       },
       {
-        id: "pick-4",
+        id: "pick-6",
         league: "Liga MX",
         homeTeam: "Club Necaxa",
         awayTeam: "FC Juárez",
@@ -423,10 +457,24 @@
         isVIP: false,
         status: "pending",
         tacticalNotes: "Necaxa se hace fuerte en el Estadio Victoria frente a un Juárez que encaja goles con facilidad en sus salidas."
+      },
+      {
+        id: "pick-7",
+        league: "Liga MX",
+        homeTeam: "Atlante FC",
+        awayTeam: "Atlético de San Luis",
+        matchTime: "Hoy • 10:00 PM CDT",
+        market: "Ambos Marcan",
+        selection: "Sí (Ambos Equipos Anotan)",
+        oddsUS: "-120",
+        oddsDec: 1.83,
+        stake: 2.0,
+        isVIP: true,
+        status: "pending",
+        tacticalNotes: "Partido de ida y vuelta nocturno con ofensivas rápidas y defensas que conceden remates directos."
       }
     ];
 
-    // Historical Audited Picks
     let historicalData = [
       { date: "22/10/2026", match: "SC Freiburg vs Bayern München", league: "Bundesliga", market: "Ambos Marcan", selection: "Sí (Ambos anotan)", oddsUS: "-220", oddsDec: 1.45, stake: 2.5, status: "win", returnUnits: 1.13 },
       { date: "21/10/2026", match: "Real Madrid vs Borussia Dortmund", league: "Champions League", market: "Over Goles", selection: "Más de 2.5 Goles", oddsUS: "-180", oddsDec: 1.55, stake: 3.0, status: "win", returnUnits: 1.65 },
@@ -435,87 +483,111 @@
       { date: "18/10/2026", match: "Liverpool vs Chelsea", league: "Premier League", market: "Ambos Marcan", selection: "Sí (Ambos anotan)", oddsUS: "-160", oddsDec: 1.62, stake: 2.0, status: "win", returnUnits: 1.24 }
     ];
 
-    // Detailed Match Reports Database for AI Radar
     const reportsDB = {
       "stuttgart-gladbach": {
         title: "VfB Stuttgart vs Borussia Mönchengladbach",
         home: "VfB Stuttgart",
         away: "Borussia Mönchengladbach",
         date: "Hoy · 1:30 PM CDT · Mercedes-Benz Arena",
-        radio: "El Stuttgart consolida una estructura de ataque posicional de élite con transiciones veloces por bandas. El Gladbach tiende a conceder volumen de disparos cuando no logra retener el balón en campo propio.",
-        homeForm: ["G", "G", "E", "P", "G"],
-        awayForm: ["P", "E", "G", "P", "E"],
+        radio: "El Stuttgart consolida una estructura de ataque posicional fluida. El Gladbach tiende a conceder volumen de disparos cuando no logra pausar el juego en el centro.",
         market1x2: {
-          homeProb: 62.4, homeModel: 68.5, homeDiff: "+6.1", homeOdds: "1.46", homeVal: "+9.8%",
-          drawProb: 21.0, drawModel: 18.2, drawDiff: "-2.8", drawOdds: "4.75", drawVal: "-13.3%",
-          awayProb: 16.6, awayModel: 13.3, awayDiff: "-3.3", awayOdds: "6.00", awayVal: "-19.8%"
+          homeOdds: "1.46", homeVal: "+9.8%",
+          drawOdds: "4.75", drawVal: "-13.3%",
+          awayOdds: "6.00", awayVal: "-19.8%"
         },
-        goals: { overProb: 78, overOdds: "1.32", overEV: "+4.5%", underProb: 22, underOdds: "3.40", underEV: "-12.0%" },
-        btts: { yesProb: 64.2, yesModel: 69.1, yesDiff: "+4.9", yesOdds: "1.52", yesVal: "+5.0%" },
-        favoritePick: { market: "Moneyline + Goles", pick: "Stuttgart a Ganar + Over 1.5 Goles", odds: "1.61 (-165)", conf: "82.5%", stake: "3.0u" },
-        valuePick: { market: "Hándicap Asiático", pick: "Stuttgart -1.0", odds: "1.87 (-115)", ev: "+14.2%", stake: "1.5u" },
-        bombPick: { market: "Resultado y BTTS", pick: "Stuttgart Gana y Ambos Marcan", odds: "2.85 (+185)", ev: "+32.0%", stake: "0.75u" }
+        goals: { overOdds: "1.32", overEV: "+4.5%", underOdds: "3.40", underEV: "-12.0%" },
+        btts: { yesOdds: "1.52", yesVal: "+5.0%" },
+        favoritePick: { pick: "Stuttgart a Ganar + Over 1.5 Goles", odds: "1.61 (-165)", conf: "82.5%", stake: "3.0u" },
+        valuePick: { pick: "Stuttgart -1.0 (Hándicap)", odds: "1.87 (-115)", ev: "+14.2%", stake: "1.5u" },
+        bombPick: { pick: "Stuttgart Gana y Ambos Marcan", odds: "2.85 (+185)", stake: "0.75u" }
+      },
+      "torino-monza": {
+        title: "Torino vs AC Monza",
+        home: "Torino",
+        away: "AC Monza",
+        date: "Hoy · 1:45 PM CDT · Estadio Olímpico de Turín",
+        radio: "Propuesta de fútbol táctico de bajo riesgo con marcas individuales. Torino sostiene números defensivos sobresalientes en su estadio.",
+        market1x2: {
+          homeOdds: "1.92", homeVal: "+10.4%",
+          drawOdds: "3.30", drawVal: "-4.2%",
+          awayOdds: "4.40", awayVal: "-16.0%"
+        },
+        goals: { overOdds: "2.25", overEV: "-7.0%", underOdds: "1.65", underEV: "+8.5%" },
+        btts: { yesOdds: "2.05", yesVal: "-6.0%" },
+        favoritePick: { pick: "Torino Empate No Acción (DNB)", odds: "1.40 (-250)", conf: "78.0%", stake: "3.0u" },
+        valuePick: { pick: "Menos de 2.0 Goles Asiático", odds: "2.10 (+110)", ev: "+13.5%", stake: "1.5u" },
+        bombPick: { pick: "Torino Gana 1-0 o 2-0 (Marcador Exacto)", odds: "3.10 (+210)", stake: "0.75u" }
+      },
+      "brest-nice": {
+        title: "Stade Brestois vs OGC Niza",
+        home: "Stade Brestois",
+        away: "OGC Niza",
+        date: "Hoy · 1:45 PM CDT · Stade Francis-Le Blé",
+        radio: "Duelo igualado donde Niza ejerce una presión posicional muy eficiente en bloque medio y el Brest acumula desgaste de rotación.",
+        market1x2: {
+          homeOdds: "2.65", homeVal: "-5.0%",
+          drawOdds: "3.20", drawVal: "+3.2%",
+          awayOdds: "2.75", awayVal: "+8.9%"
+        },
+        goals: { overOdds: "2.15", overEV: "-2.0%", underOdds: "1.70", underEV: "+4.1%" },
+        btts: { yesOdds: "1.88", yesVal: "+4.0%" },
+        favoritePick: { pick: "OGC Niza o Empate (X2)", odds: "1.69 (-145)", conf: "71.0%", stake: "2.5u" },
+        valuePick: { pick: "Empate al Descanso", odds: "2.05 (+105)", ev: "+11.0%", stake: "1.5u" },
+        bombPick: { pick: "Niza Gana sin Conceder Gol", odds: "4.33 (+333)", stake: "0.5u" }
       },
       "alaves-malaga": {
         title: "Deportivo Alavés vs Málaga CF",
         home: "Deportivo Alavés",
         away: "Málaga CF",
         date: "Hoy · 2:00 PM CDT · Estadio de Mendizorroza",
-        radio: "Duelo caracterizado por la intensidad física en zonas medias y baja frecuencia de ocasiones francas. El Alavés concede poco en casa, forzando partidos de marcadores estrechos.",
-        homeForm: ["E", "G", "P", "E", "G"],
-        awayForm: ["P", "P", "E", "G", "P"],
+        radio: "Duelo caracterizado por la presión física en el mediocampo. El Alavés concede muy pocas llegadas claras en su feudo.",
         market1x2: {
-          homeProb: 53.0, homeModel: 59.2, homeDiff: "+6.2", homeOdds: "1.88", homeVal: "+11.7%",
-          drawProb: 28.5, drawModel: 26.3, drawDiff: "-2.2", drawOdds: "3.50", drawVal: "-7.7%",
-          awayProb: 18.5, awayModel: 14.5, awayDiff: "-4.0", awayOdds: "5.40", awayVal: "-21.6%"
+          homeOdds: "1.88", homeVal: "+11.7%",
+          drawOdds: "3.50", drawVal: "-7.7%",
+          awayOdds: "5.40", awayVal: "-21.6%"
         },
-        goals: { overProb: 38, overOdds: "2.40", overEV: "-8.8%", underProb: 62, underOdds: "1.80", underEV: "+11.6%" },
-        btts: { yesProb: 44.0, yesModel: 41.5, yesDiff: "-2.5", yesOdds: "2.20", yesVal: "-5.7%" },
-        favoritePick: { market: "Goles Totales", pick: "Menos de 2.5 Goles", odds: "1.80 (-125)", conf: "65.0%", stake: "2.5u" },
-        valuePick: { market: "Portería a Cero", pick: "Alavés Gana a Cero", odds: "2.60 (+160)", ev: "+18.4%", stake: "1.5u" },
-        bombPick: { market: "Descanso / Final", pick: "Empate al Descanso / Alavés al Final", odds: "4.50 (+350)", ev: "+28.5%", stake: "0.5u" }
+        goals: { overOdds: "2.40", overEV: "-8.8%", underOdds: "1.80", underEV: "+11.6%" },
+        btts: { yesOdds: "2.20", yesVal: "-5.7%" },
+        favoritePick: { pick: "Menos de 2.5 Goles", odds: "1.80 (-125)", conf: "65.0%", stake: "2.5u" },
+        valuePick: { pick: "Alavés Gana a Cero", odds: "2.60 (+160)", ev: "+18.4%", stake: "1.5u" },
+        bombPick: { pick: "Empate al Descanso / Alavés al Final", odds: "4.50 (+350)", stake: "0.5u" }
       },
       "ipswich-forest": {
         title: "Ipswich Town vs Nottingham Forest",
         home: "Ipswich Town",
         away: "Nottingham Forest",
         date: "Hoy · 2:00 PM CDT · Portman Road",
-        radio: "El Forest repliega ordenado para castigar al contragolpe. Ipswich busca imponer juego directo pero sufre vulnerabilidades en retroceso ante rivales de buen físico en pelota parada.",
-        homeForm: ["P", "E", "P", "E", "P"],
-        awayForm: ["G", "E", "P", "G", "E"],
+        radio: "El Forest arma un bloque bajo y busca salidas rápidas. Ipswich suele sufrir cuando no encuentra espacios para atacar en largo.",
         market1x2: {
-          homeProb: 35.0, homeModel: 31.0, homeDiff: "-4.0", homeOdds: "2.85", homeVal: "-11.4%",
-          drawProb: 30.5, drawModel: 32.0, drawDiff: "+1.5", drawOdds: "3.28", drawVal: "+4.9%",
-          awayProb: 34.5, awayModel: 37.0, awayDiff: "+2.5", awayOdds: "2.90", awayVal: "+7.3%"
+          homeOdds: "2.85", homeVal: "-11.4%",
+          drawOdds: "3.28", drawVal: "+4.9%",
+          awayOdds: "2.90", awayVal: "+7.3%"
         },
-        goals: { overProb: 48, overOdds: "2.08", overEV: "-0.2%", underProb: 52, underOdds: "1.75", underEV: "+2.5%" },
-        btts: { yesProb: 51.0, yesModel: 48.0, yesDiff: "-3.0", yesOdds: "1.95", yesVal: "-5.9%" },
-        favoritePick: { market: "Doble Oportunidad", pick: "Nottingham Forest o Empate (X2)", odds: "1.71 (-140)", conf: "69.0%", stake: "2.5u" },
-        valuePick: { market: "Ambos Marcan", pick: "Ambos Marcan: NO", odds: "1.91 (-110)", ev: "+12.0%", stake: "1.5u" },
-        bombPick: { market: "Marcador Múltiple", pick: "Empate 0-0 o 1-1", odds: "3.25 (+225)", ev: "+24.0%", stake: "0.75u" }
+        goals: { overOdds: "2.08", overEV: "-0.2%", underOdds: "1.75", underEV: "+2.5%" },
+        btts: { yesOdds: "1.95", yesVal: "-5.9%" },
+        favoritePick: { pick: "Nottingham Forest o Empate (X2)", odds: "1.71 (-140)", conf: "69.0%", stake: "2.5u" },
+        valuePick: { pick: "Ambos Marcan: NO", odds: "1.91 (-110)", ev: "+12.0%", stake: "1.5u" },
+        bombPick: { pick: "Empate 0-0 o 1-1", odds: "3.25 (+225)", stake: "0.75u" }
       },
       "necaxa-juarez": {
         title: "Club Necaxa vs FC Juárez",
         home: "Club Necaxa",
         away: "FC Juárez",
         date: "Hoy · 8:00 PM CDT · Estadio Victoria",
-        radio: "Duelo directo de la Liga MX. Necaxa hace valer la localía con transiciones rápidas; Juárez presenta grietas defensivas constantes en sus visitas recientes.",
-        homeForm: ["P", "G", "E", "P", "G"],
-        awayForm: ["P", "P", "P", "G", "P"],
+        radio: "Duelo directo en la Liga MX. Necaxa hace valer la altura y la localía frente a una zaga de Juárez que suele desordenarse en los segundos tiempos.",
         market1x2: {
-          homeProb: 49.5, homeModel: 56.0, homeDiff: "+6.5", homeOdds: "2.02", homeVal: "+13.1%",
-          drawProb: 27.5, drawModel: 25.5, drawDiff: "-2.0", drawOdds: "3.60", drawVal: "-7.3%",
-          awayProb: 23.0, awayModel: 18.5, awayDiff: "-4.5", awayOdds: "4.35", awayVal: "-19.5%"
+          homeOdds: "2.02", homeVal: "+13.1%",
+          drawOdds: "3.60", drawVal: "-7.3%",
+          awayOdds: "4.35", awayVal: "-19.5%"
         },
-        goals: { overProb: 55, overOdds: "1.82", overEV: "+5.1%", underProb: 45, underOdds: "1.98", underEV: "-5.0%" },
-        btts: { yesProb: 54.5, yesModel: 58.0, yesDiff: "+3.5", yesOdds: "1.83", yesVal: "+6.1%" },
-        favoritePick: { market: "Empate No Acción", pick: "Necaxa DNB", odds: "1.65 (-155)", conf: "74.0%", stake: "3.0u" },
-        valuePick: { market: "Ambos Marcan", pick: "Sí (Ambos Anotan)", odds: "1.83 (-120)", ev: "+10.5%", stake: "2.0u" },
-        bombPick: { market: "Resultado y BTTS", pick: "Necaxa Gana y Ambos Marcan", odds: "3.60 (+260)", ev: "+30.2%", stake: "0.75u" }
+        goals: { overOdds: "1.82", overEV: "+5.1%", underOdds: "1.98", underEV: "-5.0%" },
+        btts: { yesOdds: "1.83", yesVal: "+6.1%" },
+        favoritePick: { pick: "Necaxa DNB", odds: "1.65 (-155)", conf: "74.0%", stake: "3.0u" },
+        valuePick: { pick: "Ambos Marcan: Sí", odds: "1.83 (-120)", ev: "+10.5%", stake: "2.0u" },
+        bombPick: { pick: "Necaxa Gana y Ambos Marcan", odds: "3.60 (+260)", stake: "0.75u" }
       }
     };
 
-    // Toggle Admin Mode
     function toggleAdminMode() {
       isAdminMode = !isAdminMode;
       const dot = document.getElementById('admin-badge-dot');
@@ -531,7 +603,6 @@
       renderPicksGrid();
     }
 
-    // Filter by League
     function filterLeague(league) {
       activeLeagueFilter = league;
       document.querySelectorAll('.league-filter-btn').forEach(btn => {
@@ -544,7 +615,6 @@
       renderPicksGrid();
     }
 
-    // Resolve Pick (Admin action)
     function resolvePick(pickId, resolution) {
       const pickIndex = picksData.findIndex(p => p.id === pickId);
       if (pickIndex === -1) return;
@@ -559,7 +629,6 @@
         returnUnits = 0.00;
       }
 
-      // Add to historical data
       historicalData.unshift({
         date: "Hoy",
         match: `${p.homeTeam} vs ${p.awayTeam}`,
@@ -573,15 +642,12 @@
         returnUnits: returnUnits
       });
 
-      // Remove from active picks
       picksData.splice(pickIndex, 1);
-      
       recalculateMetrics();
       renderPicksGrid();
       renderHistoryTable();
     }
 
-    // Recalculate Dashboard Metrics
     function recalculateMetrics() {
       let totalUnits = 0;
       let wins = 0;
@@ -607,7 +673,6 @@
       document.getElementById('metric-roi').innerText = (roi >= 0 ? `+${roi}%` : `${roi}%`);
     }
 
-    // Render Active Picks Grid
     function renderPicksGrid() {
       const grid = document.getElementById('picks-grid');
       grid.innerHTML = "";
@@ -634,13 +699,11 @@
         
         card.innerHTML = `
           <div>
-            <!-- Header -->
             <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-3 border-b border-purple-900/30 pb-2">
               <span class="font-bold text-purple-300">${p.league}</span>
               <span>${p.matchTime}</span>
             </div>
 
-            <!-- Teams & Crests -->
             <div class="flex items-center justify-between gap-3 my-2">
               <div class="flex items-center gap-2.5 flex-1 min-w-0">
                 <img src="${homeBadge}" class="w-8 h-8 object-contain rounded-full bg-black/40 p-1 border border-purple-500/30 shrink-0">
@@ -653,7 +716,6 @@
               </div>
             </div>
 
-            <!-- Market & Pick Info -->
             <div class="bg-black/40 rounded-xl p-3 my-3 border border-purple-500/15">
               <div class="text-[10px] uppercase font-mono text-slate-400 tracking-wider">${p.market}</div>
               <div class="text-sm font-bold text-purple-200 mt-0.5">${p.selection}</div>
@@ -669,11 +731,9 @@
               </div>
             </div>
 
-            <!-- Analysis Notes -->
             ${p.tacticalNotes ? `<p class="text-[11px] text-slate-400 leading-relaxed mb-3">${p.tacticalNotes}</p>` : ''}
           </div>
 
-          <!-- Footer / Admin Actions -->
           <div class="pt-2 border-t border-purple-900/20">
             ${isAdminMode ? `
               <div class="flex items-center justify-between gap-1 pt-1">
@@ -698,7 +758,6 @@
       });
     }
 
-    // Render Historical Table
     function renderHistoryTable() {
       const tbody = document.getElementById('history-table-body');
       tbody.innerHTML = "";
@@ -748,7 +807,6 @@
       });
     }
 
-    // AI Radar Match Loader
     function loadMatchReport(key) {
       const report = reportsDB[key];
       if (!report) return;
@@ -759,7 +817,6 @@
       const container = document.getElementById('ai-report-container');
       container.innerHTML = `
         <div class="space-y-4">
-          <!-- Header Banner -->
           <div class="flex flex-col sm:flex-row items-center justify-between p-4 bg-black/40 rounded-xl border border-purple-500/20 gap-4">
             <div class="flex items-center gap-3">
               <img src="${homeBadge}" class="w-12 h-12 object-contain p-1 rounded-full bg-black/60 border border-purple-500/30">
@@ -771,15 +828,12 @@
             <img src="${awayBadge}" class="w-12 h-12 object-contain p-1 rounded-full bg-black/60 border border-purple-500/30">
           </div>
 
-          <!-- Radiografía Táctica -->
           <div class="bg-black/30 p-4 rounded-xl border border-purple-500/15">
             <h4 class="text-xs font-mono font-bold text-purple-400 uppercase tracking-wider mb-1">Radiografía del Partido</h4>
             <p class="text-xs text-slate-300 leading-relaxed">${report.radio}</p>
           </div>
 
-          <!-- Comparativas de Mercado vs Modelo -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <!-- 1X2 -->
             <div class="bg-black/40 p-3.5 rounded-xl border border-purple-500/15">
               <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block mb-2">Resultado 1X2</span>
               <div class="space-y-1.5 text-xs font-mono">
@@ -798,7 +852,6 @@
               </div>
             </div>
 
-            <!-- Goles -->
             <div class="bg-black/40 p-3.5 rounded-xl border border-purple-500/15">
               <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block mb-2">Línea 2.5 Goles</span>
               <div class="space-y-1.5 text-xs font-mono">
@@ -813,7 +866,6 @@
               </div>
             </div>
 
-            <!-- Ambos Marcan -->
             <div class="bg-black/40 p-3.5 rounded-xl border border-purple-500/15">
               <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block mb-2">Ambos Marcan</span>
               <div class="space-y-1.5 text-xs font-mono">
@@ -829,9 +881,7 @@
             </div>
           </div>
 
-          <!-- Los 3 Picks Conclusivos -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
-            <!-- Pick Favorito -->
             <div class="p-3.5 rounded-xl bg-purple-950/30 border border-purple-500/40">
               <div class="flex items-center justify-between mb-1.5">
                 <span class="text-xs font-bold text-white flex items-center gap-1">✅ Pick Favorito</span>
@@ -844,7 +894,6 @@
               </div>
             </div>
 
-            <!-- Pick de Valor -->
             <div class="p-3.5 rounded-xl bg-indigo-950/30 border border-indigo-500/40">
               <div class="flex items-center justify-between mb-1.5">
                 <span class="text-xs font-bold text-white flex items-center gap-1">🎯 Pick de Valor</span>
@@ -857,7 +906,6 @@
               </div>
             </div>
 
-            <!-- Pick Bomba -->
             <div class="p-3.5 rounded-xl bg-pink-950/30 border border-pink-500/40">
               <div class="flex items-center justify-between mb-1.5">
                 <span class="text-xs font-bold text-white flex items-center gap-1">💣 Pick Bomba</span>
@@ -876,13 +924,14 @@
 
     function runAiAnalysis() {
       const query = document.getElementById('ai-search-input').value.toLowerCase();
-      if (query.includes('alaves') || query.includes('malaga')) loadMatchReport('alaves-malaga');
+      if (query.includes('torino') || query.includes('monza')) loadMatchReport('torino-monza');
+      else if (query.includes('brest') || query.includes('nice') || query.includes('niza')) loadMatchReport('brest-nice');
+      else if (query.includes('alaves') || query.includes('malaga')) loadMatchReport('alaves-malaga');
       else if (query.includes('ipswich') || query.includes('forest')) loadMatchReport('ipswich-forest');
       else if (query.includes('necaxa') || query.includes('juarez')) loadMatchReport('necaxa-juarez');
       else loadMatchReport('stuttgart-gladbach');
     }
 
-    // Modal Controls
     function openAdminModal() {
       document.getElementById('admin-modal').classList.remove('hidden');
     }
@@ -890,7 +939,6 @@
       document.getElementById('admin-modal').classList.add('hidden');
     }
 
-    // Form submit
     function submitNewPick(e) {
       e.preventDefault();
       const newPick = {
@@ -915,7 +963,6 @@
       document.getElementById('new-pick-form').reset();
     }
 
-    // Initialize application
     window.addEventListener('DOMContentLoaded', () => {
       loadMatchReport('stuttgart-gladbach');
       recalculateMetrics();
