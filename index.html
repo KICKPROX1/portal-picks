@@ -116,10 +116,10 @@
       </div>
     </aside>
 
-    <!-- COLUMNA 2 (CENTRAL): PESTAÑAS (RADAR IA / CHAT / TIPSTERS) -->
+    <!-- COLUMNA 2 (CENTRAL): PESTAÑAS (RADAR IA / CHAT / TIPSTERS / TRACKER) -->
     <section class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden h-[740px]">
       
-      <!-- HEADER CON 3 PESTAÑAS -->
+      <!-- HEADER CON 4 PESTAÑAS -->
       <div class="flex items-center justify-between px-3 py-2 border-b border-bordercolor bg-[#10141d] overflow-x-auto">
         <div class="flex items-center gap-1.5 shrink-0">
           <button id="tab-tactics-btn" onclick="switchMainTab('tactics')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-proaccent text-white flex items-center gap-1">
@@ -130,7 +130,10 @@
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
           </button>
           <button id="tab-tipsters-btn" onclick="switchMainTab('tipsters')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1">
-            <span>🏆 Tipsters Leaderboard</span>
+            <span>🏆 Ranking</span>
+          </button>
+          <button id="tab-tracker-btn" onclick="switchMainTab('tracker')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1">
+            <span>📊 Mi Bitácora</span>
           </button>
         </div>
         <span id="active-tab-indicator" class="text-[10px] font-mono text-slate-500 shrink-0">Algorítmico</span>
@@ -198,6 +201,47 @@
         </div>
       </div>
 
+      <!-- VISTA 4: RASTREADOR PERSONAL DE APUESTAS (BET TRACKER) -->
+      <div id="view-tracker" class="flex-1 flex flex-col overflow-hidden hidden">
+        <div class="p-3.5 bg-innerbg/60 border-b border-bordercolor flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span>📊</span> Bitácora Personal de Inversión
+            </span>
+            <span class="text-[10px] text-slate-400 block">Audita tu balance, win rate y rendimiento de tus boletos registrados.</span>
+          </div>
+          <button onclick="loadUserBets()" class="text-xs font-mono text-slate-400 hover:text-white px-2 py-1 bg-innerbg border border-bordercolor rounded">
+            🔄 Actualizar
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-4">
+          <!-- TARJETAS DE MÉTRICAS -->
+          <div class="grid grid-cols-3 gap-3">
+            <div class="bg-innerbg p-3 rounded-xl border border-bordercolor">
+              <span class="text-[10px] font-mono uppercase text-slate-400 block">Balance Neto</span>
+              <span id="tracker-net-profit" class="text-base font-bold font-mono text-progreen mt-1 block">+0.00u</span>
+            </div>
+            <div class="bg-innerbg p-3 rounded-xl border border-bordercolor">
+              <span class="text-[10px] font-mono uppercase text-slate-400 block">Acierto (Win Rate)</span>
+              <span id="tracker-win-rate" class="text-base font-bold font-mono text-white mt-1 block">0.0%</span>
+            </div>
+            <div class="bg-innerbg p-3 rounded-xl border border-bordercolor">
+              <span class="text-[10px] font-mono uppercase text-slate-400 block">Total Boletos</span>
+              <span id="tracker-total-bets" class="text-base font-bold font-mono text-proaccent mt-1 block">0</span>
+            </div>
+          </div>
+
+          <!-- LISTADO DE BOLETOS REGISTRADOS -->
+          <div class="space-y-2">
+            <span class="text-[10px] font-mono uppercase font-bold text-slate-400 block tracking-wider">Historial de Mis Boletos</span>
+            <div id="user-bets-list" class="space-y-2">
+              <!-- Renderizado dinámico -->
+            </div>
+          </div>
+        </div>
+      </div>
+
     </section>
 
     <!-- COLUMNA 3 (DERECHA): PARLAY BUILDER IA + BET SLIP -->
@@ -251,7 +295,6 @@
             <span id="slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
           </div>
           
-          <!-- BOTÓN EXPORTAR PARLAY A IMAGEN -->
           <button onclick="exportSlipToImage()" class="w-full py-2 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 border border-blue-500/40 text-white font-bold rounded-lg text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-md">
             <span>📸</span>
             <span id="export-slip-label">Exportar Boleto a Imagen (Social)</span>
@@ -262,8 +305,9 @@
             <span id="copy-btn-label">Copiar Boleto Formateado</span>
           </button>
           
-          <button onclick="publishSlip()" class="w-full py-2.5 bg-progreen hover:bg-emerald-500 text-slate-950 font-bold rounded-lg uppercase tracking-wider text-[11px] transition-all shadow-md">
-            Confirmar Jugada
+          <!-- BOTÓN REGISTRAR EN BET TRACKER -->
+          <button id="btn-confirm-bet" onclick="confirmAndTrackBet()" class="w-full py-2.5 bg-progreen hover:bg-emerald-500 text-slate-950 font-bold rounded-lg uppercase tracking-wider text-[11px] transition-all shadow-md">
+            Confirmar en Mi Bitácora
           </button>
         </div>
       </div>
@@ -271,14 +315,12 @@
 
   </main>
 
-  <!-- LIENZO OCULTO PARA RENDERIZAR TARJETAS EN ALTA DEFINICIÓN (1080x1080 / Formato Redes) -->
+  <!-- LIENZO OCULTO PARA EXPORTAR TARJETAS -->
   <div id="export-container" style="position: absolute; left: -9999px; top: -9999px;">
     <div id="social-card" class="w-[600px] bg-gradient-to-br from-[#0c0e14] via-[#121722] to-[#0c0e14] border-2 border-proaccent/40 rounded-3xl p-8 text-white font-sans flex flex-col justify-between shadow-2xl relative overflow-hidden">
-      <!-- Fondo decorativo -->
       <div class="absolute -right-16 -top-16 w-56 h-56 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <!-- Header de la tarjeta -->
       <div class="flex items-center justify-between border-b border-bordercolor/80 pb-5">
         <div class="flex items-center gap-3">
           <div class="w-12 h-12 rounded-2xl bg-problue flex items-center justify-center font-black text-white text-2xl shadow-lg shadow-blue-500/30">⚽</div>
@@ -290,13 +332,10 @@
           </div>
         </div>
         <div class="text-right">
-          <span id="card-badge-status" class="px-3 py-1 bg-progreen/20 text-progreen border border-progreen/40 font-mono font-bold text-xs rounded-full">
-            ✅ VERIFICADO
-          </span>
+          <span id="card-badge-status" class="px-3 py-1 bg-progreen/20 text-progreen border border-progreen/40 font-mono font-bold text-xs rounded-full">✅ VERIFICADO</span>
         </div>
       </div>
 
-      <!-- Contenido central de la tarjeta -->
       <div class="my-6 space-y-5">
         <div>
           <span id="card-league" class="text-xs font-mono font-bold uppercase text-slate-400 tracking-wider">LALIGA • JORNADA 10</span>
@@ -316,16 +355,13 @@
         </div>
 
         <div id="card-analysis-box" class="p-4 bg-basebg/70 border border-bordercolor rounded-xl text-xs text-slate-300 leading-relaxed italic">
-          "Ventaja estadística clara en volumen ofensivo y disparos generados. El modelo proyecta un 68.5% de probabilidad local frente a cuota implícita del 62%."
+          "Ventaja estadística clara en volumen ofensivo y disparos generados."
         </div>
       </div>
 
-      <!-- Footer de la tarjeta con branding -->
       <div class="border-t border-bordercolor/80 pt-4 flex items-center justify-between text-xs font-mono">
         <span class="text-slate-400">portal-picks.vercel.app</span>
-        <span class="text-amber-400 font-bold flex items-center gap-1">
-          <span>👑</span> Pase VIP: whop.com/portal-picks
-        </span>
+        <span class="text-amber-400 font-bold flex items-center gap-1"><span>👑</span> Pase VIP: whop.com/portal-picks</span>
       </div>
     </div>
   </div>
@@ -432,7 +468,7 @@
     </div>
   </div>
 
-  <!-- MODAL AUDITORÍA -->
+  <!-- MODAL AUDITORÍA PÚBLICA -->
   <div id="audit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-cardbg border border-bordercolor rounded-2xl max-w-2xl w-full p-6 relative shadow-2xl max-h-[85vh] flex flex-col">
       <button onclick="closeAuditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
@@ -462,7 +498,7 @@
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC -->
+  <!-- SCRIPT LOGIC: SUPABASE AUTH + TRACKER + ADMIN -->
   <script>
     const SUPABASE_URL = "https://ukgvoeblxzspffngumpk.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrZ3ZvZWJseHpzcGZmbmd1bXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3MzM4MzUsImV4cCI6MjEwODMwOTgzNX0._P82lM8TyzNdrQbCvqDt_0AZ1F0pzJ1s5Vx2jstPT7U";
@@ -699,7 +735,153 @@
       });
     }
 
-    // GENERADOR DE TARJETAS GRÁFICAS PARA REDES SOCIALES
+    // CONFIRMAR EN EL BET TRACKER
+    async function confirmAndTrackBet() {
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+      if (activeSlip.length === 0) {
+        alert("El cupón de apuestas está vacío.");
+        return;
+      }
+
+      const totalOdds = parseFloat(document.getElementById('slip-total-odds').innerText);
+      const stake = parseFloat(document.getElementById('slip-stake-input').value);
+      const potentialPayout = parseFloat((stake * totalOdds - stake).toFixed(2));
+
+      const { data, error } = await supabaseClient
+        .from('user_bets')
+        .insert([
+          {
+            user_id: currentUser.id,
+            picks: activeSlip,
+            total_odds: totalOdds,
+            stake: stake,
+            potential_payout: potentialPayout,
+            status: 'PENDIENTE',
+            profit: 0.0
+          }
+        ]);
+
+      if (!error) {
+        alert("¡Boleto registrado exitosamente en tu bitácora personal!");
+        switchMainTab('tracker');
+      } else {
+        alert("Error al registrar apuesta: " + error.message);
+      }
+    }
+
+    // CARGA Y AUDITORÍA DEL BET TRACKER PERSONAL
+    async function loadUserBets() {
+      if (!currentUser) return;
+
+      const { data: bets, error } = await supabaseClient
+        .from('user_bets')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false });
+
+      const container = document.getElementById('user-bets-list');
+      container.innerHTML = "";
+
+      if (!bets || bets.length === 0) {
+        container.innerHTML = `<div class="text-center py-10 text-slate-500 font-mono text-xs">No has registrado ningún boleto todavía. Agrega picks en el cupón derecho y presiona "Confirmar en Mi Bitácora".</div>`;
+        document.getElementById('tracker-net-profit').innerText = "+0.00u";
+        document.getElementById('tracker-win-rate').innerText = "0.0%";
+        document.getElementById('tracker-total-bets').innerText = "0";
+        return;
+      }
+
+      // Cálculo de métricas
+      let wonCount = 0;
+      let resolvedCount = 0;
+      let totalProfit = 0.0;
+
+      bets.forEach(b => {
+        if (b.status === 'GANADA') {
+          wonCount++;
+          resolvedCount++;
+          totalProfit += parseFloat(b.profit);
+        } else if (b.status === 'PERDIDA') {
+          resolvedCount++;
+          totalProfit += parseFloat(b.profit);
+        }
+      });
+
+      const winRate = resolvedCount > 0 ? ((wonCount / resolvedCount) * 100).toFixed(1) : "0.0";
+      const profitEl = document.getElementById('tracker-net-profit');
+      profitEl.innerText = (totalProfit >= 0 ? `+${totalProfit.toFixed(2)}u` : `${totalProfit.toFixed(2)}u`);
+      profitEl.className = `text-base font-bold font-mono mt-1 block ${totalProfit >= 0 ? 'text-progreen' : 'text-rose-400'}`;
+
+      document.getElementById('tracker-win-rate').innerText = `${winRate}%`;
+      document.getElementById('tracker-total-bets').innerText = bets.length;
+
+      // Render de boletos
+      bets.forEach(b => {
+        let badgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/30";
+        if (b.status === 'GANADA') badgeColor = "bg-emerald-500/20 text-progreen border-emerald-500/40";
+        if (b.status === 'PERDIDA') badgeColor = "bg-rose-500/20 text-rose-400 border-rose-500/40";
+
+        const timeStr = new Date(b.created_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const picksSummary = b.picks.map(p => `<div class="text-[11px] text-slate-300">• ${p.match}: <strong class="text-white">${p.pick}</strong> (${p.odds.toFixed(2)})</div>`).join('');
+
+        const div = document.createElement('div');
+        div.className = "p-3.5 rounded-xl bg-innerbg border border-bordercolor space-y-2";
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-[9px] font-mono border px-1.5 py-0.2 rounded font-bold ${badgeColor}">${b.status}</span>
+              <span class="text-[10px] font-mono text-slate-400">${timeStr}</span>
+            </div>
+            <div class="text-right font-mono text-xs">
+              <span class="text-slate-400">Cuota: <strong class="text-proaccent">${parseFloat(b.total_odds).toFixed(2)}</strong></span>
+            </div>
+          </div>
+
+          <div class="space-y-1 bg-basebg/50 p-2.5 rounded-lg border border-bordercolor/60">
+            ${picksSummary}
+          </div>
+
+          <div class="flex items-center justify-between text-xs font-mono pt-1">
+            <span class="text-slate-400">Stake: <strong class="text-white">${b.stake}u</strong> | Retorno: <strong class="text-progreen">+${b.potential_payout}u</strong></span>
+            ${b.status === 'PENDIENTE' ? `
+              <div class="flex items-center gap-1.5">
+                <button onclick="updateBetStatus('${b.id}', 'GANADA', ${b.potential_payout})" class="px-2 py-1 bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded text-[10px] font-bold transition-all">✅ Win</button>
+                <button onclick="updateBetStatus('${b.id}', 'PERDIDA', -${b.stake})" class="px-2 py-1 bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white rounded text-[10px] font-bold transition-all">❌ Loss</button>
+                <button onclick="deleteUserBet('${b.id}')" class="text-slate-500 hover:text-rose-400 text-xs px-1">✕</button>
+              </div>
+            ` : `
+              <span class="font-bold ${b.profit >= 0 ? 'text-progreen' : 'text-rose-400'}">${b.profit >= 0 ? '+' + b.profit : b.profit}u</span>
+            `}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function updateBetStatus(betId, newStatus, profitVal) {
+      const { error } = await supabaseClient
+        .from('user_bets')
+        .update({ status: newStatus, profit: parseFloat(profitVal) })
+        .eq('id', betId);
+
+      if (!error) loadUserBets();
+      else alert("Error al actualizar estado: " + error.message);
+    }
+
+    async function deleteUserBet(betId) {
+      if (!confirm("¿Eliminar este boleto de tu bitácora?")) return;
+      const { error } = await supabaseClient
+        .from('user_bets')
+        .delete()
+        .eq('id', betId);
+
+      if (!error) loadUserBets();
+      else alert("Error al eliminar: " + error.message);
+    }
+
+    // EXPORTACIÓN DE TARJETAS
     function generateSocialCard(league, matchName, pickName, odds, ev, readText) {
       document.getElementById('card-league').innerText = league.toUpperCase();
       document.getElementById('card-match-title').innerText = matchName;
@@ -707,30 +889,23 @@
       document.getElementById('card-odds').innerText = parseFloat(odds).toFixed(2);
       document.getElementById('card-stake').innerText = "2.0u";
       document.getElementById('card-ev-label').innerText = `EV: ${ev || '+12.5%'}`;
-      document.getElementById('card-analysis-box').innerText = `"${readText || 'Análisis matemático validado por volumen xG y datos cuantitativos.'}"`;
+      document.getElementById('card-analysis-box').innerText = `"${readText || 'Análisis cuantitativo validado por modelo matemático.'}"`;
 
       const cardElement = document.getElementById('social-card');
       const filename = `SofaTactics_${matchName.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
 
-      html2canvas(cardElement, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: null
-      }).then(canvas => {
+      html2canvas(cardElement, { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
         const link = document.createElement('a');
         link.download = filename;
         link.href = canvas.toDataURL('image/png');
         link.click();
       }).catch(err => {
-        alert("Error al generar imagen: " + err);
+        alert("Error al exportar imagen: " + err);
       });
     }
 
     function exportSlipToImage() {
-      if (activeSlip.length === 0) {
-        alert("Agrega primero selecciones a tu boleto.");
-        return;
-      }
+      if (activeSlip.length === 0) { alert("Agrega primero selecciones a tu boleto."); return; }
       const label = document.getElementById('export-slip-label');
       label.innerText = "Generando Imagen...";
 
@@ -747,27 +922,29 @@
         "Jugada combinada generada algorítmicamente por SofaTactics PRO con cuota total de alto retorno."
       );
 
-      setTimeout(() => {
-        label.innerText = "Exportar Boleto a Imagen (Social)";
-      }, 2000);
+      setTimeout(() => { label.innerText = "Exportar Boleto a Imagen (Social)"; }, 2000);
     }
 
-    // INTERCAMBIADOR DE PESTAÑAS (3 VISTAS)
+    // SELECTOR DE PESTAÑAS
     function switchMainTab(tab) {
       const viewTactics = document.getElementById('view-tactics');
       const viewCommunity = document.getElementById('view-community');
       const viewTipsters = document.getElementById('view-tipsters');
+      const viewTracker = document.getElementById('view-tracker');
       const btnTactics = document.getElementById('tab-tactics-btn');
       const btnCommunity = document.getElementById('tab-community-btn');
       const btnTipsters = document.getElementById('tab-tipsters-btn');
+      const btnTracker = document.getElementById('tab-tracker-btn');
       const indicator = document.getElementById('active-tab-indicator');
 
       viewTactics.classList.add('hidden');
       viewCommunity.classList.add('hidden');
       viewTipsters.classList.add('hidden');
+      viewTracker.classList.add('hidden');
       btnTactics.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1";
       btnCommunity.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1";
       btnTipsters.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1";
+      btnTracker.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1";
 
       if (tab === 'tactics') {
         viewTactics.classList.remove('hidden');
@@ -783,6 +960,11 @@
         btnTipsters.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-amber-400 text-white flex items-center gap-1";
         indicator.innerText = "Comunitario";
         loadCommunityTips();
+      } else if (tab === 'tracker') {
+        viewTracker.classList.remove('hidden');
+        btnTracker.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-proaccent text-white flex items-center gap-1";
+        indicator.innerText = "Personal";
+        loadUserBets();
       }
     }
 
@@ -954,7 +1136,7 @@
       if (!error) fetchMatchVotes(matchKey);
     }
 
-    // GESTIÓN DE TIPSTERS
+    // TIPSTERS LEADERBOARD
     async function loadCommunityTips() {
       const { data: tips } = await supabaseClient
         .from('community_tips')
@@ -1056,7 +1238,6 @@
       else alert("Error al actualizar estado: " + error.message);
     }
 
-    // MODAL TIPSTERS
     function openTipModal() {
       if (!currentUser) { openAuthModal('login'); return; }
       document.getElementById('tip-modal').classList.remove('hidden');
@@ -1116,11 +1297,6 @@
       if (foundKey) triggerTacticalPrompt(foundKey);
       else triggerTacticalPrompt('stuttgart-gladbach', document.getElementById('tactical-input').value.trim());
       document.getElementById('tactical-input').value = "";
-    }
-
-    function publishSlip() {
-      if (activeSlip.length === 0) { alert("El cupón está vacío."); return; }
-      alert("Jugada confirmada y registrada en el sistema.");
     }
 
     // MODALES GENERALES
@@ -1249,6 +1425,7 @@
       supabaseClient.channel('public:community_chat').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'community_chat' }, payload => appendChatMessage(payload.new)).subscribe();
       supabaseClient.channel('public:matches').on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => fetchMatchesFromSupabase()).subscribe();
       supabaseClient.channel('public:community_tips').on('postgres_changes', { event: '*', schema: 'public', table: 'community_tips' }, () => loadCommunityTips()).subscribe();
+      supabaseClient.channel('public:user_bets').on('postgres_changes', { event: '*', schema: 'public', table: 'user_bets' }, () => loadUserBets()).subscribe();
     }
 
     // NOTIFICADOR
