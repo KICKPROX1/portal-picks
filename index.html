@@ -139,14 +139,13 @@
         </div>
 
         <div class="flex-1 overflow-y-auto custom-scroll space-y-3 mt-3 pr-1 text-xs">
-          
           <!-- BUNDESLIGA -->
           <div>
             <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
               <span>🇩🇪 Bundesliga</span>
               <span class="text-[10px] text-slate-500">Jornada 7</span>
             </div>
-            <div onclick="triggerTacticalPrompt('stuttgart-gladbach')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
+            <div onclick="switchMainTab('tactics'); triggerTacticalPrompt('stuttgart-gladbach')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-[10px] font-mono text-slate-400">13:30 CDT</span>
                 <span class="text-[9px] font-mono text-progreen bg-progreen/10 border border-progreen/30 px-1.5 py-0.2 rounded font-bold">VALOR +EV</span>
@@ -176,7 +175,7 @@
               <span>🇪🇸 LaLiga</span>
               <span class="text-[10px] text-slate-500">Jornada 10</span>
             </div>
-            <div onclick="triggerTacticalPrompt('alaves-malaga')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
+            <div onclick="switchMainTab('tactics'); triggerTacticalPrompt('alaves-malaga')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-[10px] font-mono text-slate-400">14:00 CDT</span>
                 <span class="text-[9px] font-mono text-slate-400 bg-white/5 border border-white/10 px-1.5 py-0.2 rounded">TACTICAL</span>
@@ -206,7 +205,7 @@
               <span>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span>
               <span class="text-[10px] text-slate-500">Jornada 8</span>
             </div>
-            <div onclick="triggerTacticalPrompt('ipswich-forest')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
+            <div onclick="switchMainTab('tactics'); triggerTacticalPrompt('ipswich-forest')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-[10px] font-mono text-slate-400">14:00 CDT</span>
                 <span class="text-[9px] font-mono text-proaccent bg-proaccent/10 border border-proaccent/30 px-1.5 py-0.2 rounded font-bold">X2 PICK</span>
@@ -236,7 +235,7 @@
               <span>🇲🇽 Liga MX</span>
               <span class="text-[10px] text-slate-500">Apertura J14</span>
             </div>
-            <div onclick="triggerTacticalPrompt('necaxa-juarez')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
+            <div onclick="switchMainTab('tactics'); triggerTacticalPrompt('necaxa-juarez')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-[10px] font-mono text-slate-400">20:00 CDT</span>
                 <span class="text-[9px] font-mono text-progreen bg-progreen/10 border border-progreen/30 px-1.5 py-0.2 rounded font-bold">DNB LOCAL</span>
@@ -259,32 +258,67 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </aside>
 
-    <!-- COLUMNA 2 (CENTRAL): FEED INTERACTIVO & ANÁLISIS TÁCTICO -->
+    <!-- COLUMNA 2 (CENTRAL): PESTAÑAS (RADAR TÁCTICO IA vs CHAT COMUNITARIO) -->
     <section class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden h-[740px]">
       
-      <!-- Stream de Mensajes / Análisis -->
-      <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4">
-        <!-- Rendered by JavaScript -->
+      <!-- HEADER CON SELECTOR DE PESTAÑA -->
+      <div class="flex items-center justify-between px-4 py-2.5 border-b border-bordercolor bg-[#10141d]">
+        <div class="flex items-center gap-2">
+          <button id="tab-tactics-btn" onclick="switchMainTab('tactics')" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-innerbg border border-proaccent text-white flex items-center gap-1.5">
+            <span>⚡ Radar Táctico IA</span>
+          </button>
+          <button id="tab-community-btn" onclick="switchMainTab('community')" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5">
+            <span>💬 Chat Comunitario</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          </button>
+        </div>
+        <span id="active-tab-indicator" class="text-[10px] font-mono text-slate-500">Algorítmico</span>
       </div>
 
-      <!-- Barra de Solicitud Inferior -->
-      <div class="p-3 bg-[#10141d] border-t border-bordercolor">
-        <form onsubmit="handleUserSearch(event)" class="relative flex items-center">
-          <input 
-            type="text" 
-            id="tactical-input" 
-            placeholder="Escribe el nombre de un equipo o partido (Ej: Alavés, Forest, Necaxa)..." 
-            class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-proaccent transition-all font-sans"
-          >
-          <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-problue hover:bg-blue-500 text-white font-mono text-xs flex items-center justify-center transition-all">
-            Enviar
-          </button>
-        </form>
+      <!-- VISTA 1: RADAR TÁCTICO IA -->
+      <div id="view-tactics" class="flex-1 flex flex-col overflow-hidden">
+        <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div class="p-3 bg-[#10141d] border-t border-bordercolor">
+          <form onsubmit="handleUserSearch(event)" class="relative flex items-center">
+            <input 
+              type="text" 
+              id="tactical-input" 
+              placeholder="Escribe el nombre de un equipo o partido (Ej: Alavés, Forest, Necaxa)..." 
+              class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-proaccent transition-all font-sans"
+            >
+            <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-problue hover:bg-blue-500 text-white font-mono text-xs flex items-center justify-center transition-all">
+              Enviar
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- VISTA 2: CHAT COMUNITARIO EN VIVO (SUPABASE REALTIME) -->
+      <div id="view-community" class="flex-1 flex flex-col overflow-hidden hidden">
+        <div id="chat-messages-container" class="flex-1 overflow-y-auto custom-scroll p-4 space-y-3">
+          <!-- Mensajes en tiempo real inyectados aquí -->
+        </div>
+
+        <div class="p-3 bg-[#10141d] border-t border-bordercolor">
+          <form onsubmit="handleSendChatMessage(event)" class="relative flex items-center">
+            <input 
+              type="text" 
+              id="chat-message-input" 
+              placeholder="Escribe tu análisis o pick para la comunidad..." 
+              class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-16 py-3 border border-bordercolor focus:outline-none focus:border-proaccent transition-all font-sans"
+            >
+            <button type="submit" class="absolute right-2 px-3 py-1.5 rounded-md bg-progreen hover:bg-emerald-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center transition-all">
+              Enviar
+            </button>
+          </form>
+        </div>
       </div>
 
     </section>
@@ -467,7 +501,7 @@
               <th class="py-2.5 px-2 text-right">Resultado</th>
             </tr>
           </thead>
-          <tbody class="divide-y border-bordercolor font-mono text-[11px]">
+          <tbody class="divide-y divide-bordercolor font-mono text-[11px]">
             <tr>
               <td class="py-2.5 px-2 text-slate-400">22 OCT</td>
               <td class="py-2.5 px-2 font-sans font-medium text-white">Freiburg vs Bayern</td>
@@ -525,7 +559,7 @@
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC CON CREDENCIALES CONFIGURADAS -->
+  <!-- SCRIPT LOGIC CON SUPABASE REALTIME CHAT -->
   <script>
     const SUPABASE_URL = "https://ukgvoeblxzspffngumpk.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrZ3ZvZWJseHpzcGZmbmd1bXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3MzM4MzUsImV4cCI6MjEwODMwOTgzNX0._P82lM8TyzNdrQbCvqDt_0AZ1F0pzJ1s5Vx2jstPT7U";
@@ -730,6 +764,29 @@
       });
     }
 
+    function switchMainTab(tab) {
+      const viewTactics = document.getElementById('view-tactics');
+      const viewCommunity = document.getElementById('view-community');
+      const btnTactics = document.getElementById('tab-tactics-btn');
+      const btnCommunity = document.getElementById('tab-community-btn');
+      const indicator = document.getElementById('active-tab-indicator');
+
+      if (tab === 'tactics') {
+        viewTactics.classList.remove('hidden');
+        viewCommunity.classList.add('hidden');
+        btnTactics.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-innerbg border border-proaccent text-white flex items-center gap-1.5";
+        btnCommunity.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5";
+        indicator.innerText = "Algorítmico";
+      } else {
+        viewTactics.classList.add('hidden');
+        viewCommunity.classList.remove('hidden');
+        btnCommunity.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-innerbg border border-emerald-400 text-white flex items-center gap-1.5";
+        btnTactics.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5";
+        indicator.innerText = "En Vivo";
+        loadChatMessages();
+      }
+    }
+
     function triggerTacticalPrompt(matchKey, customPrompt = null) {
       if (isTyping) return;
       const data = tacticalDB[matchKey];
@@ -782,7 +839,6 @@
       card.className = "bg-innerbg border border-bordercolor rounded-xl p-4 space-y-4 text-xs";
 
       card.innerHTML = `
-        <!-- Match Header -->
         <div class="flex items-center justify-between border-b border-bordercolor pb-3">
           <div>
             <span class="text-[10px] font-mono text-slate-400 block">${data.league}</span>
@@ -791,7 +847,6 @@
           <span class="text-[10px] font-mono text-slate-400">${data.date}</span>
         </div>
 
-        <!-- Metric Matchup Badges -->
         <div class="grid grid-cols-2 gap-3 bg-basebg/60 p-3 rounded-lg border border-bordercolor">
           <div class="flex items-center gap-2.5">
             <img src="${data.homeBadge}" class="w-7 h-7 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
@@ -809,13 +864,11 @@
           </div>
         </div>
 
-        <!-- Tactical Reading -->
         <div class="text-slate-300 leading-relaxed bg-[#121620] p-3 rounded-lg border border-bordercolor">
           <span class="font-mono text-proaccent text-[10px] uppercase font-bold block mb-1">Diagnóstico Táctico:</span>
           ${data.tacticalRead}
         </div>
 
-        <!-- Probabilities Bar -->
         <div class="space-y-1.5 font-mono text-[11px]">
           <div class="flex justify-between text-slate-400 text-[10px]">
             <span>1: ${data.modelProb.home}</span>
@@ -829,7 +882,6 @@
           </div>
         </div>
 
-        <!-- Picks Selection con Desbloqueo Dinámico para Usuarios VIP -->
         <div class="space-y-2 pt-1">
           <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider flex items-center justify-between">
             <span>Picks Recomendados (+EV)</span>
@@ -938,7 +990,7 @@
       }
     }
 
-    // AUTENTICACIÓN CON SUPABASE
+    // AUTENTICACIÓN
     async function handleAuthSubmit(e) {
       e.preventDefault();
       const email = document.getElementById('auth-email').value.trim();
@@ -974,7 +1026,6 @@
       if (session && session.user) {
         currentUser = session.user;
         
-        // Consultar estado VIP en tabla profiles
         const { data: profile } = await supabaseClient
           .from('profiles')
           .select('is_vip')
@@ -1015,6 +1066,89 @@
       checkUserSession();
     }
 
+    // GESTIÓN DEL CHAT COMUNITARIO EN VIVO
+    async function loadChatMessages() {
+      const { data: messages, error } = await supabaseClient
+        .from('community_chat')
+        .select('*')
+        .order('created_at', { ascending: true })
+        .limit(50);
+
+      const container = document.getElementById('chat-messages-container');
+      container.innerHTML = "";
+
+      if (messages && messages.length > 0) {
+        messages.forEach(msg => appendChatMessage(msg));
+      } else {
+        container.innerHTML = `
+          <div class="text-center py-12 text-slate-500 text-xs font-mono">
+            Sé el primero en compartir un pick o análisis con la comunidad.
+          </div>
+        `;
+      }
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendChatMessage(msg) {
+      const container = document.getElementById('chat-messages-container');
+      const timeStr = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const senderName = msg.email ? msg.email.split('@')[0] : 'Usuario';
+      
+      const div = document.createElement('div');
+      div.className = "p-3 rounded-xl bg-innerbg border border-bordercolor flex flex-col space-y-1";
+      div.innerHTML = `
+        <div class="flex items-center justify-between text-[11px]">
+          <div class="flex items-center gap-1.5">
+            ${msg.is_vip ? '<span class="text-xs">👑</span><span class="text-[9px] font-mono font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1 py-0.2 rounded">VIP</span>' : '<span class="text-slate-400 font-mono">👤</span>'}
+            <span class="font-bold ${msg.is_vip ? 'text-amber-300' : 'text-slate-200'}">${senderName}</span>
+          </div>
+          <span class="text-[10px] font-mono text-slate-500">${timeStr}</span>
+        </div>
+        <p class="text-xs text-slate-300 font-sans leading-relaxed break-words">${msg.message}</p>
+      `;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function handleSendChatMessage(e) {
+      e.preventDefault();
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+
+      const input = document.getElementById('chat-message-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const { error } = await supabaseClient
+        .from('community_chat')
+        .insert([
+          {
+            user_id: currentUser.id,
+            email: currentUser.email,
+            is_vip: isUserVip,
+            message: text
+          }
+        ]);
+
+      if (!error) {
+        input.value = "";
+      } else {
+        alert("Error al enviar mensaje: " + error.message);
+      }
+    }
+
+    // Suscripción Realtime para recibir mensajes de otros usuarios al instante
+    function setupRealtimeChat() {
+      supabaseClient
+        .channel('public:community_chat')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'community_chat' }, payload => {
+          appendChatMessage(payload.new);
+        })
+        .subscribe();
+    }
+
     // LIVE TOAST SOCIAL PROOF
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
@@ -1045,6 +1179,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       renderSlip();
       checkUserSession();
+      setupRealtimeChat();
       setInterval(triggerNextToast, 18000);
       setTimeout(triggerNextToast, 4000);
     });
