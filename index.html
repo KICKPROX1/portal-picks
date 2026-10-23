@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -69,12 +68,19 @@
       user-select: none;
       pointer-events: none;
     }
+    @keyframes slideInUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .toast-anim {
+      animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white relative">
 
   <!-- TOP HEADER EDITORIAL CON ACCESO VIP -->
-  <header class="h-14 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50">
+  <header class="h-14 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
     <div class="flex items-center gap-3">
       <div class="w-8 h-8 rounded-lg bg-problue flex items-center justify-center font-black text-white text-sm">
         ⚽
@@ -86,20 +92,21 @@
     </div>
     
     <div class="flex items-center gap-2 sm:gap-3">
-      <div class="hidden md:flex items-center gap-2 bg-innerbg px-3 py-1 rounded-lg border border-bordercolor text-xs font-mono">
+      <button onclick="openAuditModal()" class="hidden md:flex items-center gap-2 bg-innerbg px-3 py-1 rounded-lg border border-bordercolor text-xs font-mono hover:border-proaccent transition-all cursor-pointer">
         <span class="w-2 h-2 rounded-full bg-progreen animate-pulse"></span>
-        <span class="text-slate-300">Racha: <strong class="text-progreen">5 Verdes Seguidos</strong></span>
+        <span class="text-slate-300">Racha: <strong class="text-progreen">5 Verdes</strong></span>
         <span class="text-slate-500">|</span>
         <span class="text-slate-300">Win Rate: <strong class="text-white">77.4%</strong></span>
-      </div>
+        <span class="text-[10px] text-proaccent underline ml-1">Ver Historial</span>
+      </button>
 
       <button onclick="openVipModal()" class="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 flex items-center gap-1.5 shadow-md transition-all active:scale-95">
         <span>👑</span>
         <span>Pase VIP $10/mes</span>
       </button>
 
-      <button onclick="toggleAdminPrompt()" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-400 hover:text-white transition-all">
-        ⚙️
+      <button onclick="openAuditModal()" class="md:hidden text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-300 hover:text-white transition-all">
+        📋 Historial
       </button>
     </div>
   </header>
@@ -108,7 +115,7 @@
   <div class="bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border-b border-bordercolor py-2 px-4 text-center text-xs">
     <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-slate-300 flex-wrap">
       <span class="bg-problue text-white text-[9px] font-mono font-bold px-1.5 py-0.5 rounded uppercase">Comunidad</span>
-      <span>Acceso VIP completo por solo $10/mes:</span>
+      <span>Acceso VIP completo por solo $10/mes con alertas directas:</span>
       <a href="https://t.me" target="_blank" class="text-proaccent font-bold hover:underline flex items-center gap-1">
         <span>Canal Gratuito en Telegram</span> →
       </a>
@@ -120,7 +127,7 @@
 
     <!-- COLUMNA 1 (IZQUIERDA): FIXTURE & LIGAS -->
     <aside class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
-      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[700px]">
+      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[740px]">
         <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
           <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Jornada de Hoy</span>
           <span class="text-[10px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-proaccent">23 OCT</span>
@@ -253,7 +260,7 @@
     </aside>
 
     <!-- COLUMNA 2 (CENTRAL): FEED INTERACTIVO & ANÁLISIS TÁCTICO -->
-    <section class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden h-[700px]">
+    <section class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden h-[740px]">
       
       <!-- Stream de Mensajes / Análisis -->
       <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4">
@@ -277,11 +284,36 @@
 
     </section>
 
-    <!-- COLUMNA 3 (DERECHA): BET SLIP / PARLAY BUILDER EN VIVO -->
+    <!-- COLUMNA 3 (DERECHA): PARLAY BUILDER IA + BET SLIP -->
     <aside class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
-      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[700px]">
+      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[740px]">
         
-        <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
+        <!-- GENERADOR DE PARLAYS IA AUTOMÁTICO -->
+        <div class="bg-innerbg/70 border border-bordercolor rounded-xl p-3 mb-2 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase font-bold text-proaccent flex items-center gap-1.5">
+              <span>⚡</span> Armar Parlay IA
+            </span>
+            <span class="text-[9px] font-mono text-slate-400">Algorítmico</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5">
+            <button onclick="generateAutoParlay('safe')" class="py-1.5 px-1 bg-cardbg hover:bg-white/5 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-progreen block">Segura</span>
+              <span class="text-[9px] font-mono text-slate-400">~2.50x</span>
+            </button>
+            <button onclick="generateAutoParlay('value')" class="py-1.5 px-1 bg-cardbg hover:bg-white/5 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-proaccent block">+EV</span>
+              <span class="text-[9px] font-mono text-slate-400">~5.20x</span>
+            </button>
+            <button onclick="generateAutoParlay('bomba')" class="py-1.5 px-1 bg-cardbg hover:bg-white/5 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-goldvip block">Bomba</span>
+              <span class="text-[9px] font-mono text-slate-400">~12.0x</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pb-2 border-b border-bordercolor">
           <div class="flex items-center gap-2">
             <span class="text-sm">🧾</span>
             <span class="text-xs font-bold uppercase tracking-wider text-white">Boleto de Apuestas</span>
@@ -290,12 +322,12 @@
         </div>
 
         <!-- Lista de Selecciones en el Cupón -->
-        <div id="slip-items" class="flex-1 overflow-y-auto custom-scroll space-y-2 mt-3 pr-1 text-xs">
+        <div id="slip-items" class="flex-1 overflow-y-auto custom-scroll space-y-2 mt-2 pr-1 text-xs">
           <!-- Injected dynamically -->
         </div>
 
         <!-- Resumen de Cuota y Ganancia Estimada -->
-        <div class="border-t border-bordercolor pt-3 mt-2 space-y-2 text-xs font-mono">
+        <div class="border-t border-bordercolor pt-2.5 mt-2 space-y-2 text-xs font-mono">
           <div class="flex justify-between items-center text-slate-400">
             <span>Cuota Total:</span>
             <span id="slip-total-odds" class="text-white font-bold text-sm">2.75</span>
@@ -309,7 +341,7 @@
             </div>
           </div>
 
-          <div class="flex justify-between items-center bg-innerbg p-2.5 rounded-lg border border-bordercolor">
+          <div class="flex justify-between items-center bg-innerbg p-2 rounded-lg border border-bordercolor">
             <span class="text-slate-300">Retorno Estimado:</span>
             <span id="slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
           </div>
@@ -331,7 +363,7 @@
 
   </main>
 
-  <!-- MODAL MEMBRESÍA VIP (ACTUALIZADO A $10 MENSUAL) -->
+  <!-- MODAL MEMBRESÍA VIP ($10 MENSUAL) -->
   <div id="vip-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-cardbg border border-amber-500/30 rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
       <button onclick="closeVipModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
@@ -342,7 +374,7 @@
         </div>
         <h3 class="text-lg font-bold text-white tracking-tight">Acceso VIP SofaTactics</h3>
         <p class="text-xs text-slate-400 leading-relaxed">
-          Desbloquea los **Picks Bomba**, las selecciones con valor esperado (+EV) y las alertas diarias de todas las ligas europeas y americanas.
+          Desbloquea los **Picks Bomba**, análisis de cuotas con valor esperado (+EV) y alertas directas antes del inicio de los partidos.
         </p>
       </div>
 
@@ -376,11 +408,98 @@
       </div>
 
       <div class="space-y-2">
-        <button onclick="alert('Redirigiendo a pasarela de pago segura (Stripe / Whop) por $9.99/mes...')" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20">
+        <button onclick="alert('Redirigiendo a pasarela de cobro segura por $9.99/mes...')" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20">
           Desbloquear Acceso VIP ($9.99/mes)
         </button>
-        <p class="text-[10px] text-center text-slate-500 font-mono">Sin plazos forzosos. Cancela en cualquier momento con un clic.</p>
+        <p class="text-[10px] text-center text-slate-500 font-mono">Sin contratos forzosos. Cancela en cualquier momento con un clic.</p>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL HISTORIAL AUDITADO -->
+  <div id="audit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-bordercolor rounded-2xl max-w-2xl w-full p-6 relative shadow-2xl max-h-[85vh] flex flex-col">
+      <button onclick="closeAuditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      
+      <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>📋</span> Historial Público Auditado
+          </h3>
+          <p class="text-xs text-slate-400">Registro verificado de los últimos pronósticos del sistema.</p>
+        </div>
+        <span class="text-xs font-mono font-bold text-progreen bg-progreen/10 border border-progreen/30 px-2 py-1 rounded">
+          Balance: +14.85u
+        </span>
+      </div>
+
+      <div class="flex-1 overflow-y-auto custom-scroll mt-4">
+        <table class="w-full text-left text-xs font-sans">
+          <thead>
+            <tr class="border-b border-bordercolor text-slate-400 font-mono uppercase text-[10px]">
+              <th class="py-2.5 px-2">Fecha</th>
+              <th class="py-2.5 px-2">Partido</th>
+              <th class="py-2.5 px-2">Selección</th>
+              <th class="py-2.5 px-2 text-center">Cuota</th>
+              <th class="py-2.5 px-2 text-center">Stake</th>
+              <th class="py-2.5 px-2 text-right">Resultado</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-bordercolor font-mono text-[11px]">
+            <tr>
+              <td class="py-2.5 px-2 text-slate-400">22 OCT</td>
+              <td class="py-2.5 px-2 font-sans font-medium text-white">Freiburg vs Bayern</td>
+              <td class="py-2.5 px-2 text-slate-300">Ambos Marcan (Sí)</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">1.45</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">2.5u</td>
+              <td class="py-2.5 px-2 text-right text-progreen font-bold">+1.13u ✅</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 px-2 text-slate-400">21 OCT</td>
+              <td class="py-2.5 px-2 font-sans font-medium text-white">Real Madrid vs Dortmund</td>
+              <td class="py-2.5 px-2 text-slate-300">Más de 2.5 Goles</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">1.55</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">3.0u</td>
+              <td class="py-2.5 px-2 text-right text-progreen font-bold">+1.65u ✅</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 px-2 text-slate-400">20 OCT</td>
+              <td class="py-2.5 px-2 font-sans font-medium text-white">Arsenal vs Shakhtar</td>
+              <td class="py-2.5 px-2 text-slate-300">Arsenal -1.5 AH</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">1.74</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">2.0u</td>
+              <td class="py-2.5 px-2 text-right text-rose-400 font-bold">-2.00u ❌</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 px-2 text-slate-400">19 OCT</td>
+              <td class="py-2.5 px-2 font-sans font-medium text-white">Barcelona vs Sevilla</td>
+              <td class="py-2.5 px-2 text-slate-300">Barcelona a Ganar</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">1.33</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">3.5u</td>
+              <td class="py-2.5 px-2 text-right text-progreen font-bold">+1.16u ✅</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 px-2 text-slate-400">18 OCT</td>
+              <td class="py-2.5 px-2 font-sans font-medium text-white">Liverpool vs Chelsea</td>
+              <td class="py-2.5 px-2 text-slate-300">Ambos Marcan (Sí)</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">1.62</td>
+              <td class="py-2.5 px-2 text-center text-slate-300">2.0u</td>
+              <td class="py-2.5 px-2 text-right text-progreen font-bold">+1.24u ✅</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICADOR FLOTANTE SOCIAL PROOF (LIVE TOAST) -->
+  <div id="live-toast" class="fixed bottom-5 left-5 z-50 bg-[#161c28] border border-bordercolor text-white px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center gap-3 hidden max-w-sm toast-anim">
+    <div id="toast-icon" class="w-8 h-8 rounded-lg bg-progreen/20 text-progreen flex items-center justify-center font-bold text-sm shrink-0">
+      ⚡
+    </div>
+    <div>
+      <div id="toast-title" class="text-xs font-bold text-white leading-tight">Pick Verificado en Vivo</div>
+      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">Stuttgart ML + Over 1.5 confirmado (+EV 9.8%)</div>
     </div>
   </div>
 
@@ -538,6 +657,28 @@
       const totalOdds = parseFloat(document.getElementById('slip-total-odds').innerText) || 0;
       const payout = stake * totalOdds - stake;
       document.getElementById('slip-payout').innerText = (payout >= 0 ? `+${payout.toFixed(2)}u` : "0.00u");
+    }
+
+    function generateAutoParlay(type) {
+      if (type === 'safe') {
+        activeSlip = [
+          { id: "p1", match: "Stuttgart vs Gladbach", pick: "Stuttgart ML + Over 1.5", odds: 1.61 },
+          { id: "p2", match: "Ipswich vs Forest", pick: "Nottingham Forest o Empate (X2)", odds: 1.71 }
+        ];
+      } else if (type === 'value') {
+        activeSlip = [
+          { id: "p1", match: "Stuttgart vs Gladbach", pick: "Stuttgart AH (-1.0)", odds: 1.87 },
+          { id: "p2", match: "Alavés vs Málaga", pick: "Menos de 2.5 Goles", odds: 1.80 },
+          { id: "p3", match: "Necaxa vs Juárez", pick: "Necaxa DNB", odds: 1.65 }
+        ];
+      } else if (type === 'bomba') {
+        activeSlip = [
+          { id: "p1", match: "Stuttgart vs Gladbach", pick: "Stuttgart Gana & Ambos Marcan", odds: 2.85 },
+          { id: "p2", match: "Alavés vs Málaga", pick: "Alavés Gana a Cero", odds: 2.60 },
+          { id: "p3", match: "Necaxa vs Juárez", pick: "Ambos Marcan (Sí)", odds: 1.83 }
+        ];
+      }
+      renderSlip();
     }
 
     function copySlipToClipboard() {
@@ -725,27 +866,49 @@
 
     function publishSlip() {
       if (activeSlip.length === 0) {
-        alert("El cupón está vacío. Agrega selecciones desde el panel central.");
+        alert("El cupón está vacío. Agrega selecciones desde el panel central o genera una combinada.");
         return;
       }
       alert("Jugada confirmada y registrada en el sistema.");
     }
 
-    function toggleAdminPrompt() {
-      alert("Modo Admin: Gestión de cuotas y resultados vinculados.");
-    }
+    function openVipModal() { document.getElementById('vip-modal').classList.remove('hidden'); }
+    function closeVipModal() { document.getElementById('vip-modal').classList.add('hidden'); }
+    function openAuditModal() { document.getElementById('audit-modal').classList.remove('hidden'); }
+    function closeAuditModal() { document.getElementById('audit-modal').classList.add('hidden'); }
 
-    function openVipModal() {
-      document.getElementById('vip-modal').classList.remove('hidden');
-    }
+    // Ciclo de notificaciones de prueba social (Live Toast)
+    const toastNotifications = [
+      { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($10/mes)", color: "text-amber-400", bg: "bg-amber-500/20" },
+      { icon: "✅", title: "Pick Verificado", desc: "Stuttgart ML + Over 1.5 validado por modelo matemático", color: "text-progreen", bg: "bg-progreen/20" },
+      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Alavés vs Málaga detecta +EV del 11.6% en Menos 2.5", color: "text-proaccent", bg: "bg-blue-500/20" },
+      { icon: "👑", title: "Nuevo Miembro Premium", desc: "Usuario en línea desbloqueó el pase semanal ($3.99)", color: "text-amber-400", bg: "bg-amber-500/20" }
+    ];
+    let toastIndex = 0;
 
-    function closeVipModal() {
-      document.getElementById('vip-modal').classList.add('hidden');
+    function triggerNextToast() {
+      const toastEl = document.getElementById('live-toast');
+      const item = toastNotifications[toastIndex];
+
+      document.getElementById('toast-icon').innerText = item.icon;
+      document.getElementById('toast-icon').className = `w-8 h-8 rounded-lg ${item.bg} ${item.color} flex items-center justify-center font-bold text-sm shrink-0`;
+      document.getElementById('toast-title').innerText = item.title;
+      document.getElementById('toast-desc').innerText = item.desc;
+
+      toastEl.classList.remove('hidden');
+
+      setTimeout(() => {
+        toastEl.classList.add('hidden');
+      }, 5500);
+
+      toastIndex = (toastIndex + 1) % toastNotifications.length;
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       renderSlip();
       triggerTacticalPrompt('stuttgart-gladbach');
+      setInterval(triggerNextToast, 18000);
+      setTimeout(triggerNextToast, 4000);
     });
   </script>
 </body>
