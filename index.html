@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pronostic VIP | Inteligencia Artificial & Picks de Fútbol</title>
+  <title>PRO STATS VIP | Análisis Táctico & Pronósticos de Fútbol</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -15,17 +15,16 @@
       theme: {
         extend: {
           colors: {
-            appbg: '#080d1a',
-            panelbg: '#0f172a',
-            cardinner: '#151f38',
-            brandcyan: '#00d2ff',
-            brandblue: '#2563eb',
-            brandemerald: '#10b981',
-            brandpink: '#ec4899',
-            darkborder: 'rgba(255, 255, 255, 0.08)'
+            basebg: '#0c0e12',
+            cardbg: '#141820',
+            innerbg: '#1a1f2c',
+            bordercolor: '#232938',
+            progreen: '#10b981',
+            problue: '#2563eb',
+            proaccent: '#38bdf8'
           },
           fontFamily: {
-            sans: ['Space Grotesk', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace']
           }
         }
@@ -34,761 +33,585 @@
   </script>
   <style>
     body {
-      background-color: #060913;
-      color: #f1f5f9;
-      font-family: 'Space Grotesk', sans-serif;
+      background-color: #0c0e12;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
     }
     .custom-scroll::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
+      width: 4px;
+      height: 4px;
     }
     .custom-scroll::-webkit-scrollbar-track {
-      background: #0b1120;
+      background: #10141d;
     }
     .custom-scroll::-webkit-scrollbar-thumb {
-      background: #1e293b;
+      background: #232938;
       border-radius: 9999px;
     }
     .custom-scroll::-webkit-scrollbar-thumb:hover {
-      background: #334155;
+      background: #3b82f6;
     }
     .team-badge-img {
       object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
     }
     .cursor-blink::after {
       content: '|';
       animation: blink 1s step-start infinite;
-      color: #00d2ff;
+      color: #38bdf8;
     }
     @keyframes blink {
       50% { opacity: 0; }
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
-  <!-- TOP HEADER -->
-  <header class="h-14 border-b border-white/5 bg-[#080d1a]/90 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-50">
+  <!-- TOP HEADER EDITORIAL -->
+  <header class="h-14 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50">
     <div class="flex items-center gap-3">
-      <div class="flex items-center gap-1.5">
-        <span class="text-xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">Pronostic.io</span>
-        <span class="text-[9px] font-mono text-cyan-400 font-semibold border border-cyan-500/30 px-1.5 py-0.5 rounded ml-1">VIP AI</span>
+      <div class="w-8 h-8 rounded-lg bg-problue flex items-center justify-center font-black text-white text-sm">
+        ⚽
+      </div>
+      <div>
+        <span class="text-sm font-bold tracking-tight text-white uppercase">SofaTactics <span class="text-proaccent font-mono text-xs">PRO</span></span>
+        <span class="text-[10px] block font-mono text-slate-400">Inteligencia Deportiva & Datos de Valor</span>
       </div>
     </div>
+    
     <div class="flex items-center gap-3">
-      <button onclick="document.getElementById('aciertos-section').scrollIntoView({behavior: 'smooth'})" class="text-xs text-slate-300 hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
-        <span>Historial</span>
-      </button>
-      <button onclick="toggleAdminPrompt()" class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all text-xs font-mono">
-        ⚙️
+      <div class="hidden sm:flex items-center gap-2 bg-innerbg px-3 py-1 rounded-lg border border-bordercolor text-xs font-mono">
+        <span class="w-2 h-2 rounded-full bg-progreen"></span>
+        <span class="text-slate-300">Win Rate: <strong class="text-white">77.4%</strong></span>
+        <span class="text-slate-500">|</span>
+        <span class="text-slate-300">ROI: <strong class="text-progreen">+23.8%</strong></span>
+      </div>
+      <button onclick="toggleAdminPrompt()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-300 hover:text-white transition-all flex items-center gap-1.5">
+        <span>⚙️ Modo Admin</span>
       </button>
     </div>
   </header>
 
-  <!-- MAIN APP CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
+  <!-- WORKSPACE A 3 COLUMNAS -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-    <!-- LEFT SIDEBAR: LIGAS & PARTIDOS DISPONIBLES -->
-    <aside class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4">
-      
-      <!-- Panel de Ligas -->
-      <div class="bg-[#0b1120] border border-white/5 rounded-2xl p-4 flex flex-col h-[520px]">
-        <div class="flex items-center justify-between pb-3 border-b border-white/5">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-            <h3 class="text-xs font-mono font-bold tracking-wider text-slate-300 uppercase">Partidos Disponibles</h3>
-          </div>
-          <span class="text-[10px] text-slate-500 font-mono">Hoy</span>
+    <!-- COLUMNA 1 (IZQUIERDA): FIXTURE & LIGAS -->
+    <aside class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
+      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[680px]">
+        <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Jornada de Hoy</span>
+          <span class="text-[10px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-proaccent">23 OCT</span>
         </div>
 
-        <!-- Lista Colapsable de Ligas y Encuentros -->
-        <div class="flex-1 overflow-y-auto custom-scroll space-y-1.5 pr-1 mt-3 text-xs">
+        <div class="flex-1 overflow-y-auto custom-scroll space-y-3 mt-3 pr-1 text-xs">
           
-          <!-- Liga Alemania -->
-          <div class="rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
-            <button onclick="toggleAccordion('bundesliga-matches')" class="w-full px-3 py-2.5 flex items-center justify-between text-left text-slate-300 hover:text-white hover:bg-white/[0.03] transition-all">
-              <span class="font-medium flex items-center gap-2">🇩🇪 Liga Alemania</span>
-              <span class="text-slate-500 text-[10px]">▾</span>
-            </button>
-            <div id="bundesliga-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="triggerInteractivePrompt('stuttgart-gladbach')" class="w-full text-left py-2 px-2.5 rounded-lg bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 flex items-center justify-between hover:bg-cyan-900/50 transition-all font-mono text-[11px]">
-                <div class="flex items-center gap-2 truncate">
-                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'STU')">
-                  <span class="truncate">Stuttgart vs Gladbach</span>
+          <!-- BUNDESLIGA -->
+          <div>
+            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
+              <span>🇩🇪 Bundesliga</span>
+              <span class="text-[10px] text-slate-500">Jornada 7</span>
+            </div>
+            <div onclick="triggerTacticalPrompt('stuttgart-gladbach')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-slate-400">13:30 CDT</span>
+                <span class="text-[9px] font-mono text-progreen bg-progreen/10 border border-progreen/30 px-1.5 py-0.2 rounded font-bold">VALOR +EV</span>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'STU')">
+                    <span class="font-medium text-white text-[12px]">VfB Stuttgart</span>
+                  </div>
+                  <span class="font-mono text-slate-400 text-[11px]">1.61</span>
                 </div>
-                <span class="text-slate-400 text-[10px]">13:30</span>
-              </button>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'BMG')">
+                    <span class="font-medium text-slate-300 text-[12px]">Borussia M'gladbach</span>
+                  </div>
+                  <span class="font-mono text-slate-400 text-[11px]">5.40</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Liga España -->
-          <div class="rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
-            <button onclick="toggleAccordion('laliga-matches')" class="w-full px-3 py-2.5 flex items-center justify-between text-left text-slate-300 hover:text-white hover:bg-white/[0.03] transition-all">
-              <span class="font-medium flex items-center gap-2">🇪🇸 Liga España</span>
-              <span class="text-slate-500 text-[10px]">▾</span>
-            </button>
-            <div id="laliga-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="triggerInteractivePrompt('alaves-malaga')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <div class="flex items-center gap-2 truncate">
-                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'ALA')">
-                  <span class="truncate">Alavés vs Málaga</span>
+          <!-- LALIGA -->
+          <div>
+            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
+              <span>🇪🇸 LaLiga</span>
+              <span class="text-[10px] text-slate-500">Jornada 10</span>
+            </div>
+            <div onclick="triggerTacticalPrompt('alaves-malaga')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-slate-400">14:00 CDT</span>
+                <span class="text-[9px] font-mono text-slate-400 bg-white/5 border border-white/10 px-1.5 py-0.2 rounded">TACTICAL</span>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'ALA')">
+                    <span class="font-medium text-white text-[12px]">Deportivo Alavés</span>
+                  </div>
+                  <span class="font-mono text-slate-400 text-[11px]">1.88</span>
                 </div>
-                <span class="text-slate-500 text-[10px]">14:00</span>
-              </button>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'MAL')">
+                    <span class="font-medium text-slate-300 text-[12px]">Málaga CF</span>
+                  </div>
+                  <span class="font-mono text-slate-400 text-[11px]">4.50</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Liga Inglaterra -->
-          <div class="rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
-            <button onclick="toggleAccordion('premier-matches')" class="w-full px-3 py-2.5 flex items-center justify-between text-left text-slate-300 hover:text-white hover:bg-white/[0.03] transition-all">
-              <span class="font-medium flex items-center gap-2">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Liga Inglaterra</span>
-              <span class="text-slate-500 text-[10px]">▾</span>
-            </button>
-            <div id="premier-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="triggerInteractivePrompt('ipswich-forest')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <div class="flex items-center gap-2 truncate">
-                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'IPS')">
-                  <span class="truncate">Ipswich vs Forest</span>
+          <!-- PREMIER LEAGUE -->
+          <div>
+            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
+              <span>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span>
+              <span class="text-[10px] text-slate-500">Jornada 8</span>
+            </div>
+            <div onclick="triggerTacticalPrompt('ipswich-forest')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-slate-400">14:00 CDT</span>
+                <span class="text-[9px] font-mono text-proaccent bg-proaccent/10 border border-proaccent/30 px-1.5 py-0.2 rounded font-bold">X2 PICK</span>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'IPS')">
+                    <span class="font-medium text-white text-[12px]">Ipswich Town</span>
+                  </div>
+                  <span class="font-mono text-slate-400 text-[11px]">2.85</span>
                 </div>
-                <span class="text-slate-500 text-[10px]">14:00</span>
-              </button>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/393.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'NFO')">
+                    <span class="font-medium text-slate-300 text-[12px]">Nottingham Forest</span>
+                  </div>
+                  <span class="font-mono text-slate-400 text-[11px]">2.70</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Liga Italia -->
-          <div class="rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
-            <button onclick="toggleAccordion('seriea-matches')" class="w-full px-3 py-2.5 flex items-center justify-between text-left text-slate-300 hover:text-white hover:bg-white/[0.03] transition-all">
-              <span class="font-medium flex items-center gap-2">🇮🇹 Liga Italia</span>
-              <span class="text-slate-500 text-[10px]">▾</span>
-            </button>
-            <div id="seriea-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="triggerInteractivePrompt('torino-monza')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <div class="flex items-center gap-2 truncate">
-                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/118.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'TOR')">
-                  <span class="truncate">Torino vs Monza</span>
-                </div>
-                <span class="text-slate-500 text-[10px]">13:45</span>
-              </button>
+          <!-- LIGA MX -->
+          <div>
+            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
+              <span>🇲🇽 Liga MX</span>
+              <span class="text-[10px] text-slate-500">Apertura J14</span>
             </div>
-          </div>
-
-          <!-- Liga Francia -->
-          <div class="rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
-            <button onclick="toggleAccordion('ligue1-matches')" class="w-full px-3 py-2.5 flex items-center justify-between text-left text-slate-300 hover:text-white hover:bg-white/[0.03] transition-all">
-              <span class="font-medium flex items-center gap-2">🇫🇷 Liga Francia</span>
-              <span class="text-slate-500 text-[10px]">▾</span>
-            </button>
-            <div id="ligue1-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="triggerInteractivePrompt('brest-nice')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <div class="flex items-center gap-2 truncate">
-                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/282.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'BRE')">
-                  <span class="truncate">Brest vs Niza</span>
+            <div onclick="triggerTacticalPrompt('necaxa-juarez')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-slate-400">20:00 CDT</span>
+                <span class="text-[9px] font-mono text-progreen bg-progreen/10 border border-progreen/30 px-1.5 py-0.2 rounded font-bold">DNB LOCAL</span>
+              </div>
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'NEC')">
+                    <span class="font-medium text-white text-[12px]">Club Necaxa</span>
+                  </div>
+                  <span class="font-mono text-slate-400 text-[11px]">2.02</span>
                 </div>
-                <span class="text-slate-500 text-[10px]">13:45</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Liga México -->
-          <div class="rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
-            <button onclick="toggleAccordion('ligamx-matches')" class="w-full px-3 py-2.5 flex items-center justify-between text-left text-slate-300 hover:text-white hover:bg-white/[0.03] transition-all">
-              <span class="font-medium flex items-center gap-2">🇲🇽 Liga México</span>
-              <span class="text-slate-500 text-[10px]">▾</span>
-            </button>
-            <div id="ligamx-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="triggerInteractivePrompt('necaxa-juarez')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
-                <div class="flex items-center gap-2 truncate">
-                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'NEC')">
-                  <span class="truncate">Necaxa vs Juárez</span>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17743.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'JUA')">
+                    <span class="font-medium text-slate-300 text-[12px]">FC Juárez</span>
+                  </div>
+                  <span class="font-mono text-slate-400 text-[11px]">3.80</span>
                 </div>
-                <span class="text-slate-500 text-[10px]">20:00</span>
-              </button>
+              </div>
             </div>
           </div>
 
         </div>
       </div>
-
-      <!-- Widget Inferior de Efectividad -->
-      <div class="bg-[#0b1120] border border-white/5 rounded-2xl p-4">
-        <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider mb-2">Efectividad de los Pronósticos</div>
-        <div class="grid grid-cols-3 gap-2 text-center">
-          <div class="bg-white/[0.02] border border-white/5 p-2 rounded-xl">
-            <div class="text-lg font-mono font-bold text-emerald-400">77%</div>
-            <div class="text-[9px] text-slate-500">De acierto</div>
-          </div>
-          <div class="bg-white/[0.02] border border-white/5 p-2 rounded-xl">
-            <div class="text-lg font-mono font-bold text-cyan-400">8 de 10</div>
-            <div class="text-[9px] text-slate-500">Picks Favoritos</div>
-          </div>
-          <div class="bg-white/[0.02] border border-white/5 p-2 rounded-xl">
-            <div class="text-lg font-mono font-bold text-white">5,000+</div>
-            <div class="text-[9px] text-slate-500">Analizados</div>
-          </div>
-        </div>
-      </div>
-
     </aside>
 
-    <!-- RIGHT/CENTER: INTERACTIVE RADAR & CHAT ANALYSIS -->
-    <section class="lg:col-span-8 xl:col-span-9 flex flex-col bg-[#0b1120] border border-white/5 rounded-2xl overflow-hidden h-[700px]">
+    <!-- COLUMNA 2 (CENTRAL): FEED INTERACTIVO & ANÁLISIS TÁCTICO -->
+    <section class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden h-[680px]">
       
-      <!-- Chat Conversation Canvas Target -->
-      <div id="chat-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-6 space-y-5">
-        <!-- Rendered dynamically with typewriter effect by JavaScript -->
+      <!-- Stream de Mensajes / Análisis -->
+      <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4">
+        <!-- Rendered by JavaScript -->
       </div>
 
-      <!-- Chat Bottom Input Bar -->
-      <div class="p-3 sm:p-4 bg-[#080d1a] border-t border-white/5">
-        <form onsubmit="handleChatSubmit(event)" class="relative flex items-center">
+      <!-- Barra de Solicitud Inferior -->
+      <div class="p-3 bg-[#10141d] border-t border-bordercolor">
+        <form onsubmit="handleUserSearch(event)" class="relative flex items-center">
           <input 
             type="text" 
-            id="chat-user-input" 
-            placeholder="Pregúntame: ¿Cuál es el pronóstico de Stuttgart vs Gladbach o Alavés?..." 
-            class="w-full bg-[#11192e] text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-xl pl-4 pr-12 py-3.5 border border-white/10 focus:outline-none focus:border-cyan-500 transition-all font-sans"
+            id="tactical-input" 
+            placeholder="Escribe el nombre de un equipo o partido (Ej: Alavés, Forest, Necaxa)..." 
+            class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-proaccent transition-all font-sans"
           >
-          <button type="submit" class="absolute right-2.5 w-8 h-8 rounded-lg bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center transition-all">
-            <svg class="w-4 h-4 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-7 7m7-7l7 7"></path></svg>
+          <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-problue hover:bg-blue-500 text-white font-mono text-xs flex items-center justify-center transition-all">
+            Enviar
           </button>
         </form>
       </div>
 
     </section>
 
+    <!-- COLUMNA 3 (DERECHA): BET SLIP / PARLAY BUILDER EN VIVO -->
+    <aside class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
+      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[680px]">
+        
+        <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
+          <div class="flex items-center gap-2">
+            <span class="text-sm">🧾</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-white">Boleto de Apuestas</span>
+          </div>
+          <span id="slip-count" class="text-[10px] font-mono bg-problue text-white px-2 py-0.5 rounded-full font-bold">2</span>
+        </div>
+
+        <!-- Lista de Selecciones en el Cupón -->
+        <div id="slip-items" class="flex-1 overflow-y-auto custom-scroll space-y-2 mt-3 pr-1 text-xs">
+          <!-- Injected dynamically -->
+        </div>
+
+        <!-- Resumen de Cuota y Ganancia Estimada -->
+        <div class="border-t border-bordercolor pt-3 mt-2 space-y-2 text-xs font-mono">
+          <div class="flex justify-between items-center text-slate-400">
+            <span>Cuota Total:</span>
+            <span id="slip-total-odds" class="text-white font-bold text-sm">2.75</span>
+          </div>
+          
+          <div class="flex justify-between items-center text-slate-400">
+            <span>Importe (Stake):</span>
+            <div class="flex items-center gap-1">
+              <input type="number" id="slip-stake-input" oninput="calculateSlipPayout()" value="2.0" step="0.5" class="w-16 bg-innerbg border border-bordercolor rounded p-1 text-right text-white font-bold">
+              <span>u</span>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center bg-innerbg p-2.5 rounded-lg border border-bordercolor">
+            <span class="text-slate-300">Retorno Neto:</span>
+            <span id="slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
+          </div>
+
+          <button onclick="publishSlip()" class="w-full py-2.5 bg-progreen hover:bg-emerald-500 text-slate-950 font-bold rounded-lg uppercase tracking-wider text-[11px] transition-all shadow-md">
+            Confirmar Jugada VIP
+          </button>
+        </div>
+
+      </div>
+    </aside>
+
   </main>
-
-  <!-- BOTTOM HORIZONTAL TICKER: ACIERTOS RECIENTES -->
-  <section id="aciertos-section" class="max-w-7xl w-full mx-auto px-4 sm:px-6 pb-8 pt-2">
-    <div class="flex items-center justify-between mb-3">
-      <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-        <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">Aciertos Recientes de Pronostic</h4>
-      </div>
-      <span class="text-[11px] text-slate-500 font-mono">Últimos días</span>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-      
-      <div class="bg-[#0b1120] border border-white/5 p-3.5 rounded-xl flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[9px] font-mono uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">ACERTADO</span>
-          <span class="text-[10px] font-mono text-slate-400">Cuota 1.45</span>
-        </div>
-        <div class="text-xs font-bold text-white flex items-center gap-2">
-          <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/160.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'PSG')">
-          <span>PSG vs Barcelona</span>
-        </div>
-        <div class="text-[11px] font-mono text-cyan-300 mt-1">Más de 2.5 Goles</div>
-        <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500 font-mono border-t border-white/5 pt-1.5">
-          <span>Res: 4 - 2</span>
-          <span>Stake 3u</span>
-        </div>
-      </div>
-
-      <div class="bg-[#0b1120] border border-white/5 p-3.5 rounded-xl flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[9px] font-mono uppercase bg-pink-950/60 text-pink-400 border border-pink-500/30 px-2 py-0.5 rounded font-bold">BOMBA ✅</span>
-          <span class="text-[10px] font-mono text-slate-400">Cuota 3.05</span>
-        </div>
-        <div class="text-xs font-bold text-white flex items-center gap-2">
-          <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/349.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'BOU')">
-          <span>Bournemouth vs Milan</span>
-        </div>
-        <div class="text-[11px] font-mono text-cyan-300 mt-1">Bournemouth + BTTS</div>
-        <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500 font-mono border-t border-white/5 pt-1.5">
-          <span>Res: 3 - 1</span>
-          <span>Stake 1u</span>
-        </div>
-      </div>
-
-      <div class="bg-[#0b1120] border border-white/5 p-3.5 rounded-xl flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[9px] font-mono uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">ACERTADO</span>
-          <span class="text-[10px] font-mono text-slate-400">Cuota 1.83</span>
-        </div>
-        <div class="text-xs font-bold text-white flex items-center gap-2">
-          <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'INT')">
-          <span>Inter vs Shakhtar Donetsk</span>
-        </div>
-        <div class="text-[11px] font-mono text-cyan-300 mt-1">Inter -1.5 Hándicap</div>
-        <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500 font-mono border-t border-white/5 pt-1.5">
-          <span>Res: 2 - 0</span>
-          <span>Stake 2.5u</span>
-        </div>
-      </div>
-
-      <div class="bg-[#0b1120] border border-white/5 p-3.5 rounded-xl flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[9px] font-mono uppercase bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">ACERTADO</span>
-          <span class="text-[10px] font-mono text-slate-400">Cuota 1.62</span>
-        </div>
-        <div class="text-xs font-bold text-white flex items-center gap-2">
-          <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/364.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'LIV')">
-          <span>Liverpool vs Chelsea</span>
-        </div>
-        <div class="text-[11px] font-mono text-cyan-300 mt-1">Ambos Marcan (Sí)</div>
-        <div class="flex justify-between items-center mt-2 text-[10px] text-slate-500 font-mono border-t border-white/5 pt-1.5">
-          <span>Res: 2 - 1</span>
-          <span>Stake 2u</span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- DISCLAIMER FOOTER -->
-  <footer class="border-t border-white/5 bg-[#060913] py-6 px-4 text-center">
-    <div class="max-w-4xl mx-auto space-y-2">
-      <p class="text-[11px] text-slate-500 leading-relaxed font-sans">
-        <strong>Aviso de responsabilidad:</strong> Los pronósticos y probabilidades mostradas son estimaciones matemáticas basadas en estadísticas históricas y modelos predictivos propios. Pronostic.io es exclusivamente una herramienta de análisis de datos, información y entretenimiento. No garantizamos la exactitud de los resultados deportivos. Cualquier decisión tomada basándose en esta IA es de absoluta responsabilidad del usuario. Plataforma exclusiva para mayores de 18 años.
-      </p>
-    </div>
-  </footer>
 
   <!-- SCRIPT LOGIC -->
   <script>
     let isTyping = false;
 
     const badgesCDN = {
-      "VfB Stuttgart": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=100&h=100",
-      "Borussia Mönchengladbach": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=100&h=100",
-      "Deportivo Alavés": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=100&h=100",
-      "Málaga CF": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=100&h=100",
-      "Ipswich Town": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=100&h=100",
-      "Nottingham Forest": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/393.png&w=100&h=100",
-      "Torino": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/118.png&w=100&h=100",
-      "AC Monza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/9900.png&w=100&h=100",
-      "Stade Brestois": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/282.png&w=100&h=100",
-      "OGC Niza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/171.png&w=100&h=100",
-      "Club Necaxa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=100&h=100",
-      "FC Juárez": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17743.png&w=100&h=100"
+      "VfB Stuttgart": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=80&h=80",
+      "Borussia Mönchengladbach": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=80&h=80",
+      "Deportivo Alavés": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=80&h=80",
+      "Málaga CF": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=80&h=80",
+      "Ipswich Town": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=80&h=80",
+      "Nottingham Forest": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/393.png&w=80&h=80",
+      "Club Necaxa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=80&h=80",
+      "FC Juárez": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17743.png&w=80&h=80"
     };
 
     function handleImageError(imgEl, initials) {
       imgEl.onerror = null;
-      imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%230f172a" stroke="%2338bdf8" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${initials || 'FC'}</text></svg>`;
+      imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="%231a1f2c" stroke="%2338bdf8" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${initials || 'FC'}</text></svg>`;
     }
 
-    const matchesDatabase = {
+    const tacticalDB = {
       "stuttgart-gladbach": {
-        userPrompt: "¿Podrías darme el análisis táctico, radiografía y picks de valor para el partido entre VfB Stuttgart y Borussia Mönchengladbach de hoy?",
-        title: "Análisis VIP: VfB Stuttgart vs Borussia Mönchengladbach",
-        radio: "El Stuttgart consolida una estructura de ataque consistente y volumen de disparos superior en casa. El Gladbach muestra fragilidad defensiva en transición al jugar de visita. El modelo matemático detecta un desbalance en las cuotas que sugiere una lectura más optimista para el local.",
+        query: "¿Cuál es el desglose táctico y valor matemático para VfB Stuttgart vs Borussia Mönchengladbach?",
+        matchName: "VfB Stuttgart vs Borussia Mönchengladbach",
+        league: "Bundesliga • Jornada 7",
+        date: "Hoy • 13:30 CDT • Mercedes-Benz Arena",
         home: "VfB Stuttgart",
         homeBadge: badgesCDN["VfB Stuttgart"],
         away: "Borussia Mönchengladbach",
         awayBadge: badgesCDN["Borussia Mönchengladbach"],
-        homeForm: ["G", "G", "E", "P", "G"],
-        awayForm: ["P", "E", "G", "P", "E"],
-        market: {
-          homeName: "Local - VfB Stuttgart",
-          homeProb: "62.5%",
-          homeModel: "68.5%",
-          homeDiff: "+6.0%",
-          homeOdds: "1.46",
-          homeVal: "-7.6%",
-          drawName: "Empate",
-          drawProb: "21.5%",
-          drawModel: "18.2%",
-          drawDiff: "-3.3%",
-          drawOdds: "4.75",
-          drawVal: "+15.8%",
-          awayName: "Visitante - Borussia Mönchengladbach",
-          awayProb: "16.0%",
-          awayModel: "13.3%",
-          awayDiff: "-2.7%",
-          awayOdds: "6.00",
-          awayVal: "-19.1%"
-        },
+        xgHome: "2.14",
+        xgAway: "0.92",
+        possessionHome: "64%",
+        possessionAway: "36%",
+        tacticalRead: "Stuttgart sostiene una transición rápida hacia el tercio final con alta precisión en pases progresivos. El Gladbach cede promedio de 5.4 tiros a puerta en condición de visitante. Desbalance claro a favor del volumen ofensivo local.",
+        marketProb: { home: "62.5%", draw: "21.5%", away: "16.0%" },
+        modelProb: { home: "68.5%", draw: "18.2%", away: "13.3%" },
         picks: [
-          { type: "Pick Principal", title: "Stuttgart a Ganar + Over 1.5 Goles", odds: "1.61", tag: "FAVORITO" },
-          { type: "Pick de Valor", title: "Stuttgart Hándicap Asiático (-1.0)", odds: "1.87", tag: "VALOR +EV" },
-          { type: "Pick Bomba", title: "Stuttgart Gana y Ambos Marcan", odds: "2.85", tag: "BOMBA" }
+          { name: "Stuttgart ML + Over 1.5", odds: 1.61, tag: "FAVORITO", ev: "+9.8%" },
+          { name: "Stuttgart Hándicap (-1.0)", odds: 1.87, tag: "VALOR +EV", ev: "+14.2%" },
+          { name: "Stuttgart Gana & Ambos Marcan", odds: 2.85, tag: "BOMBA", ev: "+28.0%" }
         ]
       },
       "alaves-malaga": {
-        userPrompt: "¿Qué pronóstico y probabilidades de goles recomiendas para el Deportivo Alavés vs Málaga CF?",
-        title: "Análisis VIP: Deportivo Alavés vs Málaga CF",
-        radio: "Duelo caracterizado por la intensidad física en zonas intermedias y escasas transiciones limpias. El Alavés en Mendizorroza concede muy poco, forzando partidos de marcadores estrechos.",
+        query: "Análisis para el partido Deportivo Alavés vs Málaga CF en Mendizorroza.",
+        matchName: "Deportivo Alavés vs Málaga CF",
+        league: "LaLiga • Jornada 10",
+        date: "Hoy • 14:00 CDT • Mendizorroza",
         home: "Deportivo Alavés",
         homeBadge: badgesCDN["Deportivo Alavés"],
         away: "Málaga CF",
         awayBadge: badgesCDN["Málaga CF"],
-        homeForm: ["E", "G", "P", "E", "G"],
-        awayForm: ["P", "P", "E", "G", "P"],
-        market: {
-          homeName: "Local - Deportivo Alavés",
-          homeProb: "53.2%",
-          homeModel: "59.0%",
-          homeDiff: "+5.8%",
-          homeOdds: "1.88",
-          homeVal: "+11.7%",
-          drawName: "Empate",
-          drawProb: "28.5%",
-          drawModel: "26.5%",
-          drawDiff: "-2.0%",
-          drawOdds: "3.50",
-          drawVal: "-7.7%",
-          awayName: "Visitante - Málaga CF",
-          awayProb: "18.3%",
-          awayModel: "14.5%",
-          awayDiff: "-3.8%",
-          awayOdds: "5.40",
-          awayVal: "-21.6%"
-        },
+        xgHome: "1.10",
+        xgAway: "0.65",
+        possessionHome: "48%",
+        possessionAway: "52%",
+        tacticalRead: "Encuentro de alta fricción en la zona media con secuencias de posesión cortas. El Alavés concede menos de 0.8 tantos por partido en casa, orientando el duelo a una baja producción goleadora.",
+        marketProb: { home: "53.2%", draw: "28.5%", away: "18.3%" },
+        modelProb: { home: "59.0%", draw: "26.5%", away: "14.5%" },
         picks: [
-          { type: "Pick Principal", title: "Menos de 2.5 Goles Totales", odds: "1.80", tag: "FAVORITO" },
-          { type: "Pick de Valor", title: "Alavés Gana con Portería a Cero", odds: "2.60", tag: "VALOR +EV" }
+          { name: "Menos de 2.5 Goles Totales", odds: 1.80, tag: "FAVORITO", ev: "+11.6%" },
+          { name: "Alavés Gana a Cero", odds: 2.60, tag: "VALOR +EV", ev: "+18.4%" }
         ]
       },
       "ipswich-forest": {
-        userPrompt: "Analiza el Ipswich Town vs Nottingham Forest de la Premier League. ¿Hay cuota de valor?",
-        title: "Análisis VIP: Ipswich Town vs Nottingham Forest",
-        radio: "Forest repliega en bloque bajo y genera peligro por velocidad. Ipswich sufre para romper líneas organizadas.",
+        query: "Radiografía para Ipswich Town vs Nottingham Forest de Premier League.",
+        matchName: "Ipswich Town vs Nottingham Forest",
+        league: "Premier League • Jornada 8",
+        date: "Hoy • 14:00 CDT • Portman Road",
         home: "Ipswich Town",
         homeBadge: badgesCDN["Ipswich Town"],
         away: "Nottingham Forest",
         awayBadge: badgesCDN["Nottingham Forest"],
-        homeForm: ["P", "E", "P", "E", "P"],
-        awayForm: ["G", "E", "P", "G", "E"],
-        market: {
-          homeName: "Local - Ipswich Town",
-          homeProb: "35.0%",
-          homeModel: "31.0%",
-          homeDiff: "-4.0%",
-          homeOdds: "2.85",
-          homeVal: "-11.4%",
-          drawName: "Empate",
-          drawProb: "30.5%",
-          drawModel: "32.0%",
-          drawDiff: "+1.5%",
-          drawOdds: "3.28",
-          drawVal: "+4.9%",
-          awayName: "Visitante - Nottingham Forest",
-          awayProb: "34.5%",
-          awayModel: "37.0%",
-          awayDiff: "+2.5%",
-          awayOdds: "2.90",
-          awayVal: "+7.3%"
-        },
+        xgHome: "1.05",
+        xgAway: "1.32",
+        possessionHome: "51%",
+        possessionAway: "49%",
+        tacticalRead: "Nottingham Forest ejecuta repliegues ordenados y contraataques rápidos mediante extremos. Ipswich tiene dificultades estructurales para remontar marcadores adversos.",
+        marketProb: { home: "35.0%", draw: "30.5%", away: "34.5%" },
+        modelProb: { home: "31.0%", draw: "32.0%", away: "37.0%" },
         picks: [
-          { type: "Pick Principal", title: "Nottingham Forest o Empate (X2)", odds: "1.71", tag: "FAVORITO" },
-          { type: "Pick de Valor", title: "Ambos Marcan: NO", odds: "1.91", tag: "VALOR +EV" }
-        ]
-      },
-      "torino-monza": {
-        userPrompt: "¿Cuál es la recomendación del modelo para el Torino vs AC Monza de la Serie A?",
-        title: "Análisis VIP: Torino vs AC Monza",
-        radio: "Propuesta de fútbol táctico de bajo riesgo con marcas individuales. Torino sostiene números defensivos sobresalientes en su estadio.",
-        home: "Torino",
-        homeBadge: badgesCDN["Torino"],
-        away: "AC Monza",
-        awayBadge: badgesCDN["AC Monza"],
-        homeForm: ["G", "P", "E", "G", "P"],
-        awayForm: ["P", "E", "P", "P", "E"],
-        market: {
-          homeName: "Local - Torino",
-          homeProb: "52.0%",
-          homeModel: "58.0%",
-          homeDiff: "+6.0%",
-          homeOdds: "1.92",
-          homeVal: "+10.4%",
-          drawName: "Empate",
-          drawProb: "30.0%",
-          drawModel: "27.0%",
-          drawDiff: "-3.0%",
-          drawOdds: "3.30",
-          drawVal: "-4.2%",
-          awayName: "Visitante - AC Monza",
-          awayProb: "18.0%",
-          awayModel: "15.0%",
-          awayDiff: "-3.0%",
-          awayOdds: "4.40",
-          awayVal: "-16.0%"
-        },
-        picks: [
-          { type: "Pick Principal", title: "Torino Empate No Acción (DNB)", odds: "1.40", tag: "FAVORITO" },
-          { type: "Pick de Valor", title: "Menos de 2.0 Goles Asiático", odds: "2.10", tag: "VALOR +EV" }
-        ]
-      },
-      "brest-nice": {
-        userPrompt: "Dame los picks y el estudio táctico para el Stade Brestois vs OGC Niza.",
-        title: "Análisis VIP: Stade Brestois vs OGC Niza",
-        radio: "Duelo igualado donde Niza ejerce una presión posicional muy eficiente en bloque medio y el Brest acumula desgaste de rotación.",
-        home: "Stade Brestois",
-        homeBadge: badgesCDN["Stade Brestois"],
-        away: "OGC Niza",
-        awayBadge: badgesCDN["OGC Niza"],
-        homeForm: ["E", "P", "G", "E", "P"],
-        awayForm: ["G", "E", "G", "P", "E"],
-        market: {
-          homeName: "Local - Stade Brestois",
-          homeProb: "37.5%",
-          homeModel: "33.0%",
-          homeDiff: "-4.5%",
-          homeOdds: "2.65",
-          homeVal: "-5.0%",
-          drawName: "Empate",
-          drawProb: "31.0%",
-          drawModel: "33.0%",
-          drawDiff: "+2.0%",
-          drawOdds: "3.20",
-          drawVal: "+3.2%",
-          awayName: "Visitante - OGC Niza",
-          awayProb: "31.5%",
-          awayModel: "34.0%",
-          awayDiff: "+2.5%",
-          awayOdds: "2.75",
-          awayVal: "+8.9%"
-        },
-        picks: [
-          { type: "Pick Principal", title: "OGC Niza o Empate (X2)", odds: "1.69", tag: "FAVORITO" },
-          { type: "Pick de Valor", title: "Empate al Descanso", odds: "2.05", tag: "VALOR +EV" }
+          { name: "Nottingham Forest o Empate (X2)", odds: 1.71, tag: "FAVORITO", ev: "+7.3%" },
+          { name: "Ambos Marcan: NO", odds: 1.91, tag: "VALOR +EV", ev: "+12.0%" }
         ]
       },
       "necaxa-juarez": {
-        userPrompt: "Muéstrame la radiografía y los mejores pronósticos para Necaxa vs Juárez de la Liga MX hoy.",
-        title: "Análisis VIP: Club Necaxa vs FC Juárez",
-        radio: "Duelo directo en la Liga MX. Necaxa hace valer la altura y la localía frente a una zaga de Juárez que suele desordenarse en los segundos tiempos.",
+        query: "Dame los picks oficiales para el Club Necaxa vs FC Juárez de la Liga MX.",
+        matchName: "Club Necaxa vs FC Juárez",
+        league: "Liga MX • Apertura J14",
+        date: "Hoy • 20:00 CDT • Estadio Victoria",
         home: "Club Necaxa",
         homeBadge: badgesCDN["Club Necaxa"],
         away: "FC Juárez",
         awayBadge: badgesCDN["FC Juárez"],
-        homeForm: ["P", "G", "E", "P", "G"],
-        awayForm: ["P", "P", "P", "G", "P"],
-        market: {
-          homeName: "Local - Club Necaxa",
-          homeProb: "49.5%",
-          homeModel: "56.0%",
-          homeDiff: "+6.5%",
-          homeOdds: "2.02",
-          homeVal: "+13.1%",
-          drawName: "Empate",
-          drawProb: "27.5%",
-          drawModel: "25.5%",
-          drawDiff: "-2.0%",
-          drawOdds: "3.60",
-          drawVal: "-7.3%",
-          awayName: "Visitante - FC Juárez",
-          awayProb: "23.0%",
-          awayModel: "18.5%",
-          awayDiff: "-4.5%",
-          awayOdds: "4.35",
-          awayVal: "-19.5%"
-        },
+        xgHome: "1.65",
+        xgAway: "1.15",
+        possessionHome: "55%",
+        possessionAway: "45%",
+        tacticalRead: "Necaxa sostiene números sólidos como local frente a la zaga más vulnerada en condición de visita del torneo. Pronóstico favorable para el local sin descartar réplica en el marcador.",
+        marketProb: { home: "49.5%", draw: "27.5%", away: "23.0%" },
+        modelProb: { home: "56.0%", draw: "25.5%", away: "18.5%" },
         picks: [
-          { type: "Pick Principal", title: "Necaxa DNB", odds: "1.65", tag: "FAVORITO" },
-          { type: "Pick de Valor", title: "Ambos Marcan: Sí", odds: "1.83", tag: "VALOR +EV" }
+          { name: "Necaxa Empate No Acción (DNB)", odds: 1.65, tag: "FAVORITO", ev: "+13.1%" },
+          { name: "Ambos Equipos Anotan (Sí)", odds: 1.83, tag: "VALOR +EV", ev: "+10.5%" }
         ]
       }
     };
 
-    function toggleAccordion(id) {
-      const el = document.getElementById(id);
-      if (el) el.classList.toggle('hidden');
+    // Bet slip current state
+    let activeSlip = [
+      { id: "s1", match: "Stuttgart vs Gladbach", pick: "Stuttgart ML + Over 1.5", odds: 1.61 },
+      { id: "s2", match: "Ipswich vs Forest", pick: "Nottingham Forest X2", odds: 1.71 }
+    ];
+
+    function renderSlip() {
+      const container = document.getElementById('slip-items');
+      container.innerHTML = "";
+      document.getElementById('slip-count').innerText = activeSlip.length;
+
+      let totalOdds = 1.0;
+      activeSlip.forEach((item, index) => {
+        totalOdds *= item.odds;
+        const div = document.createElement('div');
+        div.className = "p-2.5 rounded-lg bg-innerbg border border-bordercolor flex justify-between items-start";
+        div.innerHTML = `
+          <div>
+            <div class="text-[10px] text-slate-400 font-mono">${item.match}</div>
+            <div class="text-[11px] font-bold text-white mt-0.5">${item.pick}</div>
+            <span class="text-[10px] text-proaccent font-mono font-bold">${item.odds.toFixed(2)}</span>
+          </div>
+          <button onclick="removeSlipItem(${index})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
+        `;
+        container.appendChild(div);
+      });
+
+      const finalOdds = activeSlip.length > 0 ? totalOdds.toFixed(2) : "0.00";
+      document.getElementById('slip-total-odds').innerText = finalOdds;
+      calculateSlipPayout();
     }
 
-    function renderFormDots(formArray) {
-      return formArray.map(res => {
-        if (res === 'G') return `<span class="w-3 h-3 rounded-full bg-emerald-500 inline-block shadow-sm shadow-emerald-500/50"></span>`;
-        if (res === 'E') return `<span class="w-3 h-3 rounded-full bg-amber-500 inline-block shadow-sm shadow-amber-500/50"></span>`;
-        return `<span class="w-3 h-3 rounded-full bg-rose-500 inline-block shadow-sm shadow-rose-500/50"></span>`;
-      }).join(' ');
+    function removeSlipItem(index) {
+      activeSlip.splice(index, 1);
+      renderSlip();
     }
 
-    // Interactive prompt function: simulates typing the question, thinking indicator, and answering
-    function triggerInteractivePrompt(matchKey, customText = null) {
+    function addPickToSlip(matchName, pickName, odds) {
+      activeSlip.push({ id: "s" + Date.now(), match: matchName, pick: pickName, odds: parseFloat(odds) });
+      renderSlip();
+    }
+
+    function calculateSlipPayout() {
+      const stake = parseFloat(document.getElementById('slip-stake-input').value) || 0;
+      const totalOdds = parseFloat(document.getElementById('slip-total-odds').innerText) || 0;
+      const payout = stake * totalOdds - stake;
+      document.getElementById('slip-payout').innerText = (payout >= 0 ? `+${payout.toFixed(2)}u` : "0.00u");
+    }
+
+    function triggerTacticalPrompt(matchKey, customPrompt = null) {
       if (isTyping) return;
-      const data = matchesDatabase[matchKey];
+      const data = tacticalDB[matchKey];
       if (!data) return;
 
       isTyping = true;
-      const textToType = customText || data.userPrompt;
-      const stream = document.getElementById('chat-stream');
+      const textToType = customPrompt || data.query;
+      const stream = document.getElementById('tactical-stream');
       stream.innerHTML = "";
 
-      // 1. Container for user bubble with typewriter effect
-      const userBubbleContainer = document.createElement('div');
-      userBubbleContainer.className = "flex justify-end";
-      userBubbleContainer.innerHTML = `
-        <div class="bg-blue-600 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-2xl rounded-tr-sm shadow-md max-w-lg">
-          <span id="typewriter-target" class="cursor-blink"></span>
+      // Typewriter bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = "flex justify-end";
+      userBubble.innerHTML = `
+        <div class="bg-innerbg border border-bordercolor text-slate-200 text-xs font-medium px-3.5 py-2 rounded-lg max-w-lg">
+          <span id="target-type" class="cursor-blink"></span>
         </div>
       `;
-      stream.appendChild(userBubbleContainer);
+      stream.appendChild(userBubble);
 
-      let charIndex = 0;
-      const typewriterTarget = document.getElementById('typewriter-target');
-
-      const interval = setInterval(() => {
-        if (charIndex < textToType.length) {
-          typewriterTarget.textContent += textToType.charAt(charIndex);
-          charIndex++;
+      let idx = 0;
+      const target = document.getElementById('target-type');
+      const timer = setInterval(() => {
+        if (idx < textToType.length) {
+          target.textContent += textToType.charAt(idx);
+          idx++;
           stream.scrollTop = stream.scrollHeight;
         } else {
-          clearInterval(interval);
-          typewriterTarget.classList.remove('cursor-blink');
+          clearInterval(timer);
+          target.classList.remove('cursor-blink');
 
-          // 2. Add Thinking / Loading Indicator
-          const loadingContainer = document.createElement('div');
-          loadingContainer.id = "ai-loading-box";
-          loadingContainer.className = "flex items-center gap-2 text-xs font-mono text-cyan-400 bg-[#0f172a] border border-white/5 px-4 py-3 rounded-2xl max-w-xs animate-pulse";
-          loadingContainer.innerHTML = `
-            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-            <span>Gemini AI analizando tendencias y cuotas...</span>
-          `;
-          stream.appendChild(loadingContainer);
-          stream.scrollTop = stream.scrollHeight;
+          // Loading pulse
+          const loader = document.createElement('div');
+          loader.id = "feed-loader";
+          loader.className = "text-[11px] font-mono text-proaccent flex items-center gap-2 p-2";
+          loader.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-proaccent animate-ping"></span> Procesando datos SofaTactics...`;
+          stream.appendChild(loader);
 
-          // 3. Render AI Response Card after short pause
           setTimeout(() => {
-            const loader = document.getElementById('ai-loading-box');
-            if (loader) loader.remove();
-
-            renderAiResponseCard(data);
+            const l = document.getElementById('feed-loader');
+            if (l) l.remove();
+            renderTacticalReport(data);
             isTyping = false;
-          }, 650);
+          }, 450);
         }
-      }, 16);
+      }, 14);
     }
 
-    function renderAiResponseCard(data) {
-      const stream = document.getElementById('chat-stream');
-      const responseCard = document.createElement('div');
-      responseCard.className = "bg-[#101828] border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl transition-all duration-300";
+    function renderTacticalReport(data) {
+      const stream = document.getElementById('tactical-stream');
+      const card = document.createElement('div');
+      card.className = "bg-innerbg border border-bordercolor rounded-xl p-4 space-y-4 text-xs";
 
-      responseCard.innerHTML = `
-        <!-- Header Título con Escudos Oficiales -->
-        <div class="flex items-center justify-between border-b border-white/5 pb-3">
+      card.innerHTML = `
+        <!-- Match Header -->
+        <div class="flex items-center justify-between border-b border-bordercolor pb-3">
+          <div>
+            <span class="text-[10px] font-mono text-slate-400 block">${data.league}</span>
+            <h2 class="text-sm font-bold text-white mt-0.5">${data.matchName}</h2>
+          </div>
+          <span class="text-[10px] font-mono text-slate-400">${data.date}</span>
+        </div>
+
+        <!-- Metric Matchup Badges -->
+        <div class="grid grid-cols-2 gap-3 bg-basebg/60 p-3 rounded-lg border border-bordercolor">
           <div class="flex items-center gap-2.5">
-            <span class="text-sm">⚡</span>
-            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">${data.title}</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <img src="${data.homeBadge}" class="w-6 h-6 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
-            <span class="text-[10px] font-mono text-slate-500">vs</span>
-            <img src="${data.awayBadge}" class="w-6 h-6 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
-          </div>
-        </div>
-
-        <!-- Radiografía del Partido -->
-        <div class="text-xs text-slate-300 leading-relaxed bg-[#0b1120] p-3.5 rounded-xl border border-white/5">
-          <strong class="text-cyan-400 block font-mono text-[11px] uppercase mb-1">Radiografía del Partido:</strong>
-          ${data.radio}
-        </div>
-
-        <!-- Forma Reciente con Escudos -->
-        <div class="bg-[#0b1120] p-3.5 rounded-xl border border-white/5 space-y-2">
-          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Forma Reciente</div>
-          <div class="flex items-center justify-between text-xs py-1">
-            <div class="flex items-center gap-2">
-              <img src="${data.homeBadge}" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
-              <span class="font-medium text-slate-200">${data.home}</span>
-            </div>
-            <div class="flex items-center gap-1.5">${renderFormDots(data.homeForm)}</div>
-          </div>
-          <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
-            <div class="flex items-center gap-2">
-              <img src="${data.awayBadge}" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
-              <span class="font-medium text-slate-200">${data.away}</span>
-            </div>
-            <div class="flex items-center gap-1.5">${renderFormDots(data.awayForm)}</div>
-          </div>
-        </div>
-
-        <!-- Análisis de Valores -->
-        <div class="bg-[#0b1120] p-3.5 rounded-xl border border-white/5 space-y-3 font-mono">
-          <div class="flex items-center justify-between border-b border-white/5 pb-2">
-            <span class="text-[10px] font-bold uppercase text-slate-400">Análisis de Valores</span>
-            <span class="text-[10px] text-slate-500">Resultado del Partido</span>
-          </div>
-
-          <!-- Home -->
-          <div class="flex items-center justify-between text-xs py-1">
+            <img src="${data.homeBadge}" class="w-7 h-7 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
             <div>
-              <div class="text-white font-medium">${data.market.homeName}</div>
-              <div class="text-[10px] text-slate-400">Mercado: ${data.market.homeProb} · Modelo: ${data.market.homeModel} (${data.market.homeDiff})</div>
-            </div>
-            <div class="text-right">
-              <div class="text-white font-bold">${data.market.homeOdds}</div>
-              <div class="text-[10px] text-rose-400 font-bold">${data.market.homeVal}</div>
+              <div class="font-bold text-white text-[11px] truncate">${data.home}</div>
+              <div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-progreen">${data.xgHome}</strong> · Pos: ${data.possessionHome}</div>
             </div>
           </div>
-
-          <!-- Draw -->
-          <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
+          <div class="flex items-center justify-end gap-2.5 text-right">
             <div>
-              <div class="text-slate-300 font-medium">${data.market.drawName}</div>
-              <div class="text-[10px] text-slate-400">Mercado: ${data.market.drawProb} · Modelo: ${data.market.drawModel} (${data.market.drawDiff})</div>
+              <div class="font-bold text-white text-[11px] truncate">${data.away}</div>
+              <div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-slate-300">${data.xgAway}</strong> · Pos: ${data.possessionAway}</div>
             </div>
-            <div class="text-right">
-              <div class="text-slate-300 font-bold">${data.market.drawOdds}</div>
-              <div class="text-[10px] text-emerald-400 font-bold">${data.market.drawVal}</div>
-            </div>
-          </div>
-
-          <!-- Away -->
-          <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
-            <div>
-              <div class="text-slate-300 font-medium">${data.market.awayName}</div>
-              <div class="text-[10px] text-slate-400">Mercado: ${data.market.awayProb} · Modelo: ${data.market.awayModel} (${data.market.awayDiff})</div>
-            </div>
-            <div class="text-right">
-              <div class="text-slate-300 font-bold">${data.market.awayOdds}</div>
-              <div class="text-[10px] text-rose-400 font-bold">${data.market.awayVal}</div>
-            </div>
+            <img src="${data.awayBadge}" class="w-7 h-7 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
           </div>
         </div>
 
-        <!-- Pronósticos Destacados -->
+        <!-- Tactical Reading -->
+        <div class="text-slate-300 leading-relaxed bg-[#121620] p-3 rounded-lg border border-bordercolor">
+          <span class="font-mono text-proaccent text-[10px] uppercase font-bold block mb-1">Diagnóstico Táctico:</span>
+          ${data.tacticalRead}
+        </div>
+
+        <!-- Probabilities Bar -->
+        <div class="space-y-1.5 font-mono text-[11px]">
+          <div class="flex justify-between text-slate-400 text-[10px]">
+            <span>1: ${data.modelProb.home}</span>
+            <span>X: ${data.modelProb.draw}</span>
+            <span>2: ${data.modelProb.away}</span>
+          </div>
+          <div class="w-full h-2 bg-basebg rounded-full overflow-hidden flex">
+            <div style="width: ${data.modelProb.home}" class="bg-progreen"></div>
+            <div style="width: ${data.modelProb.draw}" class="bg-slate-500"></div>
+            <div style="width: ${data.modelProb.away}" class="bg-rose-500"></div>
+          </div>
+        </div>
+
+        <!-- Picks Selection -->
         <div class="space-y-2 pt-1">
-          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Pronósticos Destacados</div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Picks Recomendados (+EV)</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             ${data.picks.map(p => `
-              <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 flex flex-col justify-between">
-                <div class="flex justify-between items-center text-[9px] font-mono mb-1">
-                  <span class="text-slate-400">${p.type}</span>
-                  <span class="text-cyan-400 font-bold">${p.tag}</span>
+              <div class="p-2.5 rounded-lg bg-basebg border border-bordercolor flex items-center justify-between">
+                <div>
+                  <div class="text-[9px] font-mono text-proaccent font-bold">${p.tag} · EV: ${p.ev}</div>
+                  <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
+                  <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${p.odds}</span></div>
                 </div>
-                <div class="text-xs font-bold text-white mb-2">${p.title}</div>
-                <div class="text-[11px] font-mono text-emerald-400 font-bold">Cuota: ${p.odds}</div>
+                <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-problue hover:bg-blue-500 text-white font-mono text-[10px] font-bold transition-all">
+                  + Boleto
+                </button>
               </div>
             `).join('')}
           </div>
         </div>
       `;
 
-      stream.appendChild(responseCard);
+      stream.appendChild(card);
       stream.scrollTop = stream.scrollHeight;
     }
 
-    function handleChatSubmit(e) {
+    function handleUserSearch(e) {
       e.preventDefault();
-      const input = document.getElementById('chat-user-input');
-      const val = input.value.trim();
+      const val = document.getElementById('tactical-input').value.trim().toLowerCase();
       if (!val) return;
 
-      const lower = val.toLowerCase();
-      let matchKey = 'stuttgart-gladbach';
+      let key = 'stuttgart-gladbach';
+      if (val.includes('alaves') || val.includes('malaga')) key = 'alaves-malaga';
+      else if (val.includes('ipswich') || val.includes('forest')) key = 'ipswich-forest';
+      else if (val.includes('necaxa') || val.includes('juarez')) key = 'necaxa-juarez';
 
-      if (lower.includes('alaves') || lower.includes('malaga')) matchKey = 'alaves-malaga';
-      else if (lower.includes('ipswich') || lower.includes('forest')) matchKey = 'ipswich-forest';
-      else if (lower.includes('torino') || lower.includes('monza')) matchKey = 'torino-monza';
-      else if (lower.includes('brest') || lower.includes('nice') || lower.includes('niza')) matchKey = 'brest-nice';
-      else if (lower.includes('necaxa') || lower.includes('juarez')) matchKey = 'necaxa-juarez';
+      triggerTacticalPrompt(key, document.getElementById('tactical-input').value.trim());
+      document.getElementById('tactical-input').value = "";
+    }
 
-      triggerInteractivePrompt(matchKey, val);
-      input.value = "";
+    function publishSlip() {
+      if (activeSlip.length === 0) {
+        alert("El cupón está vacío. Agrega selecciones desde el panel central.");
+        return;
+      }
+      alert("Jugada confirmada y registrada en el sistema.");
     }
 
     function toggleAdminPrompt() {
-      alert("Configuración: Conexión con Supabase y dominio activo.");
+      alert("Modo Admin: Gestión de cuotas y resultados vinculados.");
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      // Auto-inicia la primera interacción simulada al cargar la web
-      triggerInteractivePrompt('stuttgart-gladbach');
+      renderSlip();
+      triggerTacticalPrompt('stuttgart-gladbach');
     });
   </script>
 </body>
