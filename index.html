@@ -1,3 +1,4 @@
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -55,6 +56,14 @@
       object-fit: contain;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
     }
+    .cursor-blink::after {
+      content: '|';
+      animation: blink 1s step-start infinite;
+      color: #00d2ff;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
@@ -87,7 +96,7 @@
       <div class="bg-[#0b1120] border border-white/5 rounded-2xl p-4 flex flex-col h-[520px]">
         <div class="flex items-center justify-between pb-3 border-b border-white/5">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
             <h3 class="text-xs font-mono font-bold tracking-wider text-slate-300 uppercase">Partidos Disponibles</h3>
           </div>
           <span class="text-[10px] text-slate-500 font-mono">Hoy</span>
@@ -103,7 +112,7 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="bundesliga-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="selectMatch('stuttgart-gladbach')" class="w-full text-left py-2 px-2.5 rounded-lg bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 flex items-center justify-between hover:bg-cyan-900/50 transition-all font-mono text-[11px]">
+              <button onclick="triggerInteractivePrompt('stuttgart-gladbach')" class="w-full text-left py-2 px-2.5 rounded-lg bg-cyan-950/40 text-cyan-300 border border-cyan-500/30 flex items-center justify-between hover:bg-cyan-900/50 transition-all font-mono text-[11px]">
                 <div class="flex items-center gap-2 truncate">
                   <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'STU')">
                   <span class="truncate">Stuttgart vs Gladbach</span>
@@ -120,7 +129,7 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="laliga-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="selectMatch('alaves-malaga')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+              <button onclick="triggerInteractivePrompt('alaves-malaga')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
                 <div class="flex items-center gap-2 truncate">
                   <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'ALA')">
                   <span class="truncate">Alavés vs Málaga</span>
@@ -137,7 +146,7 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="premier-matches" class="px-3 pb-2 pt-1 space-y-1">
-              <button onclick="selectMatch('ipswich-forest')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+              <button onclick="triggerInteractivePrompt('ipswich-forest')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
                 <div class="flex items-center gap-2 truncate">
                   <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'IPS')">
                   <span class="truncate">Ipswich vs Forest</span>
@@ -154,7 +163,7 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="seriea-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="selectMatch('torino-monza')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+              <button onclick="triggerInteractivePrompt('torino-monza')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
                 <div class="flex items-center gap-2 truncate">
                   <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/118.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'TOR')">
                   <span class="truncate">Torino vs Monza</span>
@@ -171,7 +180,7 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="ligue1-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="selectMatch('brest-nice')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+              <button onclick="triggerInteractivePrompt('brest-nice')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
                 <div class="flex items-center gap-2 truncate">
                   <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/282.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'BRE')">
                   <span class="truncate">Brest vs Niza</span>
@@ -188,7 +197,7 @@
               <span class="text-slate-500 text-[10px]">▾</span>
             </button>
             <div id="ligamx-matches" class="px-3 pb-2 pt-1 space-y-1 hidden">
-              <button onclick="selectMatch('necaxa-juarez')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
+              <button onclick="triggerInteractivePrompt('necaxa-juarez')" class="w-full text-left py-2 px-2.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white flex items-center justify-between transition-all font-mono text-[11px]">
                 <div class="flex items-center gap-2 truncate">
                   <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'NEC')">
                   <span class="truncate">Necaxa vs Juárez</span>
@@ -226,8 +235,8 @@
     <section class="lg:col-span-8 xl:col-span-9 flex flex-col bg-[#0b1120] border border-white/5 rounded-2xl overflow-hidden h-[700px]">
       
       <!-- Chat Conversation Canvas Target -->
-      <div id="chat-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-6 space-y-4">
-        <!-- Rendered dynamically by JavaScript -->
+      <div id="chat-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-6 space-y-5">
+        <!-- Rendered dynamically with typewriter effect by JavaScript -->
       </div>
 
       <!-- Chat Bottom Input Bar -->
@@ -236,7 +245,7 @@
           <input 
             type="text" 
             id="chat-user-input" 
-            placeholder="Ej: Pronóstico para el próximo partido de Barcelona o Stuttgart..." 
+            placeholder="Pregúntame: ¿Cuál es el pronóstico de Stuttgart vs Gladbach o Alavés?..." 
             class="w-full bg-[#11192e] text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-xl pl-4 pr-12 py-3.5 border border-white/10 focus:outline-none focus:border-cyan-500 transition-all font-sans"
           >
           <button type="submit" class="absolute right-2.5 w-8 h-8 rounded-lg bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center transition-all">
@@ -339,7 +348,8 @@
 
   <!-- SCRIPT LOGIC -->
   <script>
-    // Robust Badge Direct CDN map with SVG fallback
+    let isTyping = false;
+
     const badgesCDN = {
       "VfB Stuttgart": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=100&h=100",
       "Borussia Mönchengladbach": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=100&h=100",
@@ -362,7 +372,7 @@
 
     const matchesDatabase = {
       "stuttgart-gladbach": {
-        query: "Pronóstico VfB Stuttgart vs Borussia Mönchengladbach",
+        userPrompt: "¿Podrías darme el análisis táctico, radiografía y picks de valor para el partido entre VfB Stuttgart y Borussia Mönchengladbach de hoy?",
         title: "Análisis VIP: VfB Stuttgart vs Borussia Mönchengladbach",
         radio: "El Stuttgart consolida una estructura de ataque consistente y volumen de disparos superior en casa. El Gladbach muestra fragilidad defensiva en transición al jugar de visita. El modelo matemático detecta un desbalance en las cuotas que sugiere una lectura más optimista para el local.",
         home: "VfB Stuttgart",
@@ -398,7 +408,7 @@
         ]
       },
       "alaves-malaga": {
-        query: "Pronóstico Deportivo Alavés vs Málaga CF",
+        userPrompt: "¿Qué pronóstico y probabilidades de goles recomiendas para el Deportivo Alavés vs Málaga CF?",
         title: "Análisis VIP: Deportivo Alavés vs Málaga CF",
         radio: "Duelo caracterizado por la intensidad física en zonas intermedias y escasas transiciones limpias. El Alavés en Mendizorroza concede muy poco, forzando partidos de marcadores estrechos.",
         home: "Deportivo Alavés",
@@ -433,7 +443,7 @@
         ]
       },
       "ipswich-forest": {
-        query: "Pronóstico Ipswich Town vs Nottingham Forest",
+        userPrompt: "Analiza el Ipswich Town vs Nottingham Forest de la Premier League. ¿Hay cuota de valor?",
         title: "Análisis VIP: Ipswich Town vs Nottingham Forest",
         radio: "Forest repliega en bloque bajo y genera peligro por velocidad. Ipswich sufre para romper líneas organizadas.",
         home: "Ipswich Town",
@@ -468,7 +478,7 @@
         ]
       },
       "torino-monza": {
-        query: "Pronóstico Torino vs AC Monza",
+        userPrompt: "¿Cuál es la recomendación del modelo para el Torino vs AC Monza de la Serie A?",
         title: "Análisis VIP: Torino vs AC Monza",
         radio: "Propuesta de fútbol táctico de bajo riesgo con marcas individuales. Torino sostiene números defensivos sobresalientes en su estadio.",
         home: "Torino",
@@ -503,7 +513,7 @@
         ]
       },
       "brest-nice": {
-        query: "Pronóstico Stade Brestois vs OGC Niza",
+        userPrompt: "Dame los picks y el estudio táctico para el Stade Brestois vs OGC Niza.",
         title: "Análisis VIP: Stade Brestois vs OGC Niza",
         radio: "Duelo igualado donde Niza ejerce una presión posicional muy eficiente en bloque medio y el Brest acumula desgaste de rotación.",
         home: "Stade Brestois",
@@ -538,7 +548,7 @@
         ]
       },
       "necaxa-juarez": {
-        query: "Pronóstico Club Necaxa vs FC Juárez",
+        userPrompt: "Muéstrame la radiografía y los mejores pronósticos para Necaxa vs Juárez de la Liga MX hoy.",
         title: "Análisis VIP: Club Necaxa vs FC Juárez",
         radio: "Duelo directo en la Liga MX. Necaxa hace valer la altura y la localía frente a una zaga de Juárez que suele desordenarse en los segundos tiempos.",
         home: "Club Necaxa",
@@ -587,154 +597,198 @@
       }).join(' ');
     }
 
-    function selectMatch(matchKey) {
+    // Interactive prompt function: simulates typing the question, thinking indicator, and answering
+    function triggerInteractivePrompt(matchKey, customText = null) {
+      if (isTyping) return;
       const data = matchesDatabase[matchKey];
       if (!data) return;
 
+      isTyping = true;
+      const textToType = customText || data.userPrompt;
       const stream = document.getElementById('chat-stream');
-      stream.innerHTML = `
-        <!-- USER PROMPT BUBBLE -->
-        <div class="flex justify-end">
-          <div class="bg-blue-600 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-2xl rounded-tr-sm shadow-md max-w-lg">
-            ${data.query}
-          </div>
-        </div>
+      stream.innerHTML = "";
 
-        <!-- AI RESPONSE CONTAINER -->
-        <div class="bg-[#101828] border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl">
-          
-          <!-- Header Título con Escudos Oficiales -->
-          <div class="flex items-center justify-between border-b border-white/5 pb-3">
-            <div class="flex items-center gap-2.5">
-              <span class="text-sm">⚡</span>
-              <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">${data.title}</h3>
-            </div>
-            <div class="flex items-center gap-2">
-              <img src="${data.homeBadge}" class="w-6 h-6 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
-              <span class="text-[10px] font-mono text-slate-500">vs</span>
-              <img src="${data.awayBadge}" class="w-6 h-6 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
-            </div>
-          </div>
-
-          <!-- Radiografía del Partido -->
-          <div class="text-xs text-slate-300 leading-relaxed bg-[#0b1120] p-3.5 rounded-xl border border-white/5">
-            <strong class="text-cyan-400 block font-mono text-[11px] uppercase mb-1">Radiografía del Partido:</strong>
-            ${data.radio}
-          </div>
-
-          <!-- Forma Reciente con Escudos -->
-          <div class="bg-[#0b1120] p-3.5 rounded-xl border border-white/5 space-y-2">
-            <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Forma Reciente</div>
-            <div class="flex items-center justify-between text-xs py-1">
-              <div class="flex items-center gap-2">
-                <img src="${data.homeBadge}" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
-                <span class="font-medium text-slate-200">${data.home}</span>
-              </div>
-              <div class="flex items-center gap-1.5">${renderFormDots(data.homeForm)}</div>
-            </div>
-            <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
-              <div class="flex items-center gap-2">
-                <img src="${data.awayBadge}" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
-                <span class="font-medium text-slate-200">${data.away}</span>
-              </div>
-              <div class="flex items-center gap-1.5">${renderFormDots(data.awayForm)}</div>
-            </div>
-          </div>
-
-          <!-- Análisis de Valores -->
-          <div class="bg-[#0b1120] p-3.5 rounded-xl border border-white/5 space-y-3 font-mono">
-            <div class="flex items-center justify-between border-b border-white/5 pb-2">
-              <span class="text-[10px] font-bold uppercase text-slate-400">Análisis de Valores</span>
-              <span class="text-[10px] text-slate-500">Resultado del Partido</span>
-            </div>
-
-            <!-- Home -->
-            <div class="flex items-center justify-between text-xs py-1">
-              <div>
-                <div class="text-white font-medium">${data.market.homeName}</div>
-                <div class="text-[10px] text-slate-400">Mercado: ${data.market.homeProb} · Modelo: ${data.market.homeModel} (${data.market.homeDiff})</div>
-              </div>
-              <div class="text-right">
-                <div class="text-white font-bold">${data.market.homeOdds}</div>
-                <div class="text-[10px] text-rose-400 font-bold">${data.market.homeVal}</div>
-              </div>
-            </div>
-
-            <!-- Draw -->
-            <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
-              <div>
-                <div class="text-slate-300 font-medium">${data.market.drawName}</div>
-                <div class="text-[10px] text-slate-400">Mercado: ${data.market.drawProb} · Modelo: ${data.market.drawModel} (${data.market.drawDiff})</div>
-              </div>
-              <div class="text-right">
-                <div class="text-slate-300 font-bold">${data.market.drawOdds}</div>
-                <div class="text-[10px] text-emerald-400 font-bold">${data.market.drawVal}</div>
-              </div>
-            </div>
-
-            <!-- Away -->
-            <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
-              <div>
-                <div class="text-slate-300 font-medium">${data.market.awayName}</div>
-                <div class="text-[10px] text-slate-400">Mercado: ${data.market.awayProb} · Modelo: ${data.market.awayModel} (${data.market.awayDiff})</div>
-              </div>
-              <div class="text-right">
-                <div class="text-slate-300 font-bold">${data.market.awayOdds}</div>
-                <div class="text-[10px] text-rose-400 font-bold">${data.market.awayVal}</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pronósticos Destacados -->
-          <div class="space-y-2 pt-1">
-            <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Pronósticos Destacados</div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-              ${data.picks.map(p => `
-                <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 flex flex-col justify-between">
-                  <div class="flex justify-between items-center text-[9px] font-mono mb-1">
-                    <span class="text-slate-400">${p.type}</span>
-                    <span class="text-cyan-400 font-bold">${p.tag}</span>
-                  </div>
-                  <div class="text-xs font-bold text-white mb-2">${p.title}</div>
-                  <div class="text-[11px] font-mono text-emerald-400 font-bold">Cuota: ${p.odds}</div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
+      // 1. Container for user bubble with typewriter effect
+      const userBubbleContainer = document.createElement('div');
+      userBubbleContainer.className = "flex justify-end";
+      userBubbleContainer.innerHTML = `
+        <div class="bg-blue-600 text-white text-xs sm:text-sm font-medium px-4 py-2.5 rounded-2xl rounded-tr-sm shadow-md max-w-lg">
+          <span id="typewriter-target" class="cursor-blink"></span>
         </div>
       `;
+      stream.appendChild(userBubbleContainer);
+
+      let charIndex = 0;
+      const typewriterTarget = document.getElementById('typewriter-target');
+
+      const interval = setInterval(() => {
+        if (charIndex < textToType.length) {
+          typewriterTarget.textContent += textToType.charAt(charIndex);
+          charIndex++;
+          stream.scrollTop = stream.scrollHeight;
+        } else {
+          clearInterval(interval);
+          typewriterTarget.classList.remove('cursor-blink');
+
+          // 2. Add Thinking / Loading Indicator
+          const loadingContainer = document.createElement('div');
+          loadingContainer.id = "ai-loading-box";
+          loadingContainer.className = "flex items-center gap-2 text-xs font-mono text-cyan-400 bg-[#0f172a] border border-white/5 px-4 py-3 rounded-2xl max-w-xs animate-pulse";
+          loadingContainer.innerHTML = `
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span>Gemini AI analizando tendencias y cuotas...</span>
+          `;
+          stream.appendChild(loadingContainer);
+          stream.scrollTop = stream.scrollHeight;
+
+          // 3. Render AI Response Card after short pause
+          setTimeout(() => {
+            const loader = document.getElementById('ai-loading-box');
+            if (loader) loader.remove();
+
+            renderAiResponseCard(data);
+            isTyping = false;
+          }, 650);
+        }
+      }, 16);
+    }
+
+    function renderAiResponseCard(data) {
+      const stream = document.getElementById('chat-stream');
+      const responseCard = document.createElement('div');
+      responseCard.className = "bg-[#101828] border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl transition-all duration-300";
+
+      responseCard.innerHTML = `
+        <!-- Header Título con Escudos Oficiales -->
+        <div class="flex items-center justify-between border-b border-white/5 pb-3">
+          <div class="flex items-center gap-2.5">
+            <span class="text-sm">⚡</span>
+            <h3 class="text-xs sm:text-sm font-bold text-white tracking-wide">${data.title}</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <img src="${data.homeBadge}" class="w-6 h-6 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
+            <span class="text-[10px] font-mono text-slate-500">vs</span>
+            <img src="${data.awayBadge}" class="w-6 h-6 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
+          </div>
+        </div>
+
+        <!-- Radiografía del Partido -->
+        <div class="text-xs text-slate-300 leading-relaxed bg-[#0b1120] p-3.5 rounded-xl border border-white/5">
+          <strong class="text-cyan-400 block font-mono text-[11px] uppercase mb-1">Radiografía del Partido:</strong>
+          ${data.radio}
+        </div>
+
+        <!-- Forma Reciente con Escudos -->
+        <div class="bg-[#0b1120] p-3.5 rounded-xl border border-white/5 space-y-2">
+          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Forma Reciente</div>
+          <div class="flex items-center justify-between text-xs py-1">
+            <div class="flex items-center gap-2">
+              <img src="${data.homeBadge}" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
+              <span class="font-medium text-slate-200">${data.home}</span>
+            </div>
+            <div class="flex items-center gap-1.5">${renderFormDots(data.homeForm)}</div>
+          </div>
+          <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
+            <div class="flex items-center gap-2">
+              <img src="${data.awayBadge}" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
+              <span class="font-medium text-slate-200">${data.away}</span>
+            </div>
+            <div class="flex items-center gap-1.5">${renderFormDots(data.awayForm)}</div>
+          </div>
+        </div>
+
+        <!-- Análisis de Valores -->
+        <div class="bg-[#0b1120] p-3.5 rounded-xl border border-white/5 space-y-3 font-mono">
+          <div class="flex items-center justify-between border-b border-white/5 pb-2">
+            <span class="text-[10px] font-bold uppercase text-slate-400">Análisis de Valores</span>
+            <span class="text-[10px] text-slate-500">Resultado del Partido</span>
+          </div>
+
+          <!-- Home -->
+          <div class="flex items-center justify-between text-xs py-1">
+            <div>
+              <div class="text-white font-medium">${data.market.homeName}</div>
+              <div class="text-[10px] text-slate-400">Mercado: ${data.market.homeProb} · Modelo: ${data.market.homeModel} (${data.market.homeDiff})</div>
+            </div>
+            <div class="text-right">
+              <div class="text-white font-bold">${data.market.homeOdds}</div>
+              <div class="text-[10px] text-rose-400 font-bold">${data.market.homeVal}</div>
+            </div>
+          </div>
+
+          <!-- Draw -->
+          <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
+            <div>
+              <div class="text-slate-300 font-medium">${data.market.drawName}</div>
+              <div class="text-[10px] text-slate-400">Mercado: ${data.market.drawProb} · Modelo: ${data.market.drawModel} (${data.market.drawDiff})</div>
+            </div>
+            <div class="text-right">
+              <div class="text-slate-300 font-bold">${data.market.drawOdds}</div>
+              <div class="text-[10px] text-emerald-400 font-bold">${data.market.drawVal}</div>
+            </div>
+          </div>
+
+          <!-- Away -->
+          <div class="flex items-center justify-between text-xs py-1 border-t border-white/5 pt-2">
+            <div>
+              <div class="text-slate-300 font-medium">${data.market.awayName}</div>
+              <div class="text-[10px] text-slate-400">Mercado: ${data.market.awayProb} · Modelo: ${data.market.awayModel} (${data.market.awayDiff})</div>
+            </div>
+            <div class="text-right">
+              <div class="text-slate-300 font-bold">${data.market.awayOdds}</div>
+              <div class="text-[10px] text-rose-400 font-bold">${data.market.awayVal}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pronósticos Destacados -->
+        <div class="space-y-2 pt-1">
+          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">Pronósticos Destacados</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            ${data.picks.map(p => `
+              <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 flex flex-col justify-between">
+                <div class="flex justify-between items-center text-[9px] font-mono mb-1">
+                  <span class="text-slate-400">${p.type}</span>
+                  <span class="text-cyan-400 font-bold">${p.tag}</span>
+                </div>
+                <div class="text-xs font-bold text-white mb-2">${p.title}</div>
+                <div class="text-[11px] font-mono text-emerald-400 font-bold">Cuota: ${p.odds}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      stream.appendChild(responseCard);
       stream.scrollTop = stream.scrollHeight;
     }
 
     function handleChatSubmit(e) {
       e.preventDefault();
       const input = document.getElementById('chat-user-input');
-      const val = input.value.trim().toLowerCase();
+      const val = input.value.trim();
       if (!val) return;
 
-      if (val.includes('alaves') || val.includes('malaga')) {
-        selectMatch('alaves-malaga');
-      } else if (val.includes('ipswich') || val.includes('forest')) {
-        selectMatch('ipswich-forest');
-      } else if (val.includes('torino') || val.includes('monza')) {
-        selectMatch('torino-monza');
-      } else if (val.includes('brest') || val.includes('nice') || val.includes('niza')) {
-        selectMatch('brest-nice');
-      } else if (val.includes('necaxa') || val.includes('juarez')) {
-        selectMatch('necaxa-juarez');
-      } else {
-        selectMatch('stuttgart-gladbach');
-      }
+      const lower = val.toLowerCase();
+      let matchKey = 'stuttgart-gladbach';
+
+      if (lower.includes('alaves') || lower.includes('malaga')) matchKey = 'alaves-malaga';
+      else if (lower.includes('ipswich') || lower.includes('forest')) matchKey = 'ipswich-forest';
+      else if (lower.includes('torino') || lower.includes('monza')) matchKey = 'torino-monza';
+      else if (lower.includes('brest') || lower.includes('nice') || lower.includes('niza')) matchKey = 'brest-nice';
+      else if (lower.includes('necaxa') || lower.includes('juarez')) matchKey = 'necaxa-juarez';
+
+      triggerInteractivePrompt(matchKey, val);
       input.value = "";
     }
 
     function toggleAdminPrompt() {
-      alert("Panel de Control: Para conectar tu dominio o actualizar pronósticos en directo, los datos están sincronizados en GitHub.");
+      alert("Configuración: Conexión con Supabase y dominio activo.");
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      selectMatch('stuttgart-gladbach');
+      // Auto-inicia la primera interacción simulada al cargar la web
+      triggerInteractivePrompt('stuttgart-gladbach');
     });
   </script>
 </body>
