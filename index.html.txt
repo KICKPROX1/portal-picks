@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP PRO PICKS | Pronósticos Deportivos de Fútbol & Análisis IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#07070b',
+            cardbg: 'rgba(17, 17, 24, 0.75)',
+            cardborder: 'rgba(139, 92, 246, 0.18)',
+            neonpurple: '#8b5cf6',
+            neonpink: '#ec4899',
+            emeraldwin: '#10b981',
+            lossred: '#ef4444',
+            accentgold: '#eab308'
+          },
+          fontFamily: {
+            sans: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #07070b;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+    .glass-card {
+      background: rgba(16, 16, 24, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(168, 85, 247, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.15);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #0d0d14;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #27273a;
+      border-radius: 9999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #8b5cf6;
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col font-sans selection:bg-purple-500 selection:text-white">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 w-full border-b border-purple-900/30 bg-[#07070b]/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 via-indigo-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-600/30">
+          <span class="text-lg font-black tracking-wider text-white">⚡</span>
+        </div>
+        <div>
+          <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-purple-300 via-white to-pink-400 bg-clip-text text-transparent">VIP PRO PICKS</span>
+          <span class="text-[10px] block font-mono text-purple-400 tracking-wider uppercase font-semibold">Fútbol & Análisis IA</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <a href="#picks-section" class="text-slate-300 hover:text-purple-400 transition-colors">Picks del Día</a>
+        <a href="#radar-ai" class="text-slate-300 hover:text-purple-400 flex items-center gap-1.5 transition-colors">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Radar VIP AI
+        </a>
+        <a href="#history-section" class="text-slate-300 hover:text-purple-400 transition-colors">Historial Auditado</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button id="admin-toggle-btn" onclick="toggleAdminMode()" class="text-xs font-mono font-semibold px-3 py-1.5 rounded-lg border border-purple-500/40 bg-purple-950/40 text-purple-300 hover:bg-purple-900/60 transition-all flex items-center gap-1.5">
+          <span id="admin-badge-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+          <span id="admin-btn-text">Modo Admin</span>
+        </button>
+        <button onclick="document.getElementById('radar-ai').scrollIntoView({behavior: 'smooth'})" class="text-xs font-bold px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-md shadow-purple-900/40 transition-all transform active:scale-95">
+          Analizar Partido
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LIVE METRICS AUDITED DASHBOARD -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 pb-2 w-full">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="glass-card rounded-2xl p-4 border border-purple-500/20">
+        <div class="text-[11px] font-mono uppercase text-slate-400 flex items-center justify-between">
+          <span>Unidades Netas</span>
+          <span class="text-emerald-400 font-bold">Auditado</span>
+        </div>
+        <div id="metric-units" class="text-2xl sm:text-3xl font-mono font-black text-emerald-400 mt-1">+14.85u</div>
+        <p class="text-[11px] text-slate-400 mt-0.5">Rentabilidad global</p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 border border-purple-500/20">
+        <div class="text-[11px] font-mono uppercase text-slate-400 flex items-center justify-between">
+          <span>Récord G - P - Pnd</span>
+          <span class="text-purple-400 font-bold">Activo</span>
+        </div>
+        <div id="metric-record" class="text-2xl sm:text-3xl font-mono font-black text-white mt-1">18 - 6 - 4</div>
+        <p class="text-[11px] text-slate-400 mt-0.5">Resultados cerrados</p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 border border-purple-500/20">
+        <div class="text-[11px] font-mono uppercase text-slate-400 flex items-center justify-between">
+          <span>Efectividad (Win Rate)</span>
+          <span class="text-purple-400 font-bold">%</span>
+        </div>
+        <div id="metric-winrate" class="text-2xl sm:text-3xl font-mono font-black text-purple-300 mt-1">75.0%</div>
+        <p class="text-[11px] text-slate-400 mt-0.5">Excluyendo pushes/pendientes</p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 border border-purple-500/20">
+        <div class="text-[11px] font-mono uppercase text-slate-400 flex items-center justify-between">
+          <span>Retorno de Inversión</span>
+          <span class="text-amber-400 font-bold">ROI</span>
+        </div>
+        <div id="metric-roi" class="text-2xl sm:text-3xl font-mono font-black text-amber-400 mt-1">+23.4%</div>
+        <p class="text-[11px] text-slate-400 mt-0.5">Sobre unidades invertidas</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RADAR VIP AI (ANÁLISIS TÁCTICO & VALOR) -->
+  <section id="radar-ai" class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full">
+    <div class="glass-card rounded-2xl p-5 sm:p-7 border border-purple-500/30 bg-gradient-to-b from-[#131322] to-[#0a0a14]">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-purple-900/30 pb-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl">👑</span>
+            <h2 class="text-lg sm:text-xl font-bold tracking-tight text-white">Radar VIP AI: Radiografía & Análisis de Valor</h2>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Comparativa estadística probabilística del modelo táctico contra las cuotas de las casas.</p>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <input id="ai-search-input" type="text" placeholder="Ej: Real Madrid vs Barcelona..." class="w-full sm:w-64 bg-black/50 border border-purple-500/30 rounded-xl px-3 py-2 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-purple-400">
+          <button onclick="runAiAnalysis()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-xl text-xs font-bold text-white transition-all shrink-0">
+            Analizar
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Selector Chips for Today's Matches -->
+      <div class="flex items-center gap-2 overflow-x-auto py-3 custom-scroll text-xs">
+        <span class="text-slate-400 text-[11px] uppercase font-mono font-bold shrink-0">Partidos de hoy:</span>
+        <button onclick="loadMatchReport('stuttgart-gladbach')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🇩🇪 Stuttgart vs Gladbach</button>
+        <button onclick="loadMatchReport('alaves-malaga')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🇪🇸 Alavés vs Málaga</button>
+        <button onclick="loadMatchReport('ipswich-forest')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Ipswich vs Forest</button>
+        <button onclick="loadMatchReport('necaxa-juarez')" class="px-3 py-1 rounded-lg bg-purple-900/30 hover:bg-purple-800/40 text-purple-200 border border-purple-500/20 shrink-0 font-medium transition-all">🇲🇽 Necaxa vs Juárez</button>
+      </div>
+
+      <!-- Match Container Render Target -->
+      <div id="ai-report-container" class="mt-4">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- PICKS DEL DÍA SECTION -->
+  <section id="picks-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-4 w-full">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+      <div>
+        <h2 class="text-xl font-black tracking-tight text-white flex items-center gap-2">
+          <span>⚽</span> Pronósticos & Jugadas de la Jornada
+        </h2>
+        <p class="text-xs text-slate-400 mt-0.5">Selección fundamentada de fútbol profesional en ligas globales.</p>
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto custom-scroll pb-1">
+        <button onclick="filterLeague('ALL')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-purple-600 text-white shadow-sm transition-all" data-league="ALL">Todas</button>
+        <button onclick="filterLeague('Bundesliga')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="Bundesliga">Bundesliga</button>
+        <button onclick="filterLeague('LaLiga')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="LaLiga">LaLiga</button>
+        <button onclick="filterLeague('Premier League')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="Premier League">Premier</button>
+        <button onclick="filterLeague('Liga MX')" class="league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all" data-league="Liga MX">Liga MX</button>
+      </div>
+    </div>
+
+    <!-- Active Picks Grid -->
+    <div id="picks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Injected by JavaScript -->
+    </div>
+  </section>
+
+  <!-- HISTORIAL AUDITADO TABLE -->
+  <section id="history-section" class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full">
+    <div class="glass-card rounded-2xl p-5 sm:p-6 border border-purple-500/20">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+        <div>
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>📋</span> Historial Público Auditado
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">Registro verificado de pronósticos anteriores.</p>
+        </div>
+        <div class="relative w-full sm:w-64">
+          <input id="history-search" oninput="renderHistoryTable()" type="text" placeholder="Filtrar por equipo o liga..." class="w-full bg-black/40 border border-purple-500/30 rounded-xl px-3 py-2 text-xs font-sans text-white placeholder-slate-500 focus:outline-none focus:border-purple-400">
+        </div>
+      </div>
+
+      <div class="overflow-x-auto custom-scroll">
+        <table class="w-full text-left text-xs font-sans">
+          <thead>
+            <tr class="border-b border-purple-900/30 text-slate-400 font-mono uppercase text-[10px] tracking-wider">
+              <th class="py-3 px-3">Fecha</th>
+              <th class="py-3 px-3">Evento & Liga</th>
+              <th class="py-3 px-3">Mercado / Selección</th>
+              <th class="py-3 px-3 text-center">Cuota</th>
+              <th class="py-3 px-3 text-center">Stake</th>
+              <th class="py-3 px-3 text-center">Estado</th>
+              <th class="py-3 px-3 text-right">Retorno</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body" class="divide-y divide-purple-900/20">
+            <!-- Injected by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER & LEGAL DISCLAIMER -->
+  <footer class="mt-auto border-t border-purple-900/30 bg-[#07070b]/90 py-8 px-4 text-center">
+    <div class="max-w-4xl mx-auto space-y-3">
+      <p class="text-xs font-mono text-purple-400 uppercase tracking-widest font-semibold">VIP PRO PICKS • Sports Intelligence</p>
+      <p class="text-[11px] text-slate-500 leading-relaxed max-w-2xl mx-auto">
+        <strong>Aviso Legal:</strong> Este portal proporciona exclusivamente análisis estadístico e información deportiva con fines de entretenimiento. No somos casa de apuestas ni captamos apuestas. El usuario asume total responsabilidad en la gestión de su bankroll. Juega con responsabilidad (18+).
+      </p>
+      <p class="text-[11px] text-slate-600 font-mono">© 2026 VIP PRO PICKS. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- ADMIN ADD PICK MODAL -->
+  <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-lg w-full p-6 border border-purple-500/40 relative max-h-[90vh] overflow-y-auto custom-scroll">
+      <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+        <span>✏️</span> Publicar Nuevo Pronóstico
+      </h3>
+
+      <form id="new-pick-form" onsubmit="submitNewPick(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Liga</label>
+            <input type="text" id="form-league" required placeholder="Ej: LaLiga" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Horario</label>
+            <input type="text" id="form-time" required placeholder="Ej: Hoy • 14:00 CDT" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Equipo Local</label>
+            <input type="text" id="form-home" required placeholder="Ej: Real Madrid" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label>
+            <input type="text" id="form-away" required placeholder="Ej: Barcelona" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Mercado</label>
+            <input type="text" id="form-market" required placeholder="Ej: Ambos Marcan" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Selección (Pick)</label>
+            <input type="text" id="form-selection" required placeholder="Ej: Sí (Ambos anotan)" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Cuota Americana</label>
+            <input type="text" id="form-odds-us" required placeholder="Ej: -125" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Cuota Decimal</label>
+            <input type="number" step="0.01" id="form-odds-dec" required placeholder="Ej: 1.80" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Stake (Unidades)</label>
+            <input type="number" step="0.5" id="form-stake" required value="2.0" class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-mono mb-1">Análisis / Justificación Táctica</label>
+          <textarea id="form-notes" rows="2" placeholder="Resumen de tendencias, bajas y justificación..." class="w-full bg-black/50 border border-purple-500/30 rounded-lg p-2 text-white"></textarea>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <input type="checkbox" id="form-vip" class="rounded border-purple-500 text-purple-600 focus:ring-purple-500">
+          <label for="form-vip" class="text-slate-300 font-medium">Marcar como contenido VIP exclusivo</label>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-2">
+          <button type="button" onclick="closeAdminModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 font-semibold">Cancelar</button>
+          <button type="submit" class="px-5 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg text-white font-bold">Publicar Pick</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- APPLICATION DATA & LOGIC -->
+  <script>
+    // State variables
+    let isAdminMode = false;
+    let activeLeagueFilter = 'ALL';
+
+    // Badge resolver database
+    const teamBadges = {
+      "Stuttgart": "https://upload.wikimedia.org/wikipedia/commons/e/eb/VfB_Stuttgart_1893_Logo.svg",
+      "VfB Stuttgart": "https://upload.wikimedia.org/wikipedia/commons/e/eb/VfB_Stuttgart_1893_Logo.svg",
+      "Gladbach": "https://upload.wikimedia.org/wikipedia/commons/8/81/Borussia_M%C3%B6nchengladbach_logo.svg",
+      "Borussia Mönchengladbach": "https://upload.wikimedia.org/wikipedia/commons/8/81/Borussia_M%C3%B6nchengladbach_logo.svg",
+      "Alavés": "https://upload.wikimedia.org/wikipedia/en/2/2e/Deportivo_Alaves_logo.svg",
+      "Deportivo Alavés": "https://upload.wikimedia.org/wikipedia/en/2/2e/Deportivo_Alaves_logo.svg",
+      "Málaga": "https://upload.wikimedia.org/wikipedia/en/6/60/Malaga_cf.svg",
+      "Málaga CF": "https://upload.wikimedia.org/wikipedia/en/6/60/Malaga_cf.svg",
+      "Ipswich": "https://upload.wikimedia.org/wikipedia/en/4/43/Ipswich_Town.svg",
+      "Ipswich Town": "https://upload.wikimedia.org/wikipedia/en/4/43/Ipswich_Town.svg",
+      "Nottingham Forest": "https://upload.wikimedia.org/wikipedia/en/e/e5/Nottingham_Forest_F.C._logo.svg",
+      "Necaxa": "https://upload.wikimedia.org/wikipedia/commons/7/75/Club_Necaxa_logo.svg",
+      "Club Necaxa": "https://upload.wikimedia.org/wikipedia/commons/7/75/Club_Necaxa_logo.svg",
+      "Juárez": "https://upload.wikimedia.org/wikipedia/en/9/91/FC_Juarez_logo.svg",
+      "FC Juárez": "https://upload.wikimedia.org/wikipedia/en/9/91/FC_Juarez_logo.svg",
+      "Torino": "https://upload.wikimedia.org/wikipedia/en/2/2e/Torino_FC_logo.svg",
+      "AC Monza": "https://upload.wikimedia.org/wikipedia/en/2/2e/AC_Monza_logo.svg",
+      "Atlante FC": "https://upload.wikimedia.org/wikipedia/en/6/67/Atlante_F.C._logo.svg",
+      "Atlético de San Luis": "https://upload.wikimedia.org/wikipedia/en/5/52/Atl%C3%A9tico_San_Luis_logo.svg"
+    };
+
+    function getTeamBadge(name) {
+      if (teamBadges[name]) return teamBadges[name];
+      const initials = name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+      return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%231a1a2e" stroke="%238b5cf6" stroke-width="2"/><text x="50%" y="54%" font-family="sans-serif" font-weight="bold" font-size="18" fill="%23a78bfa" text-anchor="middle" dominant-baseline="middle">${initials}</text></svg>`;
+    }
+
+    // Initial Live Matches
+    let picksData = [
+      {
+        id: "pick-1",
+        league: "Bundesliga",
+        homeTeam: "VfB Stuttgart",
+        awayTeam: "Borussia Mönchengladbach",
+        matchTime: "Hoy • 1:30 PM CDT",
+        market: "Moneyline + Goles",
+        selection: "Stuttgart a Ganar + Más de 1.5 Goles",
+        oddsUS: "-165",
+        oddsDec: 1.61,
+        stake: 3.0,
+        isVIP: false,
+        status: "pending",
+        tacticalNotes: "Stuttgart promedia 2.4 goles de local y mantiene dominio de posesión superior al 65%. El Gladbach concede espacios en transiciones defensivas fuera de casa."
+      },
+      {
+        id: "pick-2",
+        league: "LaLiga",
+        homeTeam: "Deportivo Alavés",
+        awayTeam: "Málaga CF",
+        matchTime: "Hoy • 2:00 PM CDT",
+        market: "Goles Totales",
+        selection: "Menos de 2.5 Goles (Under)",
+        oddsUS: "-125",
+        oddsDec: 1.80,
+        stake: 2.5,
+        isVIP: false,
+        status: "pending",
+        tacticalNotes: "Mendizorroza es una aduana de juego físico y ritmo cortado. El 80% de los últimos choques del Alavés culminaron con dos goles o menos."
+      },
+      {
+        id: "pick-3",
+        league: "Premier League",
+        homeTeam: "Ipswich Town",
+        awayTeam: "Nottingham Forest",
+        matchTime: "Hoy • 2:00 PM CDT",
+        market: "Doble Oportunidad",
+        selection: "Nottingham Forest o Empate (X2)",
+        oddsUS: "-140",
+        oddsDec: 1.71,
+        stake: 2.5,
+        isVIP: true,
+        status: "pending",
+        tacticalNotes: "Forest plantea bloques sólidos de visita con rápida salida directa. El Ipswich sufre para quebrar cerrojos defensivos."
+      },
+      {
+        id: "pick-4",
+        league: "Liga MX",
+        homeTeam: "Club Necaxa",
+        awayTeam: "FC Juárez",
+        matchTime: "Hoy • 8:00 PM CDT",
+        market: "Empate No Acción",
+        selection: "Necaxa (Draw No Bet)",
+        oddsUS: "-155",
+        oddsDec: 1.65,
+        stake: 3.0,
+        isVIP: false,
+        status: "pending",
+        tacticalNotes: "Necaxa se hace fuerte en el Estadio Victoria frente a un Juárez que encaja goles con facilidad en sus salidas."
+      }
+    ];
+
+    // Historical Audited Picks
+    let historicalData = [
+      { date: "22/10/2026", match: "SC Freiburg vs Bayern München", league: "Bundesliga", market: "Ambos Marcan", selection: "Sí (Ambos anotan)", oddsUS: "-220", oddsDec: 1.45, stake: 2.5, status: "win", returnUnits: 1.13 },
+      { date: "21/10/2026", match: "Real Madrid vs Borussia Dortmund", league: "Champions League", market: "Over Goles", selection: "Más de 2.5 Goles", oddsUS: "-180", oddsDec: 1.55, stake: 3.0, status: "win", returnUnits: 1.65 },
+      { date: "20/10/2026", match: "Arsenal vs Shakhtar Donetsk", league: "Champions League", market: "Hándicap", selection: "Arsenal -1.5", oddsUS: "-135", oddsDec: 1.74, stake: 2.0, status: "loss", returnUnits: -2.00 },
+      { date: "19/10/2026", match: "Barcelona vs Sevilla", league: "LaLiga", market: "Moneyline", selection: "Barcelona a Ganar", oddsUS: "-300", oddsDec: 1.33, stake: 3.5, status: "win", returnUnits: 1.16 },
+      { date: "18/10/2026", match: "Liverpool vs Chelsea", league: "Premier League", market: "Ambos Marcan", selection: "Sí (Ambos anotan)", oddsUS: "-160", oddsDec: 1.62, stake: 2.0, status: "win", returnUnits: 1.24 }
+    ];
+
+    // Detailed Match Reports Database for AI Radar
+    const reportsDB = {
+      "stuttgart-gladbach": {
+        title: "VfB Stuttgart vs Borussia Mönchengladbach",
+        home: "VfB Stuttgart",
+        away: "Borussia Mönchengladbach",
+        date: "Hoy · 1:30 PM CDT · Mercedes-Benz Arena",
+        radio: "El Stuttgart consolida una estructura de ataque posicional de élite con transiciones veloces por bandas. El Gladbach tiende a conceder volumen de disparos cuando no logra retener el balón en campo propio.",
+        homeForm: ["G", "G", "E", "P", "G"],
+        awayForm: ["P", "E", "G", "P", "E"],
+        market1x2: {
+          homeProb: 62.4, homeModel: 68.5, homeDiff: "+6.1", homeOdds: "1.46", homeVal: "+9.8%",
+          drawProb: 21.0, drawModel: 18.2, drawDiff: "-2.8", drawOdds: "4.75", drawVal: "-13.3%",
+          awayProb: 16.6, awayModel: 13.3, awayDiff: "-3.3", awayOdds: "6.00", awayVal: "-19.8%"
+        },
+        goals: { overProb: 78, overOdds: "1.32", overEV: "+4.5%", underProb: 22, underOdds: "3.40", underEV: "-12.0%" },
+        btts: { yesProb: 64.2, yesModel: 69.1, yesDiff: "+4.9", yesOdds: "1.52", yesVal: "+5.0%" },
+        favoritePick: { market: "Moneyline + Goles", pick: "Stuttgart a Ganar + Over 1.5 Goles", odds: "1.61 (-165)", conf: "82.5%", stake: "3.0u" },
+        valuePick: { market: "Hándicap Asiático", pick: "Stuttgart -1.0", odds: "1.87 (-115)", ev: "+14.2%", stake: "1.5u" },
+        bombPick: { market: "Resultado y BTTS", pick: "Stuttgart Gana y Ambos Marcan", odds: "2.85 (+185)", ev: "+32.0%", stake: "0.75u" }
+      },
+      "alaves-malaga": {
+        title: "Deportivo Alavés vs Málaga CF",
+        home: "Deportivo Alavés",
+        away: "Málaga CF",
+        date: "Hoy · 2:00 PM CDT · Estadio de Mendizorroza",
+        radio: "Duelo caracterizado por la intensidad física en zonas medias y baja frecuencia de ocasiones francas. El Alavés concede poco en casa, forzando partidos de marcadores estrechos.",
+        homeForm: ["E", "G", "P", "E", "G"],
+        awayForm: ["P", "P", "E", "G", "P"],
+        market1x2: {
+          homeProb: 53.0, homeModel: 59.2, homeDiff: "+6.2", homeOdds: "1.88", homeVal: "+11.7%",
+          drawProb: 28.5, drawModel: 26.3, drawDiff: "-2.2", drawOdds: "3.50", drawVal: "-7.7%",
+          awayProb: 18.5, awayModel: 14.5, awayDiff: "-4.0", awayOdds: "5.40", awayVal: "-21.6%"
+        },
+        goals: { overProb: 38, overOdds: "2.40", overEV: "-8.8%", underProb: 62, underOdds: "1.80", underEV: "+11.6%" },
+        btts: { yesProb: 44.0, yesModel: 41.5, yesDiff: "-2.5", yesOdds: "2.20", yesVal: "-5.7%" },
+        favoritePick: { market: "Goles Totales", pick: "Menos de 2.5 Goles", odds: "1.80 (-125)", conf: "65.0%", stake: "2.5u" },
+        valuePick: { market: "Portería a Cero", pick: "Alavés Gana a Cero", odds: "2.60 (+160)", ev: "+18.4%", stake: "1.5u" },
+        bombPick: { market: "Descanso / Final", pick: "Empate al Descanso / Alavés al Final", odds: "4.50 (+350)", ev: "+28.5%", stake: "0.5u" }
+      },
+      "ipswich-forest": {
+        title: "Ipswich Town vs Nottingham Forest",
+        home: "Ipswich Town",
+        away: "Nottingham Forest",
+        date: "Hoy · 2:00 PM CDT · Portman Road",
+        radio: "El Forest repliega ordenado para castigar al contragolpe. Ipswich busca imponer juego directo pero sufre vulnerabilidades en retroceso ante rivales de buen físico en pelota parada.",
+        homeForm: ["P", "E", "P", "E", "P"],
+        awayForm: ["G", "E", "P", "G", "E"],
+        market1x2: {
+          homeProb: 35.0, homeModel: 31.0, homeDiff: "-4.0", homeOdds: "2.85", homeVal: "-11.4%",
+          drawProb: 30.5, drawModel: 32.0, drawDiff: "+1.5", drawOdds: "3.28", drawVal: "+4.9%",
+          awayProb: 34.5, awayModel: 37.0, awayDiff: "+2.5", awayOdds: "2.90", awayVal: "+7.3%"
+        },
+        goals: { overProb: 48, overOdds: "2.08", overEV: "-0.2%", underProb: 52, underOdds: "1.75", underEV: "+2.5%" },
+        btts: { yesProb: 51.0, yesModel: 48.0, yesDiff: "-3.0", yesOdds: "1.95", yesVal: "-5.9%" },
+        favoritePick: { market: "Doble Oportunidad", pick: "Nottingham Forest o Empate (X2)", odds: "1.71 (-140)", conf: "69.0%", stake: "2.5u" },
+        valuePick: { market: "Ambos Marcan", pick: "Ambos Marcan: NO", odds: "1.91 (-110)", ev: "+12.0%", stake: "1.5u" },
+        bombPick: { market: "Marcador Múltiple", pick: "Empate 0-0 o 1-1", odds: "3.25 (+225)", ev: "+24.0%", stake: "0.75u" }
+      },
+      "necaxa-juarez": {
+        title: "Club Necaxa vs FC Juárez",
+        home: "Club Necaxa",
+        away: "FC Juárez",
+        date: "Hoy · 8:00 PM CDT · Estadio Victoria",
+        radio: "Duelo directo de la Liga MX. Necaxa hace valer la localía con transiciones rápidas; Juárez presenta grietas defensivas constantes en sus visitas recientes.",
+        homeForm: ["P", "G", "E", "P", "G"],
+        awayForm: ["P", "P", "P", "G", "P"],
+        market1x2: {
+          homeProb: 49.5, homeModel: 56.0, homeDiff: "+6.5", homeOdds: "2.02", homeVal: "+13.1%",
+          drawProb: 27.5, drawModel: 25.5, drawDiff: "-2.0", drawOdds: "3.60", drawVal: "-7.3%",
+          awayProb: 23.0, awayModel: 18.5, awayDiff: "-4.5", awayOdds: "4.35", awayVal: "-19.5%"
+        },
+        goals: { overProb: 55, overOdds: "1.82", overEV: "+5.1%", underProb: 45, underOdds: "1.98", underEV: "-5.0%" },
+        btts: { yesProb: 54.5, yesModel: 58.0, yesDiff: "+3.5", yesOdds: "1.83", yesVal: "+6.1%" },
+        favoritePick: { market: "Empate No Acción", pick: "Necaxa DNB", odds: "1.65 (-155)", conf: "74.0%", stake: "3.0u" },
+        valuePick: { market: "Ambos Marcan", pick: "Sí (Ambos Anotan)", odds: "1.83 (-120)", ev: "+10.5%", stake: "2.0u" },
+        bombPick: { market: "Resultado y BTTS", pick: "Necaxa Gana y Ambos Marcan", odds: "3.60 (+260)", ev: "+30.2%", stake: "0.75u" }
+      }
+    };
+
+    // Toggle Admin Mode
+    function toggleAdminMode() {
+      isAdminMode = !isAdminMode;
+      const dot = document.getElementById('admin-badge-dot');
+      const text = document.getElementById('admin-btn-text');
+      
+      if (isAdminMode) {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+        text.innerText = "Admin ACTIVO";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-slate-500";
+        text.innerText = "Modo Admin";
+      }
+      renderPicksGrid();
+    }
+
+    // Filter by League
+    function filterLeague(league) {
+      activeLeagueFilter = league;
+      document.querySelectorAll('.league-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-league') === league) {
+          btn.className = "league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-purple-600 text-white shadow-sm transition-all";
+        } else {
+          btn.className = "league-filter-btn px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 text-slate-300 hover:bg-white/10 transition-all";
+        }
+      });
+      renderPicksGrid();
+    }
+
+    // Resolve Pick (Admin action)
+    function resolvePick(pickId, resolution) {
+      const pickIndex = picksData.findIndex(p => p.id === pickId);
+      if (pickIndex === -1) return;
+      const p = picksData[pickIndex];
+      
+      let returnUnits = 0;
+      if (resolution === 'win') {
+        returnUnits = Number((p.stake * (p.oddsDec - 1)).toFixed(2));
+      } else if (resolution === 'loss') {
+        returnUnits = -Number(p.stake.toFixed(2));
+      } else {
+        returnUnits = 0.00;
+      }
+
+      // Add to historical data
+      historicalData.unshift({
+        date: "Hoy",
+        match: `${p.homeTeam} vs ${p.awayTeam}`,
+        league: p.league,
+        market: p.market,
+        selection: p.selection,
+        oddsUS: p.oddsUS,
+        oddsDec: p.oddsDec,
+        stake: p.stake,
+        status: resolution,
+        returnUnits: returnUnits
+      });
+
+      // Remove from active picks
+      picksData.splice(pickIndex, 1);
+      
+      recalculateMetrics();
+      renderPicksGrid();
+      renderHistoryTable();
+    }
+
+    // Recalculate Dashboard Metrics
+    function recalculateMetrics() {
+      let totalUnits = 0;
+      let wins = 0;
+      let losses = 0;
+      let pushes = 0;
+      let totalStaked = 0;
+
+      historicalData.forEach(item => {
+        totalUnits += item.returnUnits;
+        totalStaked += item.stake;
+        if (item.status === 'win') wins++;
+        else if (item.status === 'loss') losses++;
+        else if (item.status === 'push') pushes++;
+      });
+
+      const decidedMatches = wins + losses;
+      const winRate = decidedMatches > 0 ? ((wins / decidedMatches) * 100).toFixed(1) : "0.0";
+      const roi = totalStaked > 0 ? ((totalUnits / totalStaked) * 100).toFixed(1) : "0.0";
+
+      document.getElementById('metric-units').innerText = (totalUnits >= 0 ? `+${totalUnits.toFixed(2)}u` : `${totalUnits.toFixed(2)}u`);
+      document.getElementById('metric-record').innerText = `${wins} - ${losses} - ${pushes}`;
+      document.getElementById('metric-winrate').innerText = `${winRate}%`;
+      document.getElementById('metric-roi').innerText = (roi >= 0 ? `+${roi}%` : `${roi}%`);
+    }
+
+    // Render Active Picks Grid
+    function renderPicksGrid() {
+      const grid = document.getElementById('picks-grid');
+      grid.innerHTML = "";
+
+      const filtered = activeLeagueFilter === 'ALL' 
+        ? picksData 
+        : picksData.filter(p => p.league.toLowerCase() === activeLeagueFilter.toLowerCase());
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-500 font-mono text-xs">
+            No hay jugadas pendientes para la liga seleccionada.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const homeBadge = getTeamBadge(p.homeTeam);
+        const awayBadge = getTeamBadge(p.awayTeam);
+
+        const card = document.createElement('div');
+        card.className = "glass-card rounded-2xl p-5 border border-purple-500/20 relative flex flex-col justify-between";
+        
+        card.innerHTML = `
+          <div>
+            <!-- Header -->
+            <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-3 border-b border-purple-900/30 pb-2">
+              <span class="font-bold text-purple-300">${p.league}</span>
+              <span>${p.matchTime}</span>
+            </div>
+
+            <!-- Teams & Crests -->
+            <div class="flex items-center justify-between gap-3 my-2">
+              <div class="flex items-center gap-2.5 flex-1 min-w-0">
+                <img src="${homeBadge}" class="w-8 h-8 object-contain rounded-full bg-black/40 p-1 border border-purple-500/30 shrink-0">
+                <span class="font-bold text-xs sm:text-sm text-white truncate">${p.homeTeam}</span>
+              </div>
+              <span class="text-xs font-mono font-bold text-purple-400 shrink-0">VS</span>
+              <div class="flex items-center justify-end gap-2.5 flex-1 min-w-0 text-right">
+                <span class="font-bold text-xs sm:text-sm text-white truncate">${p.awayTeam}</span>
+                <img src="${awayBadge}" class="w-8 h-8 object-contain rounded-full bg-black/40 p-1 border border-purple-500/30 shrink-0">
+              </div>
+            </div>
+
+            <!-- Market & Pick Info -->
+            <div class="bg-black/40 rounded-xl p-3 my-3 border border-purple-500/15">
+              <div class="text-[10px] uppercase font-mono text-slate-400 tracking-wider">${p.market}</div>
+              <div class="text-sm font-bold text-purple-200 mt-0.5">${p.selection}</div>
+              
+              <div class="flex items-center justify-between mt-2 pt-2 border-t border-purple-900/20">
+                <div class="flex items-baseline gap-1.5 font-mono">
+                  <span class="text-sm font-black text-emerald-400">${p.oddsUS}</span>
+                  <span class="text-[11px] text-slate-400">(${p.oddsDec}x)</span>
+                </div>
+                <div class="text-[11px] font-mono font-bold text-purple-300">
+                  Stake: <span class="text-white">${p.stake}u</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Analysis Notes -->
+            ${p.tacticalNotes ? `<p class="text-[11px] text-slate-400 leading-relaxed mb-3">${p.tacticalNotes}</p>` : ''}
+          </div>
+
+          <!-- Footer / Admin Actions -->
+          <div class="pt-2 border-t border-purple-900/20">
+            ${isAdminMode ? `
+              <div class="flex items-center justify-between gap-1 pt-1">
+                <span class="text-[10px] font-mono text-purple-400">Resolver:</span>
+                <div class="flex items-center gap-1">
+                  <button onclick="resolvePick('${p.id}', 'win')" class="px-2 py-1 bg-emerald-950/60 hover:bg-emerald-800 text-emerald-300 border border-emerald-500/40 rounded text-[11px] font-bold">Win ✅</button>
+                  <button onclick="resolvePick('${p.id}', 'loss')" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-800 text-rose-300 border border-rose-500/40 rounded text-[11px] font-bold">Loss ❌</button>
+                  <button onclick="resolvePick('${p.id}', 'push')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[11px] font-bold">Push ➖</button>
+                </div>
+              </div>
+            ` : `
+              <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span class="flex items-center gap-1.5 text-emerald-400 font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Pick Confirmado
+                </span>
+                ${p.isVIP ? '<span class="text-amber-400 font-bold uppercase text-[10px] tracking-wider">👑 VIP PASS</span>' : '<span class="text-slate-400 text-[10px]">Público</span>'}
+              </div>
+            `}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Render Historical Table
+    function renderHistoryTable() {
+      const tbody = document.getElementById('history-table-body');
+      tbody.innerHTML = "";
+      const search = document.getElementById('history-search').value.toLowerCase();
+
+      const filtered = historicalData.filter(item => 
+        item.match.toLowerCase().includes(search) || 
+        item.league.toLowerCase().includes(search)
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-500 font-mono">No se encontraron resultados en el historial.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const isWin = item.status === 'win';
+        const isLoss = item.status === 'loss';
+        const statusBadge = isWin 
+          ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/30">GANADO</span>`
+          : isLoss
+          ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-500/30">PERDIDO</span>`
+          : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">PUSH</span>`;
+
+        const returnText = item.returnUnits >= 0 
+          ? `<span class="font-mono font-bold text-emerald-400">+${item.returnUnits.toFixed(2)}u</span>`
+          : `<span class="font-mono font-bold text-rose-400">${item.returnUnits.toFixed(2)}u</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-purple-900/10 transition-colors";
+        tr.innerHTML = `
+          <td class="py-3 px-3 font-mono text-slate-400">${item.date}</td>
+          <td class="py-3 px-3">
+            <div class="font-bold text-white">${item.match}</div>
+            <div class="text-[10px] font-mono text-purple-400">${item.league}</div>
+          </td>
+          <td class="py-3 px-3">
+            <div class="text-slate-200 font-medium">${item.selection}</div>
+            <div class="text-[10px] text-slate-400">${item.market}</div>
+          </td>
+          <td class="py-3 px-3 text-center font-mono font-bold text-slate-300">${item.oddsUS}</td>
+          <td class="py-3 px-3 text-center font-mono text-slate-300">${item.stake}u</td>
+          <td class="py-3 px-3 text-center">${statusBadge}</td>
+          <td class="py-3 px-3 text-right">${returnText}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // AI Radar Match Loader
+    function loadMatchReport(key) {
+      const report = reportsDB[key];
+      if (!report) return;
+
+      const homeBadge = getTeamBadge(report.home);
+      const awayBadge = getTeamBadge(report.away);
+
+      const container = document.getElementById('ai-report-container');
+      container.innerHTML = `
+        <div class="space-y-4">
+          <!-- Header Banner -->
+          <div class="flex flex-col sm:flex-row items-center justify-between p-4 bg-black/40 rounded-xl border border-purple-500/20 gap-4">
+            <div class="flex items-center gap-3">
+              <img src="${homeBadge}" class="w-12 h-12 object-contain p-1 rounded-full bg-black/60 border border-purple-500/30">
+              <div>
+                <h3 class="text-base sm:text-lg font-bold text-white">${report.title}</h3>
+                <span class="text-xs font-mono text-slate-400">${report.date}</span>
+              </div>
+            </div>
+            <img src="${awayBadge}" class="w-12 h-12 object-contain p-1 rounded-full bg-black/60 border border-purple-500/30">
+          </div>
+
+          <!-- Radiografía Táctica -->
+          <div class="bg-black/30 p-4 rounded-xl border border-purple-500/15">
+            <h4 class="text-xs font-mono font-bold text-purple-400 uppercase tracking-wider mb-1">Radiografía del Partido</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">${report.radio}</p>
+          </div>
+
+          <!-- Comparativas de Mercado vs Modelo -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- 1X2 -->
+            <div class="bg-black/40 p-3.5 rounded-xl border border-purple-500/15">
+              <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block mb-2">Resultado 1X2</span>
+              <div class="space-y-1.5 text-xs font-mono">
+                <div class="flex justify-between items-center">
+                  <span class="text-white">${report.home}</span>
+                  <span class="text-emerald-400 font-bold">${report.market1x2.homeOdds} (${report.market1x2.homeVal})</span>
+                </div>
+                <div class="flex justify-between items-center text-slate-400">
+                  <span>Empate</span>
+                  <span>${report.market1x2.drawOdds} (${report.market1x2.drawVal})</span>
+                </div>
+                <div class="flex justify-between items-center text-slate-400">
+                  <span>${report.away}</span>
+                  <span>${report.market1x2.awayOdds} (${report.market1x2.awayVal})</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Goles -->
+            <div class="bg-black/40 p-3.5 rounded-xl border border-purple-500/15">
+              <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block mb-2">Línea 2.5 Goles</span>
+              <div class="space-y-1.5 text-xs font-mono">
+                <div class="flex justify-between items-center">
+                  <span class="text-white">Más de 2.5</span>
+                  <span class="text-emerald-400 font-bold">${report.goals.overOdds} (${report.goals.overEV})</span>
+                </div>
+                <div class="flex justify-between items-center text-slate-400">
+                  <span>Menos de 2.5</span>
+                  <span>${report.goals.underOdds} (${report.goals.underEV})</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ambos Marcan -->
+            <div class="bg-black/40 p-3.5 rounded-xl border border-purple-500/15">
+              <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block mb-2">Ambos Marcan</span>
+              <div class="space-y-1.5 text-xs font-mono">
+                <div class="flex justify-between items-center">
+                  <span class="text-white">Sí</span>
+                  <span class="text-emerald-400 font-bold">${report.btts.yesOdds} (${report.btts.yesVal})</span>
+                </div>
+                <div class="flex justify-between items-center text-slate-400">
+                  <span>No</span>
+                  <span>2.40 (-6.2%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Los 3 Picks Conclusivos -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+            <!-- Pick Favorito -->
+            <div class="p-3.5 rounded-xl bg-purple-950/30 border border-purple-500/40">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-bold text-white flex items-center gap-1">✅ Pick Favorito</span>
+                <span class="text-[10px] font-mono font-bold text-emerald-400">${report.favoritePick.conf} Conf.</span>
+              </div>
+              <div class="text-xs font-bold text-purple-200">${report.favoritePick.pick}</div>
+              <div class="flex justify-between items-center mt-2 text-[11px] font-mono text-slate-400">
+                <span>Cuota: ${report.favoritePick.odds}</span>
+                <span>Stake: ${report.favoritePick.stake}</span>
+              </div>
+            </div>
+
+            <!-- Pick de Valor -->
+            <div class="p-3.5 rounded-xl bg-indigo-950/30 border border-indigo-500/40">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-bold text-white flex items-center gap-1">🎯 Pick de Valor</span>
+                <span class="text-[10px] font-mono font-bold text-emerald-400">EV: ${report.valuePick.ev}</span>
+              </div>
+              <div class="text-xs font-bold text-indigo-200">${report.valuePick.pick}</div>
+              <div class="flex justify-between items-center mt-2 text-[11px] font-mono text-slate-400">
+                <span>Cuota: ${report.valuePick.odds}</span>
+                <span>Stake: ${report.valuePick.stake}</span>
+              </div>
+            </div>
+
+            <!-- Pick Bomba -->
+            <div class="p-3.5 rounded-xl bg-pink-950/30 border border-pink-500/40">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-bold text-white flex items-center gap-1">💣 Pick Bomba</span>
+                <span class="text-[10px] font-mono font-bold text-pink-400">Alta Cuota</span>
+              </div>
+              <div class="text-xs font-bold text-pink-200">${report.bombPick.pick}</div>
+              <div class="flex justify-between items-center mt-2 text-[11px] font-mono text-slate-400">
+                <span>Cuota: ${report.bombPick.odds}</span>
+                <span>Stake: ${report.bombPick.stake}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function runAiAnalysis() {
+      const query = document.getElementById('ai-search-input').value.toLowerCase();
+      if (query.includes('alaves') || query.includes('malaga')) loadMatchReport('alaves-malaga');
+      else if (query.includes('ipswich') || query.includes('forest')) loadMatchReport('ipswich-forest');
+      else if (query.includes('necaxa') || query.includes('juarez')) loadMatchReport('necaxa-juarez');
+      else loadMatchReport('stuttgart-gladbach');
+    }
+
+    // Modal Controls
+    function openAdminModal() {
+      document.getElementById('admin-modal').classList.remove('hidden');
+    }
+    function closeAdminModal() {
+      document.getElementById('admin-modal').classList.add('hidden');
+    }
+
+    // Form submit
+    function submitNewPick(e) {
+      e.preventDefault();
+      const newPick = {
+        id: "pick-" + Date.now(),
+        league: document.getElementById('form-league').value,
+        homeTeam: document.getElementById('form-home').value,
+        awayTeam: document.getElementById('form-away').value,
+        matchTime: document.getElementById('form-time').value,
+        market: document.getElementById('form-market').value,
+        selection: document.getElementById('form-selection').value,
+        oddsUS: document.getElementById('form-odds-us').value,
+        oddsDec: parseFloat(document.getElementById('form-odds-dec').value),
+        stake: parseFloat(document.getElementById('form-stake').value),
+        isVIP: document.getElementById('form-vip').checked,
+        status: "pending",
+        tacticalNotes: document.getElementById('form-notes').value
+      };
+
+      picksData.unshift(newPick);
+      renderPicksGrid();
+      closeAdminModal();
+      document.getElementById('new-pick-form').reset();
+    }
+
+    // Initialize application
+    window.addEventListener('DOMContentLoaded', () => {
+      loadMatchReport('stuttgart-gladbach');
+      recalculateMetrics();
+      renderPicksGrid();
+      renderHistoryTable();
+    });
+  </script>
+</body>
+</html>
