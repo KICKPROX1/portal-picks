@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SUPABASE JS CLIENT -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -79,7 +81,7 @@
 </head>
 <body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white relative">
 
-  <!-- TOP HEADER EDITORIAL CON ACCESO VIP -->
+  <!-- TOP HEADER CON AUTH & VIP -->
   <header class="h-14 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
     <div class="flex items-center gap-3">
       <div class="w-8 h-8 rounded-lg bg-problue flex items-center justify-center font-black text-white text-sm">
@@ -97,21 +99,24 @@
         <span class="text-slate-300">Racha: <strong class="text-progreen">5 Verdes</strong></span>
         <span class="text-slate-500">|</span>
         <span class="text-slate-300">Win Rate: <strong class="text-white">77.4%</strong></span>
-        <span class="text-[10px] text-proaccent underline ml-1">Ver Historial</span>
+        <span class="text-[10px] text-proaccent underline ml-1">Historial</span>
       </button>
 
-      <button onclick="openVipModal()" class="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 flex items-center gap-1.5 shadow-md transition-all active:scale-95">
+      <button onclick="openVipModal()" id="btn-header-vip" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 flex items-center gap-1.5 shadow-md transition-all active:scale-95">
         <span>👑</span>
         <span>Pase VIP $10/mes</span>
       </button>
 
-      <button onclick="openAuditModal()" class="md:hidden text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-300 hover:text-white transition-all">
-        📋 Historial
-      </button>
+      <!-- BOTÓN AUTH CONTENEDOR DINÁMICO -->
+      <div id="auth-header-container">
+        <button onclick="openAuthModal('login')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-200 hover:text-white hover:border-slate-400 transition-all">
+          Iniciar Sesión
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- BANNER PROMO TELEGRAM / VIP -->
+  <!-- BANNER PROMO WHOP -->
   <div class="bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border-b border-bordercolor py-2 px-4 text-center text-xs">
     <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-slate-300 flex-wrap">
       <span class="bg-problue text-white text-[9px] font-mono font-bold px-1.5 py-0.5 rounded uppercase">Membresía</span>
@@ -363,7 +368,37 @@
 
   </main>
 
-  <!-- MODAL MEMBRESÍA VIP (ENLAZADO DIRECTO A WHOP) -->
+  <!-- MODAL DE AUTENTICACIÓN (LOGIN & REGISTRO) -->
+  <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-bordercolor rounded-2xl max-w-sm w-full p-6 relative shadow-2xl">
+      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+
+      <div class="flex items-center gap-2 mb-4 border-b border-bordercolor pb-3">
+        <button id="tab-login-btn" onclick="switchAuthTab('login')" class="text-xs font-bold text-white border-b-2 border-proaccent pb-1">Iniciar Sesión</button>
+        <button id="tab-signup-btn" onclick="switchAuthTab('signup')" class="text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors">Crear Cuenta</button>
+      </div>
+
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-400 font-mono mb-1">Correo Electrónico</label>
+          <input type="email" id="auth-email" required placeholder="tu@email.com" class="w-full bg-innerbg border border-bordercolor rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-proaccent font-sans">
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-mono mb-1">Contraseña</label>
+          <input type="password" id="auth-password" required minlength="6" placeholder="Mínimo 6 caracteres" class="w-full bg-innerbg border border-bordercolor rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-proaccent font-sans">
+        </div>
+
+        <div id="auth-error-msg" class="text-[11px] text-rose-400 font-mono hidden"></div>
+
+        <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-problue hover:bg-blue-500 text-white font-bold rounded-lg transition-all text-xs">
+          Iniciar Sesión
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL MEMBRESÍA VIP (WHOP) -->
   <div id="vip-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-cardbg border border-amber-500/30 rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
       <button onclick="closeVipModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
@@ -379,7 +414,6 @@
       </div>
 
       <div class="space-y-3 mb-6">
-        <!-- PLAN MENSUAL A $9.99 DIRECTO -->
         <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="p-3.5 rounded-xl border-2 border-amber-500/70 bg-amber-950/20 flex items-center justify-between cursor-pointer shadow-lg shadow-amber-500/10 block hover:bg-amber-950/30 transition-all">
           <div>
             <div class="flex items-center gap-1.5">
@@ -433,7 +467,7 @@
               <th class="py-2.5 px-2 text-right">Resultado</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-bordercolor font-mono text-[11px]">
+          <tbody class="divide-y border-bordercolor font-mono text-[11px]">
             <tr>
               <td class="py-2.5 px-2 text-slate-400">22 OCT</td>
               <td class="py-2.5 px-2 font-sans font-medium text-white">Freiburg vs Bayern</td>
@@ -491,8 +525,15 @@
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC -->
+  <!-- SCRIPT LOGIC CON CREDENCIALES CONFIGURADAS -->
   <script>
+    const SUPABASE_URL = "https://ukgvoeblxzspffngumpk.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrZ3ZvZWJseHpzcGZmbmd1bXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3MzM4MzUsImV4cCI6MjEwODMwOTgzNX0._P82lM8TyzNdrQbCvqDt_0AZ1F0pzJ1s5Vx2jstPT7U";
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let currentUser = null;
+    let isUserVip = false;
+    let authMode = 'login';
     let isTyping = false;
     const WHOP_CHECKOUT_URL = "https://whop.com/portal-picks/portal-picks-daily-winning-predictions";
 
@@ -788,16 +829,20 @@
           </div>
         </div>
 
-        <!-- Picks Selection con PAYWALL BLUR -->
+        <!-- Picks Selection con Desbloqueo Dinámico para Usuarios VIP -->
         <div class="space-y-2 pt-1">
           <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider flex items-center justify-between">
             <span>Picks Recomendados (+EV)</span>
-            <span class="text-amber-400 font-bold">👑 Pase VIP ($10/mes)</span>
+            ${isUserVip 
+              ? `<span class="text-progreen font-bold">👑 Acceso VIP Activo</span>` 
+              : `<span class="text-amber-400 font-bold">👑 Pase VIP ($10/mes)</span>`}
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             ${data.picks.map(p => {
-              if (!p.isLocked) {
+              const isLocked = isUserVip ? false : p.isLocked;
+
+              if (!isLocked) {
                 return `
                   <div class="p-2.5 rounded-lg bg-basebg border border-bordercolor flex items-center justify-between">
                     <div>
@@ -861,12 +906,116 @@
       alert("Jugada confirmada y registrada en el sistema.");
     }
 
+    // MODALES
     function openVipModal() { document.getElementById('vip-modal').classList.remove('hidden'); }
     function closeVipModal() { document.getElementById('vip-modal').classList.add('hidden'); }
     function openAuditModal() { document.getElementById('audit-modal').classList.remove('hidden'); }
     function closeAuditModal() { document.getElementById('audit-modal').classList.add('hidden'); }
+    function openAuthModal(mode = 'login') {
+      switchAuthTab(mode);
+      document.getElementById('auth-modal').classList.remove('hidden');
+    }
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.add('hidden');
+      document.getElementById('auth-error-msg').classList.add('hidden');
+      document.getElementById('auth-form').reset();
+    }
 
-    // Ciclo de notificaciones de prueba social (Live Toast)
+    function switchAuthTab(mode) {
+      authMode = mode;
+      const tabLogin = document.getElementById('tab-login-btn');
+      const tabSignup = document.getElementById('tab-signup-btn');
+      const submitBtn = document.getElementById('auth-submit-btn');
+
+      if (mode === 'login') {
+        tabLogin.className = "text-xs font-bold text-white border-b-2 border-proaccent pb-1";
+        tabSignup.className = "text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors";
+        submitBtn.innerText = "Iniciar Sesión";
+      } else {
+        tabSignup.className = "text-xs font-bold text-white border-b-2 border-proaccent pb-1";
+        tabLogin.className = "text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors";
+        submitBtn.innerText = "Crear Cuenta Gratuita";
+      }
+    }
+
+    // AUTENTICACIÓN CON SUPABASE
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value;
+      const errBox = document.getElementById('auth-error-msg');
+      errBox.classList.add('hidden');
+
+      if (authMode === 'signup') {
+        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        if (error) {
+          errBox.innerText = error.message;
+          errBox.classList.remove('hidden');
+        } else {
+          alert("Cuenta creada con éxito. Ya puedes iniciar sesión.");
+          switchAuthTab('login');
+        }
+      } else {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) {
+          errBox.innerText = error.message;
+          errBox.classList.remove('hidden');
+        } else {
+          closeAuthModal();
+          checkUserSession();
+        }
+      }
+    }
+
+    async function checkUserSession() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      const container = document.getElementById('auth-header-container');
+
+      if (session && session.user) {
+        currentUser = session.user;
+        
+        // Consultar estado VIP en tabla profiles
+        const { data: profile } = await supabaseClient
+          .from('profiles')
+          .select('is_vip')
+          .eq('id', currentUser.id)
+          .single();
+
+        isUserVip = profile ? profile.is_vip : false;
+
+        container.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono text-slate-300 bg-innerbg px-2.5 py-1 rounded-lg border border-bordercolor flex items-center gap-1.5">
+              ${isUserVip ? '<span class="text-amber-400">👑</span>' : '👤'}
+              <span class="max-w-[120px] truncate">${currentUser.email.split('@')[0]}</span>
+            </span>
+            <button onclick="handleLogout()" class="text-xs text-slate-500 hover:text-rose-400 font-mono">Salir</button>
+          </div>
+        `;
+
+        if (isUserVip) {
+          document.getElementById('btn-header-vip').classList.add('hidden');
+        }
+      } else {
+        currentUser = null;
+        isUserVip = false;
+        container.innerHTML = `
+          <button onclick="openAuthModal('login')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-200 hover:text-white hover:border-slate-400 transition-all">
+            Iniciar Sesión
+          </button>
+        `;
+        document.getElementById('btn-header-vip').classList.remove('hidden');
+      }
+
+      triggerTacticalPrompt('stuttgart-gladbach');
+    }
+
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+      checkUserSession();
+    }
+
+    // LIVE TOAST SOCIAL PROOF
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
       { icon: "✅", title: "Pick Verificado", desc: "Stuttgart ML + Over 1.5 validado por modelo matemático", color: "text-progreen", bg: "bg-progreen/20" },
@@ -895,7 +1044,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       renderSlip();
-      triggerTacticalPrompt('stuttgart-gladbach');
+      checkUserSession();
       setInterval(triggerNextToast, 18000);
       setTimeout(triggerNextToast, 4000);
     });
