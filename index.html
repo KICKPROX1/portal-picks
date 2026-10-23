@@ -34,54 +34,22 @@
     }
   </script>
   <style>
-    body {
-      background-color: #0c0e12;
-      color: #e2e8f0;
-      font-family: 'Inter', sans-serif;
-    }
-    .custom-scroll::-webkit-scrollbar {
-      width: 4px;
-      height: 4px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background: #10141d;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: #232938;
-      border-radius: 9999px;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb:hover {
-      background: #3b82f6;
-    }
-    .team-badge-img {
-      object-fit: contain;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
-    }
-    .cursor-blink::after {
-      content: '|';
-      animation: blink 1s step-start infinite;
-      color: #38bdf8;
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-    .vip-blur {
-      filter: blur(5px);
-      user-select: none;
-      pointer-events: none;
-    }
-    @keyframes slideInUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .toast-anim {
-      animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    body { background-color: #0c0e12; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #10141d; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #232938; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+    .team-badge-img { object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }
+    .cursor-blink::after { content: '|'; animation: blink 1s step-start infinite; color: #38bdf8; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .vip-blur { filter: blur(5px); user-select: none; pointer-events: none; }
+    @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .toast-anim { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white relative">
 
-  <!-- TOP HEADER CON AUTH & VIP -->
+  <!-- TOP HEADER CON AUTH & VIP & ADMIN -->
   <header class="h-14 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
     <div class="flex items-center gap-3">
       <div class="w-8 h-8 rounded-lg bg-problue flex items-center justify-center font-black text-white text-sm">
@@ -100,6 +68,11 @@
         <span class="text-slate-500">|</span>
         <span class="text-slate-300">Win Rate: <strong class="text-white">77.4%</strong></span>
         <span class="text-[10px] text-proaccent underline ml-1">Historial</span>
+      </button>
+
+      <!-- BOTON ADMIN ACCESO RAPIDO (PROTEGIDO) -->
+      <button id="admin-panel-btn" onclick="openAdminModal()" class="hidden text-xs font-bold px-3 py-1.5 rounded-lg bg-indigo-600/30 border border-indigo-500/50 hover:bg-indigo-600/50 text-indigo-300 flex items-center gap-1 transition-all">
+        ⚙️ Admin
       </button>
 
       <button onclick="openVipModal()" id="btn-header-vip" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 flex items-center gap-1.5 shadow-md transition-all active:scale-95">
@@ -134,130 +107,12 @@
     <aside class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
       <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[740px]">
         <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
-          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Jornada de Hoy</span>
-          <span class="text-[10px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-proaccent">23 OCT</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Jornada Activa</span>
+          <span class="text-[10px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-proaccent">EN VIVO</span>
         </div>
 
-        <div class="flex-1 overflow-y-auto custom-scroll space-y-3 mt-3 pr-1 text-xs">
-          <!-- BUNDESLIGA -->
-          <div>
-            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
-              <span>🇩🇪 Bundesliga</span>
-              <span class="text-[10px] text-slate-500">Jornada 7</span>
-            </div>
-            <div onclick="switchMainTab('tactics'); triggerTacticalPrompt('stuttgart-gladbach')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-mono text-slate-400">13:30 CDT</span>
-                <span class="text-[9px] font-mono text-progreen bg-progreen/10 border border-progreen/30 px-1.5 py-0.2 rounded font-bold">VALOR +EV</span>
-              </div>
-              <div class="space-y-1">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'STU')">
-                    <span class="font-medium text-white text-[12px]">VfB Stuttgart</span>
-                  </div>
-                  <span class="font-mono text-slate-400 text-[11px]">1.61</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'BMG')">
-                    <span class="font-medium text-slate-300 text-[12px]">Borussia M'gladbach</span>
-                  </div>
-                  <span class="font-mono text-slate-400 text-[11px]">5.40</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- LALIGA -->
-          <div>
-            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
-              <span>🇪🇸 LaLiga</span>
-              <span class="text-[10px] text-slate-500">Jornada 10</span>
-            </div>
-            <div onclick="switchMainTab('tactics'); triggerTacticalPrompt('alaves-malaga')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-mono text-slate-400">14:00 CDT</span>
-                <span class="text-[9px] font-mono text-slate-400 bg-white/5 border border-white/10 px-1.5 py-0.2 rounded">TACTICAL</span>
-              </div>
-              <div class="space-y-1">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'ALA')">
-                    <span class="font-medium text-white text-[12px]">Deportivo Alavés</span>
-                  </div>
-                  <span class="font-mono text-slate-400 text-[11px]">1.88</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'MAL')">
-                    <span class="font-medium text-slate-300 text-[12px]">Málaga CF</span>
-                  </div>
-                  <span class="font-mono text-slate-400 text-[11px]">4.50</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- PREMIER LEAGUE -->
-          <div>
-            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
-              <span>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span>
-              <span class="text-[10px] text-slate-500">Jornada 8</span>
-            </div>
-            <div onclick="switchMainTab('tactics'); triggerTacticalPrompt('ipswich-forest')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-mono text-slate-400">14:00 CDT</span>
-                <span class="text-[9px] font-mono text-proaccent bg-proaccent/10 border border-proaccent/30 px-1.5 py-0.2 rounded font-bold">X2 PICK</span>
-              </div>
-              <div class="space-y-1">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'IPS')">
-                    <span class="font-medium text-white text-[12px]">Ipswich Town</span>
-                  </div>
-                  <span class="font-mono text-slate-400 text-[11px]">2.85</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/393.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'NFO')">
-                    <span class="font-medium text-slate-300 text-[12px]">Nottingham Forest</span>
-                  </div>
-                  <span class="font-mono text-slate-400 text-[11px]">2.70</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- LIGA MX -->
-          <div>
-            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex items-center justify-between">
-              <span>🇲🇽 Liga MX</span>
-              <span class="text-[10px] text-slate-500">Apertura J14</span>
-            </div>
-            <div onclick="switchMainTab('tactics'); triggerTacticalPrompt('necaxa-juarez')" class="p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-mono text-slate-400">20:00 CDT</span>
-                <span class="text-[9px] font-mono text-progreen bg-progreen/10 border border-progreen/30 px-1.5 py-0.2 rounded font-bold">DNB LOCAL</span>
-              </div>
-              <div class="space-y-1">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'NEC')">
-                    <span class="font-medium text-white text-[12px]">Club Necaxa</span>
-                  </div>
-                  <span class="font-mono text-slate-400 text-[11px]">2.02</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17743.png&w=40&h=40" class="w-4 h-4 team-badge-img" onerror="handleImageError(this, 'JUA')">
-                    <span class="font-medium text-slate-300 text-[12px]">FC Juárez</span>
-                  </div>
-                  <span class="font-mono text-slate-400 text-[11px]">3.80</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div id="match-sidebar-list" class="flex-1 overflow-y-auto custom-scroll space-y-3 mt-3 pr-1 text-xs">
+          <!-- Renderizado dinámicamente desde Supabase o Caché -->
         </div>
       </div>
     </aside>
@@ -279,7 +134,7 @@
         <span id="active-tab-indicator" class="text-[10px] font-mono text-slate-500">Algorítmico</span>
       </div>
 
-      <!-- VISTA 1: RADAR TÁCTICO IA -->
+      <!-- VISTA 1: RADAR TÁCTICO IA & VOTACIONES -->
       <div id="view-tactics" class="flex-1 flex flex-col overflow-hidden">
         <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4">
           <!-- Rendered dynamically -->
@@ -290,7 +145,7 @@
             <input 
               type="text" 
               id="tactical-input" 
-              placeholder="Escribe el nombre de un equipo o partido (Ej: Alavés, Forest, Necaxa)..." 
+              placeholder="Buscar equipo o partido (Ej: Stuttgart, Alavés, Forest, Necaxa)..." 
               class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-proaccent transition-all font-sans"
             >
             <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-problue hover:bg-blue-500 text-white font-mono text-xs flex items-center justify-center transition-all">
@@ -401,6 +256,79 @@
     </aside>
 
   </main>
+
+  <!-- MODAL ADMIN: PUBLICAR PARTIDO DIARIO EN SUPABASE -->
+  <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-indigo-500/40 rounded-2xl max-w-xl w-full p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+      <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      
+      <div class="mb-4 pb-3 border-b border-bordercolor">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <span>⚙️</span> Panel de Publicación de Pronósticos
+        </h3>
+        <p class="text-xs text-slate-400">Agrega partidos diarios directamente a la base de datos sin tocar el código.</p>
+      </div>
+
+      <form onsubmit="handleCreateMatchSubmit(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Liga y Jornada</label>
+            <input type="text" id="adm-league" required placeholder="Ej: Premier League • J9" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Horario y Estadio</label>
+            <input type="text" id="adm-date" required placeholder="Ej: Hoy • 14:00 CDT" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Equipo Local</label>
+            <input type="text" id="adm-home" required placeholder="Ej: Real Madrid" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label>
+            <input type="text" id="adm-away" required placeholder="Ej: Barcelona" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">xG Local (Ej: 2.15)</label>
+            <input type="text" id="adm-xghome" value="1.85" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono">
+          </div>
+          <div>
+            <label class="block text-slate-400 font-mono mb-1">xG Visitante (Ej: 1.10)</label>
+            <input type="text" id="adm-xgaway" value="1.15" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 font-mono mb-1">Diagnóstico Táctico</label>
+          <textarea id="adm-tactical" rows="2" required placeholder="Análisis breve del volumen ofensivo, transiciones y valor matemático..." class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></textarea>
+        </div>
+
+        <!-- PICKS FORM -->
+        <div class="p-3 bg-innerbg rounded-xl border border-bordercolor space-y-2">
+          <span class="text-[10px] font-mono text-proaccent font-bold uppercase block">Picks del Partido</span>
+          <div class="grid grid-cols-3 gap-2">
+            <input type="text" id="adm-p1-name" required placeholder="Pick 1 (Gratis)" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-white text-[11px]">
+            <input type="number" id="adm-p1-odds" step="0.01" required placeholder="Cuota 1.65" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-white font-mono text-[11px]">
+            <input type="text" id="adm-p1-ev" value="+10.5%" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-progreen font-mono text-[11px]">
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <input type="text" id="adm-p2-name" required placeholder="Pick 2 (VIP Candado)" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-white text-[11px]">
+            <input type="number" id="adm-p2-odds" step="0.01" required placeholder="Cuota 2.40" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-white font-mono text-[11px]">
+            <input type="text" id="adm-p2-ev" value="+22.0%" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-amber-400 font-mono text-[11px]">
+          </div>
+        </div>
+
+        <button type="submit" id="adm-submit-btn" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition-all text-xs">
+          Publicar Partido en Supabase
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- MODAL DE AUTENTICACIÓN (LOGIN & REGISTRO) -->
   <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -559,44 +487,30 @@
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC CON SUPABASE REALTIME CHAT -->
+  <!-- SCRIPT LOGIC: ADMIN + VOTING + REALTIME -->
   <script>
     const SUPABASE_URL = "https://ukgvoeblxzspffngumpk.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrZ3ZvZWJseHpzcGZmbmd1bXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3MzM4MzUsImV4cCI6MjEwODMwOTgzNX0._P82lM8TyzNdrQbCvqDt_0AZ1F0pzJ1s5Vx2jstPT7U";
+    const ADMIN_EMAIL = "yoneleal02@gmail.com";
     
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     let currentUser = null;
     let isUserVip = false;
     let authMode = 'login';
     let isTyping = false;
+    let currentMatchKey = 'stuttgart-gladbach';
     const WHOP_CHECKOUT_URL = "https://whop.com/portal-picks/portal-picks-daily-winning-predictions";
 
-    const badgesCDN = {
-      "VfB Stuttgart": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=80&h=80",
-      "Borussia Mönchengladbach": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=80&h=80",
-      "Deportivo Alavés": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=80&h=80",
-      "Málaga CF": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=80&h=80",
-      "Ipswich Town": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=80&h=80",
-      "Nottingham Forest": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/393.png&w=80&h=80",
-      "Club Necaxa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=80&h=80",
-      "FC Juárez": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17743.png&w=80&h=80"
-    };
-
-    function handleImageError(imgEl, initials) {
-      imgEl.onerror = null;
-      imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="%231a1f2c" stroke="%2338bdf8" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${initials || 'FC'}</text></svg>`;
-    }
-
-    const tacticalDB = {
+    const defaultTacticalDB = {
       "stuttgart-gladbach": {
         query: "¿Cuál es el desglose táctico y valor matemático para VfB Stuttgart vs Borussia Mönchengladbach?",
         matchName: "VfB Stuttgart vs Borussia Mönchengladbach",
         league: "Bundesliga • Jornada 7",
         date: "Hoy • 13:30 CDT • Mercedes-Benz Arena",
         home: "VfB Stuttgart",
-        homeBadge: badgesCDN["VfB Stuttgart"],
+        homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=80&h=80",
         away: "Borussia Mönchengladbach",
-        awayBadge: badgesCDN["Borussia Mönchengladbach"],
+        awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=80&h=80",
         xgHome: "2.14",
         xgAway: "0.92",
         possessionHome: "64%",
@@ -616,9 +530,9 @@
         league: "LaLiga • Jornada 10",
         date: "Hoy • 14:00 CDT • Mendizorroza",
         home: "Deportivo Alavés",
-        homeBadge: badgesCDN["Deportivo Alavés"],
+        homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=80&h=80",
         away: "Málaga CF",
-        awayBadge: badgesCDN["Málaga CF"],
+        awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=80&h=80",
         xgHome: "1.10",
         xgAway: "0.65",
         possessionHome: "48%",
@@ -637,9 +551,9 @@
         league: "Premier League • Jornada 8",
         date: "Hoy • 14:00 CDT • Portman Road",
         home: "Ipswich Town",
-        homeBadge: badgesCDN["Ipswich Town"],
+        homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=80&h=80",
         away: "Nottingham Forest",
-        awayBadge: badgesCDN["Nottingham Forest"],
+        awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/393.png&w=80&h=80",
         xgHome: "1.05",
         xgAway: "1.32",
         possessionHome: "51%",
@@ -658,9 +572,9 @@
         league: "Liga MX • Apertura J14",
         date: "Hoy • 20:00 CDT • Estadio Victoria",
         home: "Club Necaxa",
-        homeBadge: badgesCDN["Club Necaxa"],
+        homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=80&h=80",
         away: "FC Juárez",
-        awayBadge: badgesCDN["FC Juárez"],
+        awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17743.png&w=80&h=80",
         xgHome: "1.65",
         xgAway: "1.15",
         possessionHome: "55%",
@@ -675,11 +589,74 @@
       }
     };
 
+    let tacticalDB = { ...defaultTacticalDB };
+
     let activeSlip = [
       { id: "s1", match: "Stuttgart vs Gladbach", pick: "Stuttgart ML + Over 1.5", odds: 1.61 },
       { id: "s2", match: "Ipswich vs Forest", pick: "Nottingham Forest X2", odds: 1.71 }
     ];
 
+    function handleImageError(imgEl, initials) {
+      imgEl.onerror = null;
+      imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="%231a1f2c" stroke="%2338bdf8" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${initials || 'FC'}</text></svg>`;
+    }
+
+    // CARGA DE PARTIDOS DINÁMICOS DESDE SUPABASE
+    async function fetchMatchesFromSupabase() {
+      const { data: dbMatches, error } = await supabaseClient
+        .from('matches')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (dbMatches && dbMatches.length > 0) {
+        dbMatches.forEach(m => {
+          tacticalDB[m.match_key] = {
+            query: `Análisis y valor matemático para ${m.match_name}.`,
+            matchName: m.match_name,
+            league: m.league,
+            date: m.match_date,
+            home: m.home_team,
+            homeBadge: m.home_badge || '',
+            away: m.away_team,
+            awayBadge: m.away_badge || '',
+            xgHome: m.xg_home,
+            xgAway: m.xg_away,
+            possessionHome: m.possession_home,
+            possessionAway: m.possession_away,
+            tacticalRead: m.tactical_read,
+            modelProb: { home: m.prob_home, draw: m.prob_draw, away: m.prob_away },
+            picks: m.picks || []
+          };
+        });
+      }
+      renderMatchSidebar();
+    }
+
+    function renderMatchSidebar() {
+      const list = document.getElementById('match-sidebar-list');
+      list.innerHTML = "";
+
+      Object.keys(tacticalDB).forEach(key => {
+        const item = tacticalDB[key];
+        const div = document.createElement('div');
+        div.onclick = () => {
+          switchMainTab('tactics');
+          triggerTacticalPrompt(key);
+        };
+        div.className = "p-2.5 rounded-lg bg-innerbg border border-bordercolor hover:border-proaccent cursor-pointer transition-all space-y-1.5";
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono text-slate-400">${item.league}</span>
+            <span class="text-[9px] font-mono text-proaccent bg-proaccent/10 border border-proaccent/30 px-1.5 py-0.2 rounded font-bold">PICK EV</span>
+          </div>
+          <div class="font-bold text-white text-[11px] truncate">${item.home} vs ${item.away}</div>
+          <div class="text-[10px] font-mono text-slate-400">${item.date}</div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    // GESTIÓN DEL BOLETO DE APUESTAS
     function renderSlip() {
       const container = document.getElementById('slip-items');
       container.innerHTML = "";
@@ -789,6 +766,7 @@
 
     function triggerTacticalPrompt(matchKey, customPrompt = null) {
       if (isTyping) return;
+      currentMatchKey = matchKey;
       const data = tacticalDB[matchKey];
       if (!data) return;
 
@@ -826,14 +804,14 @@
           setTimeout(() => {
             const l = document.getElementById('feed-loader');
             if (l) l.remove();
-            renderTacticalReport(data);
+            renderTacticalReport(data, matchKey);
             isTyping = false;
-          }, 450);
+          }, 350);
         }
-      }, 14);
+      }, 12);
     }
 
-    function renderTacticalReport(data) {
+    function renderTacticalReport(data, matchKey) {
       const stream = document.getElementById('tactical-stream');
       const card = document.createElement('div');
       card.className = "bg-innerbg border border-bordercolor rounded-xl p-4 space-y-4 text-xs";
@@ -869,19 +847,32 @@
           ${data.tacticalRead}
         </div>
 
-        <div class="space-y-1.5 font-mono text-[11px]">
-          <div class="flex justify-between text-slate-400 text-[10px]">
-            <span>1: ${data.modelProb.home}</span>
-            <span>X: ${data.modelProb.draw}</span>
-            <span>2: ${data.modelProb.away}</span>
+        <!-- SENTIMIENTO DE LA TRIBUNA (VOTACION DE LA COMUNIDAD) -->
+        <div class="p-3 bg-[#10141d] rounded-lg border border-bordercolor space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono text-slate-400 uppercase font-bold flex items-center gap-1.5">
+              <span>📊 Sentimiento de la Tribuna</span>
+            </span>
+            <span id="vote-total-label" class="text-[10px] font-mono text-proaccent">Cargando votos...</span>
           </div>
-          <div class="w-full h-2 bg-basebg rounded-full overflow-hidden flex">
-            <div style="width: ${data.modelProb.home}" class="bg-progreen"></div>
-            <div style="width: ${data.modelProb.draw}" class="bg-slate-500"></div>
-            <div style="width: ${data.modelProb.away}" class="bg-rose-500"></div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="handleCastVote('${matchKey}', '1')" class="py-1.5 bg-innerbg hover:border-progreen border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-white block">1 ${data.home.slice(0, 10)}</span>
+              <span id="vote-pct-1" class="text-[9px] font-mono text-progreen font-bold">--%</span>
+            </button>
+            <button onclick="handleCastVote('${matchKey}', 'X')" class="py-1.5 bg-innerbg hover:border-slate-400 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-white block">X Empate</span>
+              <span id="vote-pct-x" class="text-[9px] font-mono text-slate-300 font-bold">--%</span>
+            </button>
+            <button onclick="handleCastVote('${matchKey}', '2')" class="py-1.5 bg-innerbg hover:border-rose-400 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-white block">2 ${data.away.slice(0, 10)}</span>
+              <span id="vote-pct-2" class="text-[9px] font-mono text-rose-400 font-bold">--%</span>
+            </button>
           </div>
         </div>
 
+        <!-- PICKS SELECTION (CON DESBLOQUEO VIP) -->
         <div class="space-y-2 pt-1">
           <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider flex items-center justify-between">
             <span>Picks Recomendados (+EV)</span>
@@ -900,7 +891,7 @@
                     <div>
                       <div class="text-[9px] font-mono text-proaccent font-bold">${p.tag} · EV: ${p.ev}</div>
                       <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
-                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${p.odds.toFixed(2)}</span></div>
+                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${parseFloat(p.odds).toFixed(2)}</span></div>
                     </div>
                     <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-problue hover:bg-blue-500 text-white font-mono text-[10px] font-bold transition-all">
                       + Boleto
@@ -913,7 +904,7 @@
                     <div class="vip-blur">
                       <div class="text-[9px] font-mono text-amber-400 font-bold">${p.tag} · EV: ${p.ev}</div>
                       <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
-                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${p.odds.toFixed(2)}</span></div>
+                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${parseFloat(p.odds).toFixed(2)}</span></div>
                     </div>
                     <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-between px-3">
                       <div class="flex items-center gap-1.5">
@@ -934,6 +925,114 @@
 
       stream.appendChild(card);
       stream.scrollTop = stream.scrollHeight;
+      fetchMatchVotes(matchKey);
+    }
+
+    // SISTEMA DE VOTACIÓN (SENTIMIENTO DE LA TRIBUNA)
+    async function fetchMatchVotes(matchKey) {
+      const { data: votes, error } = await supabaseClient
+        .from('match_votes')
+        .select('vote')
+        .eq('match_key', matchKey);
+
+      if (!votes || votes.length === 0) {
+        document.getElementById('vote-total-label').innerText = "0 votos registrados";
+        document.getElementById('vote-pct-1').innerText = "33%";
+        document.getElementById('vote-pct-x').innerText = "33%";
+        document.getElementById('vote-pct-2').innerText = "34%";
+        return;
+      }
+
+      const total = votes.length;
+      const count1 = votes.filter(v => v.vote === '1').length;
+      const countX = votes.filter(v => v.vote === 'X').length;
+      const count2 = votes.filter(v => v.vote === '2').length;
+
+      document.getElementById('vote-total-label').innerText = `${total} aficionado${total > 1 ? 's' : ''} han votado`;
+      document.getElementById('vote-pct-1').innerText = `${Math.round((count1 / total) * 100)}%`;
+      document.getElementById('vote-pct-x').innerText = `${Math.round((countX / total) * 100)}%`;
+      document.getElementById('vote-pct-2').innerText = `${Math.round((count2 / total) * 100)}%`;
+    }
+
+    async function handleCastVote(matchKey, voteOption) {
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from('match_votes')
+        .upsert(
+          { match_key: matchKey, user_id: currentUser.id, vote: voteOption },
+          { onConflict: 'match_key,user_id' }
+        );
+
+      if (!error) {
+        fetchMatchVotes(matchKey);
+      } else {
+        alert("Error al emitir voto: " + error.message);
+      }
+    }
+
+    // MANEJO DE PUBLICACIÓN DESDE ADMIN PANEL
+    async function handleCreateMatchSubmit(e) {
+      e.preventDefault();
+      if (!currentUser || currentUser.email !== ADMIN_EMAIL) {
+        alert("Acceso denegado: solo el administrador puede publicar.");
+        return;
+      }
+
+      const home = document.getElementById('adm-home').value.trim();
+      const away = document.getElementById('adm-away').value.trim();
+      const matchKey = (home + "-" + away).toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      const newMatch = {
+        match_key: matchKey,
+        league: document.getElementById('adm-league').value.trim(),
+        match_name: `${home} vs ${away}`,
+        match_date: document.getElementById('adm-date').value.trim(),
+        home_team: home,
+        away_team: away,
+        home_badge: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default.png&w=80&h=80`,
+        away_badge: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default.png&w=80&h=80`,
+        xg_home: document.getElementById('adm-xghome').value.trim(),
+        xg_away: document.getElementById('adm-xgaway').value.trim(),
+        possession_home: "55%",
+        possession_away: "45%",
+        tactical_read: document.getElementById('adm-tactical').value.trim(),
+        prob_home: "50%",
+        prob_draw: "26%",
+        prob_away: "24%",
+        picks: [
+          {
+            name: document.getElementById('adm-p1-name').value.trim(),
+            odds: parseFloat(document.getElementById('adm-p1-odds').value),
+            tag: "GRATIS",
+            ev: document.getElementById('adm-p1-ev').value.trim(),
+            isLocked: false
+          },
+          {
+            name: document.getElementById('adm-p2-name').value.trim(),
+            odds: parseFloat(document.getElementById('adm-p2-odds').value),
+            tag: "VIP EXCLUSIVO",
+            ev: document.getElementById('adm-p2-ev').value.trim(),
+            isLocked: true
+          }
+        ]
+      };
+
+      const { error } = await supabaseClient
+        .from('matches')
+        .upsert(newMatch, { onConflict: 'match_key' });
+
+      if (!error) {
+        alert("¡Partido publicado en Supabase con éxito!");
+        closeAdminModal();
+        await fetchMatchesFromSupabase();
+        triggerTacticalPrompt(matchKey);
+      } else {
+        alert("Error al publicar en base de datos: " + error.message);
+      }
     }
 
     function handleUserSearch(e) {
@@ -941,12 +1040,16 @@
       const val = document.getElementById('tactical-input').value.trim().toLowerCase();
       if (!val) return;
 
-      let key = 'stuttgart-gladbach';
-      if (val.includes('alaves') || val.includes('malaga')) key = 'alaves-malaga';
-      else if (val.includes('ipswich') || val.includes('forest')) key = 'ipswich-forest';
-      else if (val.includes('necaxa') || val.includes('juarez')) key = 'necaxa-juarez';
+      const foundKey = Object.keys(tacticalDB).find(k => {
+        const item = tacticalDB[k];
+        return item.home.toLowerCase().includes(val) || item.away.toLowerCase().includes(val) || item.league.toLowerCase().includes(val);
+      });
 
-      triggerTacticalPrompt(key, document.getElementById('tactical-input').value.trim());
+      if (foundKey) {
+        triggerTacticalPrompt(foundKey);
+      } else {
+        triggerTacticalPrompt('stuttgart-gladbach', document.getElementById('tactical-input').value.trim());
+      }
       document.getElementById('tactical-input').value = "";
     }
 
@@ -963,6 +1066,9 @@
     function closeVipModal() { document.getElementById('vip-modal').classList.add('hidden'); }
     function openAuditModal() { document.getElementById('audit-modal').classList.remove('hidden'); }
     function closeAuditModal() { document.getElementById('audit-modal').classList.add('hidden'); }
+    function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
+    function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+    
     function openAuthModal(mode = 'login') {
       switchAuthTab(mode);
       document.getElementById('auth-modal').classList.remove('hidden');
@@ -1022,6 +1128,7 @@
     async function checkUserSession() {
       const { data: { session } } = await supabaseClient.auth.getSession();
       const container = document.getElementById('auth-header-container');
+      const adminBtn = document.getElementById('admin-panel-btn');
 
       if (session && session.user) {
         currentUser = session.user;
@@ -1033,6 +1140,13 @@
           .single();
 
         isUserVip = profile ? profile.is_vip : false;
+
+        // Mostrar botón de administración solo a tu correo
+        if (currentUser.email === ADMIN_EMAIL) {
+          adminBtn.classList.remove('hidden');
+        } else {
+          adminBtn.classList.add('hidden');
+        }
 
         container.innerHTML = `
           <div class="flex items-center gap-2">
@@ -1050,6 +1164,7 @@
       } else {
         currentUser = null;
         isUserVip = false;
+        adminBtn.classList.add('hidden');
         container.innerHTML = `
           <button onclick="openAuthModal('login')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-200 hover:text-white hover:border-slate-400 transition-all">
             Iniciar Sesión
@@ -1058,7 +1173,7 @@
         document.getElementById('btn-header-vip').classList.remove('hidden');
       }
 
-      triggerTacticalPrompt('stuttgart-gladbach');
+      triggerTacticalPrompt(currentMatchKey);
     }
 
     async function handleLogout() {
@@ -1066,9 +1181,9 @@
       checkUserSession();
     }
 
-    // GESTIÓN DEL CHAT COMUNITARIO EN VIVO
+    // CHAT COMUNITARIO
     async function loadChatMessages() {
-      const { data: messages, error } = await supabaseClient
+      const { data: messages } = await supabaseClient
         .from('community_chat')
         .select('*')
         .order('created_at', { ascending: true })
@@ -1080,11 +1195,7 @@
       if (messages && messages.length > 0) {
         messages.forEach(msg => appendChatMessage(msg));
       } else {
-        container.innerHTML = `
-          <div class="text-center py-12 text-slate-500 text-xs font-mono">
-            Sé el primero en compartir un pick o análisis con la comunidad.
-          </div>
-        `;
+        container.innerHTML = `<div class="text-center py-12 text-slate-500 text-xs font-mono">Sé el primero en compartir un pick o análisis con la comunidad.</div>`;
       }
       container.scrollTop = container.scrollHeight;
     }
@@ -1123,33 +1234,28 @@
 
       const { error } = await supabaseClient
         .from('community_chat')
-        .insert([
-          {
-            user_id: currentUser.id,
-            email: currentUser.email,
-            is_vip: isUserVip,
-            message: text
-          }
-        ]);
+        .insert([{ user_id: currentUser.id, email: currentUser.email, is_vip: isUserVip, message: text }]);
 
-      if (!error) {
-        input.value = "";
-      } else {
-        alert("Error al enviar mensaje: " + error.message);
-      }
+      if (!error) input.value = "";
     }
 
-    // Suscripción Realtime para recibir mensajes de otros usuarios al instante
-    function setupRealtimeChat() {
+    function setupRealtimeListeners() {
       supabaseClient
         .channel('public:community_chat')
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'community_chat' }, payload => {
           appendChatMessage(payload.new);
         })
         .subscribe();
+
+      supabaseClient
+        .channel('public:matches')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
+          fetchMatchesFromSupabase();
+        })
+        .subscribe();
     }
 
-    // LIVE TOAST SOCIAL PROOF
+    // NOTIFICADOR SOCIAL PROOF
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
       { icon: "✅", title: "Pick Verificado", desc: "Stuttgart ML + Over 1.5 validado por modelo matemático", color: "text-progreen", bg: "bg-progreen/20" },
@@ -1168,18 +1274,15 @@
       document.getElementById('toast-desc').innerText = item.desc;
 
       toastEl.classList.remove('hidden');
-
-      setTimeout(() => {
-        toastEl.classList.add('hidden');
-      }, 5500);
-
+      setTimeout(() => { toastEl.classList.add('hidden'); }, 5500);
       toastIndex = (toastIndex + 1) % toastNotifications.length;
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       renderSlip();
-      checkUserSession();
-      setupRealtimeChat();
+      await fetchMatchesFromSupabase();
+      await checkUserSession();
+      setupRealtimeListeners();
       setInterval(triggerNextToast, 18000);
       setTimeout(triggerNextToast, 4000);
     });
