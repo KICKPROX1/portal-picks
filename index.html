@@ -116,12 +116,12 @@
     </div>
   </header>
 
-  <!-- BANNER PROMO WHOP -->
+  <!-- BANNER PROMO WHOP ACTUALIZADO -->
   <div class="bg-gradient-to-r from-emerald-950/40 via-innerbg to-blue-950/40 border-b border-bordercolor py-1.5 px-3 text-center text-xs">
     <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-slate-300 flex-wrap">
       <span class="bg-emerald-600 text-slate-950 text-[9px] font-mono font-black px-1.5 py-0.2 rounded uppercase">MEMBRESÍA EXCLUSIVA</span>
       <span class="text-[11px] sm:text-xs">Acceso inmediato a los Picks Bomba diarios:</span>
-      <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="text-emerald-400 font-bold hover:underline flex items-center gap-1 text-[11px] sm:text-xs">
+      <a href="https://portal-picks.whop.site/landing" target="_blank" class="text-emerald-400 font-bold hover:underline flex items-center gap-1 text-[11px] sm:text-xs">
         <span>Desbloquear en Whop</span> →
       </a>
     </div>
@@ -489,7 +489,7 @@
 
       <div class="border-t border-bordercolor/80 pt-4 flex items-center justify-between text-xs font-mono">
         <span class="text-slate-400">portal-picks.vercel.app</span>
-        <span class="text-amber-400 font-bold flex items-center gap-1"><span>👑</span> Pase VIP: whop.com/portal-picks</span>
+        <span class="text-amber-400 font-bold flex items-center gap-1"><span>👑</span> Pase VIP: portal-picks.whop.site/landing</span>
       </div>
     </div>
   </div>
@@ -537,7 +537,6 @@
           <div><label class="block text-slate-400 font-mono mb-1">URL Logo Visitante (Opcional)</label><input type="text" id="adm-away-badge" placeholder="https://..." class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white text-[11px]"></div>
         </div>
 
-        <!-- CAMPO VINCULACIÓN FIXTURE API-SPORTS -->
         <div class="p-3 bg-indigo-950/20 border border-indigo-500/40 rounded-xl space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-mono text-indigo-300 font-bold uppercase block">Automatización API-Sports</span>
@@ -604,7 +603,7 @@
     </div>
   </div>
 
-  <!-- MODAL VIP -->
+  <!-- MODAL VIP CON ENLACE DIRECTO A LA LANDING -->
   <div id="vip-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-cardbg border border-amber-500/30 rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
       <button onclick="closeVipModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
@@ -614,7 +613,7 @@
         <p class="text-xs text-slate-400 leading-relaxed">Desbloquea los **Picks Bomba**, análisis de cuotas con valor esperado (+EV), parlay óptimo y alertas instantáneas.</p>
       </div>
       <div class="space-y-3 mb-6">
-        <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="p-3.5 rounded-xl border-2 border-amber-500/70 bg-amber-950/20 flex items-center justify-between cursor-pointer shadow-lg shadow-amber-500/10 block hover:bg-amber-950/30 transition-all">
+        <a href="https://portal-picks.whop.site/landing" target="_blank" class="p-3.5 rounded-xl border-2 border-amber-500/70 bg-amber-950/20 flex items-center justify-between cursor-pointer shadow-lg shadow-amber-500/10 block hover:bg-amber-950/30 transition-all">
           <div>
             <div class="flex items-center gap-1.5"><span class="text-xs font-bold text-white">Pase Mensual VIP</span><span class="text-[9px] font-mono bg-amber-500 text-slate-950 px-1.5 py-0.2 rounded font-black uppercase">Recomendado</span></div>
             <span class="text-[11px] text-slate-400 block mt-0.5">Acceso diario completo • Pago Seguro con Stripe / Apple Pay</span>
@@ -623,7 +622,7 @@
         </a>
       </div>
       <div class="space-y-2">
-        <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20 block text-center">Desbloquear Acceso en Whop ($9.99/mes)</a>
+        <a href="https://portal-picks.whop.site/landing" target="_blank" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20 block text-center">Desbloquear Acceso en Whop ($9.99/mes)</a>
         <p class="text-[10px] text-center text-slate-500 font-mono">Sin plazos forzosos. Cancela en cualquier momento con un clic.</p>
       </div>
     </div>
@@ -671,7 +670,7 @@
     let authMode = 'login';
     let isTyping = false;
     let currentMatchKey = 'astonvilla-mancity';
-    const WHOP_CHECKOUT_URL = "https://whop.com/portal-picks/portal-picks-daily-winning-predictions";
+    const WHOP_CHECKOUT_URL = "https://portal-picks.whop.site/landing";
 
     // CATÁLOGO DE LOGOS OFICIALES (ESPN CDN)
     const TEAM_BADGES_BACKUP = {
