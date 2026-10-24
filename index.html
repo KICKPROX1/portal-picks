@@ -109,7 +109,7 @@
   <!-- WORKSPACE A 3 COLUMNAS -->
   <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-    <!-- COLUMNA 1 (IZQUIERDA): CARTELERA POR LIGAS (OMITE AUTOMÁTICAMENTE FINALIZADOS) -->
+    <!-- COLUMNA 1 (IZQUIERDA): CARTELERA POR LIGAS (FILTRADO AUTOMÁTICO FT) -->
     <aside id="col-fixture" class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
       <div class="bg-cardbg border border-bordercolor rounded-xl p-3 flex flex-col max-h-[520px] lg:max-h-none lg:h-[750px] shadow-lg">
         <div class="flex items-center justify-between pb-2.5 px-1 border-b border-bordercolor">
@@ -121,7 +121,7 @@
         </div>
 
         <div id="match-sidebar-list" class="flex-1 overflow-y-auto custom-scroll space-y-2.5 mt-2.5 pr-1 text-xs">
-          <!-- Render dinámico con acordeones por liga y logos -->
+          <!-- Render dinámico con acordeones por liga y logos verificados -->
         </div>
       </div>
     </aside>
@@ -644,16 +644,101 @@
     let currentMatchKey = 'astonvilla-mancity';
     const WHOP_CHECKOUT_URL = "https://whop.com/portal-picks/portal-picks-daily-winning-predictions";
 
+    // CATÁLOGO DE LOGOS OFICIALES (ESPN CDN)
+    const TEAM_BADGES_BACKUP = {
+      "aston villa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/362.png&w=100&h=100",
+      "manchester city": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=100&h=100",
+      "arsenal": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/359.png&w=100&h=100",
+      "everton": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/368.png&w=100&h=100",
+      "coventry": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/394.png&w=100&h=100",
+      "fulham": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/370.png&w=100&h=100",
+      "chelsea": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/363.png&w=100&h=100",
+      "tottenham": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/367.png&w=100&h=100",
+      "rayo vallecano": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/101.png&w=100&h=100",
+      "elche": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3751.png&w=100&h=100",
+      "racing": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/90.png&w=100&h=100",
+      "espanyol": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/88.png&w=100&h=100",
+      "valencia": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/94.png&w=100&h=100",
+      "villarreal": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/102.png&w=100&h=100",
+      "atletico": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/1068.png&w=100&h=100",
+      "deportivo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/95.png&w=100&h=100",
+      "cagliari": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/105.png&w=100&h=100",
+      "bologna": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/107.png&w=100&h=100",
+      "como": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/2765.png&w=100&h=100",
+      "sassuolo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3811.png&w=100&h=100",
+      "napoli": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/114.png&w=100&h=100",
+      "roma": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/104.png&w=100&h=100",
+      "lazio": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=100&h=100",
+      "parma": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/111.png&w=100&h=100",
+      "koln": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/122.png&w=100&h=100",
+      "schalke": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/133.png&w=100&h=100",
+      "mainz": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/2959.png&w=100&h=100",
+      "bremen": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/137.png&w=100&h=100",
+      "paderborn": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/6440.png&w=100&h=100",
+      "hamburgo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/126.png&w=100&h=100",
+      "dortmund": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/124.png&w=100&h=100",
+      "frankfurt": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/125.png&w=100&h=100",
+      "leon": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/225.png&w=100&h=100",
+      "toluca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/230.png&w=100&h=100",
+      "monterrey": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/226.png&w=100&h=100",
+      "chivas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/217.png&w=100&h=100",
+      "columbus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18267.png&w=100&h=100",
+      "toronto": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7318.png&w=100&h=100",
+      "red bulls": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/189.png&w=100&h=100",
+      "miami": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20232.png&w=100&h=100",
+      "atlanta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18418.png&w=100&h=100",
+      "chicago": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/182.png&w=100&h=100",
+      "dc united": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/193.png&w=100&h=100",
+      "cincinnati": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18268.png&w=100&h=100",
+      "orlando": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17726.png&w=100&h=100",
+      "nycfc": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17606.png&w=100&h=100",
+      "philadelphia": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10971.png&w=100&h=100",
+      "new england": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/188.png&w=100&h=100",
+      "houston": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/6077.png&w=100&h=100",
+      "minnesota": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18417.png&w=100&h=100",
+      "kansas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/186.png&w=100&h=100",
+      "austin": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20906.png&w=100&h=100",
+      "portland": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10972.png&w=100&h=100",
+      "charlotte": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/21300.png&w=100&h=100",
+      "banfield": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3.png&w=100&h=100",
+      "lanus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14.png&w=100&h=100",
+      "talleres": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20.png&w=100&h=100",
+      "defensa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10041.png&w=100&h=100",
+      "san lorenzo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18.png&w=100&h=100",
+      "newell": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/16.png&w=100&h=100",
+      "rosario central": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17.png&w=100&h=100",
+      "huracan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/11.png&w=100&h=100",
+      "fortaleza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14467.png&w=100&h=100",
+      "cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/328.png&w=100&h=100",
+      "alianza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14468.png&w=100&h=100",
+      "inter bogota": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20340.png&w=100&h=100",
+      "america": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/326.png&w=100&h=100",
+      "cucuta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/330.png&w=100&h=100"
+    };
+
+    function resolveTeamBadge(teamName, currentUrl) {
+      if (currentUrl && currentUrl.startsWith('http') && !currentUrl.includes('default.png')) {
+        return currentUrl;
+      }
+      const lower = (teamName || '').toLowerCase();
+      for (const key in TEAM_BADGES_BACKUP) {
+        if (lower.includes(key)) {
+          return TEAM_BADGES_BACKUP[key];
+        }
+      }
+      return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%23141820" stroke="%2310b981" stroke-width="2.5"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="16" fill="%2310b981" text-anchor="middle" dominant-baseline="middle">${encodeURIComponent((teamName || 'PB').slice(0, 3).toUpperCase())}</text></svg>`;
+    }
+
+    function handleImageError(imgEl, teamName) {
+      imgEl.onerror = null;
+      imgEl.src = resolveTeamBadge(teamName, null);
+    }
+
     let tacticalDB = {};
     let activeSlip = [
       { id: "s1", match: "Aston Villa vs City", pick: "Aston Villa +0.5", odds: 2.37 },
       { id: "s2", match: "Arsenal vs Everton", pick: "Arsenal Hándicap (-1.5)", odds: 1.95 }
     ];
-
-    function handleImageError(imgEl, initials) {
-      imgEl.onerror = null;
-      imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%231a1f2c" stroke="%2310b981" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2310b981" text-anchor="middle" dominant-baseline="middle">${(initials || 'PB').slice(0, 3)}</text></svg>`;
-    }
 
     function scrollToMobileSection(sectionId) {
       const el = document.getElementById(sectionId);
@@ -744,7 +829,6 @@
       if (dbMatches && dbMatches.length > 0) {
         dbMatches.forEach(m => {
           const status = m.current_minute || m.match_status || 'PROGRAMADO';
-          // Si el minuto o status marca FINAL o FT, queda excluido de la lista de partidos
           if (status.includes('FT') || status.includes('FINAL')) return;
 
           tacticalDB[m.match_key] = {
@@ -753,9 +837,9 @@
             league: m.league,
             date: m.match_date,
             home: m.home_team,
-            homeBadge: m.home_badge || '',
+            homeBadge: resolveTeamBadge(m.home_team, m.home_badge),
             away: m.away_team,
-            awayBadge: m.away_badge || '',
+            awayBadge: resolveTeamBadge(m.away_team, m.away_badge),
             homeScore: m.home_score !== undefined ? m.home_score : 0,
             awayScore: m.away_score !== undefined ? m.away_score : 0,
             statusText: status,
@@ -1533,8 +1617,8 @@
       const away = document.getElementById('adm-away').value.trim();
       const matchKey = (home + "-" + away).toLowerCase().replace(/[^a-z0-9]/g, '');
       const fixtureId = parseInt(document.getElementById('adm-fixture-id').value) || null;
-      const homeBadge = document.getElementById('adm-home-badge').value.trim() || `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default.png&w=80&h=80`;
-      const awayBadge = document.getElementById('adm-away-badge').value.trim() || `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default.png&w=80&h=80`;
+      const homeBadge = resolveTeamBadge(home, document.getElementById('adm-home-badge').value.trim());
+      const awayBadge = resolveTeamBadge(away, document.getElementById('adm-away-badge').value.trim());
 
       const newMatch = {
         match_key: matchKey,
