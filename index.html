@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PicksBomba VIP | Terminal Algorítmica & Pronósticos de Fútbol</title>
+  <title>PicksBomba VIP | Terminal Algorítmica & Pronósticos Deportivos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -47,6 +47,19 @@
     .vip-blur { filter: blur(5px); user-select: none; pointer-events: none; }
     @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .toast-anim { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    
+    /* ANIMACIONES DEL LOGO PICKSBOMBA */
+    @keyframes bombaFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1deg); }
+    }
+    .animate-bomba { animation: bombaFloat 4s ease-in-out infinite; }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.35; transform: scale(0.95); }
+      50% { opacity: 0.75; transform: scale(1.08); }
+    }
+    .animate-glow { animation: pulseGlow 3s ease-in-out infinite; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative pb-20 lg:pb-0">
@@ -54,14 +67,14 @@
   <!-- TOP HEADER CON LOGO OFICIAL PICKSBOMBA -->
   <header class="h-16 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
     <div class="flex items-center gap-3 cursor-pointer" onclick="renderWelcomeScreen()">
-      <div class="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-emerald-500/20 border border-emerald-400/30">
-        <span>💣</span>
-        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+      <div class="relative w-11 h-11 rounded-xl bg-[#141824] flex items-center justify-center p-1 border border-emerald-500/40 shadow-lg shadow-emerald-500/20">
+        <img src="Gemini_Generated_Image_pg9jhbpg9jhbpg9j.jpg" alt="PicksBomba" class="w-full h-full object-contain">
+        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
       </div>
       <div>
         <div class="text-base sm:text-lg font-black tracking-tight text-white uppercase leading-none flex items-center gap-1.5 font-sans">
           Picks<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent italic">BOMBA</span>
-          <span class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 not-italic">PRO</span>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 not-italic">VIP</span>
         </div>
         <span class="text-[9px] font-mono text-slate-400 block tracking-wider mt-1">Terminal Algorítmica & Valor +EV</span>
       </div>
@@ -149,7 +162,7 @@
         <span id="active-tab-indicator" class="text-[10px] font-mono text-slate-500 shrink-0 hidden sm:block">Terminal</span>
       </div>
 
-      <!-- VISTA 1: RADAR TÁCTICO IA & BIENVENIDA -->
+      <!-- VISTA 1: RADAR TÁCTICO IA & BIENVENIDA ANIMADA -->
       <div id="view-tactics" class="flex-1 flex flex-col overflow-hidden">
         <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4"></div>
         <div class="p-3 bg-[#10141d] border-t border-bordercolor">
@@ -422,7 +435,9 @@
 
       <div class="flex items-center justify-between border-b border-bordercolor/80 pb-5">
         <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-black text-white text-2xl shadow-lg shadow-emerald-500/30">💣</div>
+          <div class="w-14 h-14 rounded-2xl bg-[#141824] flex items-center justify-center p-1.5 border border-emerald-500/40 shadow-lg shadow-emerald-500/30">
+            <img src="Gemini_Generated_Image_pg9jhbpg9jhbpg9j.jpg" class="w-full h-full object-contain">
+          </div>
           <div>
             <h1 class="text-xl font-black tracking-tight uppercase flex items-center gap-2">
               Picks<span class="text-emerald-400 italic">BOMBA</span> <span class="text-amber-400 font-mono text-sm px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40">VIP</span>
@@ -754,42 +769,78 @@
       document.getElementById('mobile-slip-drawer').classList.add('hidden');
     }
 
+    // BIENVENIDA VISUAL CON EL LOGO OFICIAL ANIMADO
     function renderWelcomeScreen() {
       const stream = document.getElementById('tactical-stream');
       stream.innerHTML = `
-        <div class="space-y-4 animate-fade-in">
-          <div class="bg-gradient-to-r from-emerald-950/40 via-innerbg to-cardbg border border-bordercolor rounded-2xl p-5 shadow-lg relative overflow-hidden">
-            <div class="flex items-start justify-between relative z-10">
-              <div>
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Terminal Cuantitativa Activa</span>
-                </div>
-                <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Bienvenido a PicksBomba PRO</h2>
-                <p class="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
-                  Sistema algorítmico diseñado para identificar <strong class="text-emerald-400">valor esperado positivo (+EV)</strong>, análisis métrico xG y liquidación automática de aciertos en tiempo real.
-                </p>
-              </div>
-              <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 items-center justify-center text-2xl shrink-0 shadow-lg shadow-emerald-500/20">
-                💣
-              </div>
-            </div>
+        <div class="space-y-5 animate-fade-in">
+          
+          <!-- BANNER HERO PRINCIPAL CON LOGO ANIMADO -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0e131d] via-[#141b29] to-[#0a0d14] border-2 border-emerald-500/40 p-6 sm:p-8 text-center shadow-2xl">
+            
+            <!-- AURA LUMINOSA EXPANSIVA -->
+            <div class="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none animate-glow"></div>
+            <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-amber-500/15 rounded-full blur-3xl pointer-events-none animate-glow"></div>
 
-            <div class="mt-4 pt-3 border-t border-bordercolor/60 flex items-center gap-3">
-              <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
-                <span>💣 Ver Pick Bomba: Villa vs City</span>
-              </button>
-              <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">O selecciona un partido de la cartelera activa.</span>
+            <div class="relative z-10 flex flex-col items-center">
+              
+              <!-- CONTENEDOR DEL LOGO ANIMADO CON FLOTACIÓN -->
+              <div class="relative mb-4 animate-bomba">
+                <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-b from-innerbg to-basebg p-2 shadow-2xl shadow-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center">
+                  <img src="Gemini_Generated_Image_pg9jhbpg9jhbpg9j.jpg" alt="PicksBomba" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(16,185,129,0.35)]">
+                </div>
+                <!-- INSIGNIA FLOTANTE EN VIVO -->
+                <span class="absolute -bottom-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-black font-mono text-[10px] px-3 py-0.5 rounded-full uppercase tracking-wider shadow-lg border border-emerald-300/40">
+                  ⚡ RADAR CUÁNTICO
+                </span>
+              </div>
+
+              <!-- TÍTULO Y DESCRIPCIÓN -->
+              <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase font-sans mt-2">
+                Picks<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent italic">BOMBA</span> <span class="text-amber-400 font-mono text-sm px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 not-italic">VIP</span>
+              </h2>
+              
+              <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-lg leading-relaxed font-sans">
+                Sistema matemático que rastrea ineficiencias de cuotas en tiempo real. Selecciona un partido de la cartelera para ver el análisis de valor esperado (<strong class="text-emerald-400">+EV</strong>) y los <strong class="text-amber-400">Picks Bomba</strong> del día.
+              </p>
+
+              <!-- MÉTRICAS EN VIVO -->
+              <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-md mt-6 pt-5 border-t border-bordercolor/80">
+                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
+                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Win Rate</span>
+                  <span class="text-sm sm:text-base font-black font-mono text-emerald-400 mt-0.5 block">77.4%</span>
+                </div>
+                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
+                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Racha Actual</span>
+                  <span class="text-sm sm:text-base font-black font-mono text-progreen mt-0.5 block">5 Verdes 🔥</span>
+                </div>
+                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
+                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Valor Promedio</span>
+                  <span class="text-sm sm:text-base font-black font-mono text-amber-400 mt-0.5 block">+18.5% EV</span>
+                </div>
+              </div>
+
+              <!-- BOTÓN CTA PRINCIPAL -->
+              <div class="mt-6 flex flex-col sm:flex-row items-center gap-3">
+                <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-emerald-500/25 active:scale-95 cursor-pointer">
+                  <span>💣 Desbloquear Pick Bomba Destacado</span>
+                </button>
+                <button onclick="switchMainTab('tipsters')" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                  <span>🏆 Ver Muro de Aciertos</span>
+                </button>
+              </div>
+
             </div>
           </div>
 
-          <div class="bg-innerbg/70 border border-bordercolor rounded-2xl p-4 sm:p-5 space-y-3">
+          <!-- REGLAS DE GESTIÓN Y PROTOCOLO -->
+          <div class="bg-innerbg/60 border border-bordercolor rounded-2xl p-4 sm:p-5 space-y-3">
             <div class="flex items-center justify-between border-b border-bordercolor/70 pb-2.5">
               <div class="flex items-center gap-2">
                 <span class="text-sm">🛡️</span>
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Protocolo de Gestión & Apuesta Responsable</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Protocolo de Gestión PicksBomba</span>
               </div>
-              <span class="text-[10px] font-mono bg-basebg px-2 py-0.5 rounded text-amber-400 font-bold">REGLAS</span>
+              <span class="text-[10px] font-mono bg-basebg px-2 py-0.5 rounded text-amber-400 font-bold">REGLAS DE ORO</span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
@@ -804,14 +855,15 @@
 
               <div class="p-3 rounded-xl bg-basebg/60 border border-bordercolor/80 space-y-1">
                 <div class="font-bold text-white flex items-center gap-1.5 text-[11px]">
-                  <span class="text-emerald-400 font-mono">02.</span> Búsqueda de Valor (+EV)
+                  <span class="text-emerald-400 font-mono">02.</span> Ventaja Matemática (+EV)
                 </div>
                 <p class="text-[11px] text-slate-400 leading-relaxed">
-                  Apuesta cuando la probabilidad calculada por el modelo supere la cuota del mercado.
+                  Apuesta únicamente cuando la probabilidad estimada supere el precio que paga la casa.
                 </p>
               </div>
             </div>
           </div>
+
         </div>
       `;
     }
