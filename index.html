@@ -109,18 +109,18 @@
         <div class="flex items-center justify-between pb-2.5 px-1 border-b border-bordercolor">
           <div class="flex items-center gap-2">
             <span class="text-sm">🏆</span>
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Competiciones</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Competiciones Activas</span>
           </div>
           <span class="text-[9px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-proaccent font-bold">FILTRADO PRO</span>
         </div>
 
         <div id="match-sidebar-list" class="flex-1 overflow-y-auto custom-scroll space-y-2.5 mt-2.5 pr-1 text-xs">
-          <!-- Render dinámico organizado por ligas con logos -->
+          <!-- Render dinámico filtrado sin partidos finalizados -->
         </div>
       </div>
     </aside>
 
-    <!-- COLUMNA 2 (CENTRAL): PESTAÑAS (RADAR IA / CHAT / TIPSTERS / TRACKER) -->
+    <!-- COLUMNA 2 (CENTRAL): PESTAÑAS (RADAR IA / CHAT / RANKING ACIERTOS / TRACKER) -->
     <section id="col-center" class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden min-h-[560px] lg:h-[750px] shadow-lg">
       
       <!-- HEADER CON 4 PESTAÑAS -->
@@ -134,7 +134,7 @@
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
           </button>
           <button id="tab-tipsters-btn" onclick="switchMainTab('tipsters')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1">
-            <span>🏆 Ranking</span>
+            <span>🏆 Ranking Aciertos</span>
           </button>
           <button id="tab-tracker-btn" onclick="switchMainTab('tracker')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1">
             <span>📊 Mi Bitácora</span>
@@ -165,14 +165,14 @@
         </div>
       </div>
 
-      <!-- VISTA 3: TIPSTERS LEADERBOARD -->
+      <!-- VISTA 3: RANKING DE ACIERTOS (SOLO GANADAS) -->
       <div id="view-tipsters" class="flex-1 flex flex-col overflow-hidden hidden">
         <div class="p-3 bg-innerbg/60 border-b border-bordercolor flex items-center justify-between">
           <div>
             <span class="text-xs font-bold text-white flex items-center gap-1.5">
-              <span>🏅</span> Ranking Semanal de Tipsters
+              <span>🏅</span> Muro de Aciertos & Podio de Tipsters
             </span>
-            <span class="text-[10px] text-slate-400 block">El #1 al finalizar la semana gana 1 Mes de Pase VIP gratis.</span>
+            <span class="text-[10px] text-slate-400 block">Vitrina verificada de pronósticos ganados de la comunidad.</span>
           </div>
           <button onclick="openTipModal()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1 shadow-md transition-all">
             <span>+</span> Publicar
@@ -183,23 +183,23 @@
           <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
             <div class="bg-innerbg p-2.5 rounded-xl border border-amber-500/30">
               <span class="text-amber-400 text-xs sm:text-sm block">🥇 1º</span>
-              <span id="rank-1-name" class="font-bold text-white block mt-1 truncate">Cargando...</span>
-              <span id="rank-1-stats" class="text-[10px] text-progreen">0A - 0P</span>
+              <span id="rank-1-name" class="font-bold text-white block mt-1 truncate">Sin datos</span>
+              <span id="rank-1-stats" class="text-[10px] text-progreen">0 Verdes ✅</span>
             </div>
             <div class="bg-innerbg p-2.5 rounded-xl border border-slate-600">
               <span class="text-slate-300 text-xs sm:text-sm block">🥈 2º</span>
-              <span id="rank-2-name" class="font-bold text-white block mt-1 truncate">Cargando...</span>
-              <span id="rank-2-stats" class="text-[10px] text-slate-400">0A - 0P</span>
+              <span id="rank-2-name" class="font-bold text-white block mt-1 truncate">Sin datos</span>
+              <span id="rank-2-stats" class="text-[10px] text-progreen">0 Verdes ✅</span>
             </div>
             <div class="bg-innerbg p-2.5 rounded-xl border border-amber-700/50">
               <span class="text-amber-600 text-xs sm:text-sm block">🥉 3º</span>
-              <span id="rank-3-name" class="font-bold text-white block mt-1 truncate">Cargando...</span>
-              <span id="rank-3-stats" class="text-[10px] text-slate-400">0A - 0P</span>
+              <span id="rank-3-name" class="font-bold text-white block mt-1 truncate">Sin datos</span>
+              <span id="rank-3-stats" class="text-[10px] text-progreen">0 Verdes ✅</span>
             </div>
           </div>
 
           <div class="space-y-2">
-            <span class="text-[10px] font-mono uppercase font-bold text-slate-400 block tracking-wider">Pronósticos de Aficionados</span>
+            <span class="text-[10px] font-mono uppercase font-bold text-slate-400 block tracking-wider">Pronósticos Cobrados Recientes</span>
             <div id="community-tips-list" class="space-y-2"></div>
           </div>
         </div>
@@ -605,7 +605,7 @@
       <div class="flex-1 overflow-y-auto custom-scroll mt-4">
         <table class="w-full text-left text-xs font-sans">
           <thead><tr class="border-b border-bordercolor text-slate-400 font-mono uppercase text-[10px]"><th class="py-2.5 px-2">Fecha</th><th class="py-2.5 px-2">Partido</th><th class="py-2.5 px-2">Selección</th><th class="py-2.5 px-2 text-center">Cuota</th><th class="py-2.5 px-2 text-center">Stake</th><th class="py-2.5 px-2 text-right">Resultado</th></tr></thead>
-          <tbody class="divide-y divide-bordercolor font-mono text-[11px]">
+          <tbody class="divide-y border-bordercolor font-mono text-[11px]">
             <tr><td class="py-2.5 px-2 text-slate-400">22 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Freiburg vs Bayern</td><td class="py-2.5 px-2 text-slate-300">Ambos Marcan (Sí)</td><td class="py-2.5 px-2 text-center text-slate-300">1.45</td><td class="py-2.5 px-2 text-center text-slate-300">2.5u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.13u ✅</td></tr>
             <tr><td class="py-2.5 px-2 text-slate-400">21 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Real Madrid vs Dortmund</td><td class="py-2.5 px-2 text-slate-300">Más de 2.5 Goles</td><td class="py-2.5 px-2 text-center text-slate-300">1.55</td><td class="py-2.5 px-2 text-center text-slate-300">3.0u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.65u ✅</td></tr>
             <tr><td class="py-2.5 px-2 text-slate-400">20 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Arsenal vs Shakhtar</td><td class="py-2.5 px-2 text-slate-300">Arsenal -1.5 AH</td><td class="py-2.5 px-2 text-center text-slate-300">1.74</td><td class="py-2.5 px-2 text-center text-slate-300">2.0u</td><td class="py-2.5 px-2 text-right text-rose-400 font-bold">-2.00u ❌</td></tr>
@@ -620,11 +620,11 @@
     <div id="toast-icon" class="w-8 h-8 rounded-lg bg-progreen/20 text-progreen flex items-center justify-center font-bold text-sm shrink-0">⚡</div>
     <div>
       <div id="toast-title" class="text-xs font-bold text-white leading-tight">Pick Verificado en Vivo</div>
-      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">Alavés 1-0 Málaga: Pronóstico Cobrado ✅</div>
+      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">Aston Villa +0.5 (Cuota 2.37) CONFIRMADO</div>
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC: SUPABASE AUTH + TRACKER + ADMIN + WELCOME + REALTIME SYNC + LOGOS -->
+  <!-- SCRIPT LOGIC: SUPABASE AUTH + TRACKER + ADMIN + REALTIME SYNC + LOGOS + LIMPIEZA FT -->
   <script>
     const SUPABASE_URL = "https://ukgvoeblxzspffngumpk.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrZ3ZvZWJseHpzcGZmbmd1bXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3MzM4MzUsImV4cCI6MjEwODMwOTgzNX0._P82lM8TyzNdrQbCvqDt_0AZ1F0pzJ1s5Vx2jstPT7U";
@@ -638,53 +638,7 @@
     let currentMatchKey = 'astonvilla-mancity';
     const WHOP_CHECKOUT_URL = "https://whop.com/portal-picks/portal-picks-daily-winning-predictions";
 
-    const defaultTacticalDB = {
-      "astonvilla-mancity": {
-        query: "¿Cuál es el valor matemático para Aston Villa vs Manchester City en Villa Park?",
-        matchName: "Aston Villa vs Manchester City",
-        league: "Premier League • Jornada 9",
-        date: "Hoy • 6:30 AM CT • Villa Park",
-        home: "Aston Villa",
-        homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/362.png&w=80&h=80",
-        away: "Manchester City",
-        awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=80&h=80",
-        homeScore: 0,
-        awayScore: 0,
-        statusText: "PROGRAMADO",
-        isLive: false,
-        xgHome: "1.38", xgAway: "1.74", possessionHome: "44%", possessionAway: "56%",
-        tacticalRead: "El Aston Villa sostiene una racha formidable de imbatibilidad en casa. El mercado descuenta en demasía a la visita, provocando un desajuste (+EV masivo) en el Hándicap +0.5 y el triunfo local.",
-        modelProb: { home: "28.5%", draw: "24.0%", away: "47.5%" },
-        picks: [
-          { name: "Menos de 3.5 Goles Totales", odds: 1.71, tag: "ALTA CONFIANZA", ev: "+14.2%", isLocked: false },
-          { name: "Aston Villa Hándicap (+0.5)", odds: 2.37, tag: "VALOR +EV", ev: "+39.1%", isLocked: false },
-          { name: "Gana Aston Villa (ML Directo)", odds: 5.12, tag: "💣 PICK BOMBA VIP", ev: "+72.1%", isLocked: true }
-        ]
-      },
-      "alaves-malaga": {
-        query: "Análisis para el partido Deportivo Alavés vs Málaga CF en Mendizorroza.",
-        matchName: "Deportivo Alavés vs Málaga CF",
-        league: "LaLiga • Jornada 10",
-        date: "Finalizado • Mendizorroza",
-        home: "Deportivo Alavés",
-        homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=80&h=80",
-        away: "Málaga CF",
-        awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=80&h=80",
-        homeScore: 1,
-        awayScore: 0,
-        statusText: "FINAL FT",
-        isLive: false,
-        xgHome: "1.10", xgAway: "0.65", possessionHome: "48%", possessionAway: "52%",
-        tacticalRead: "Partido cerrado y de alta fricción defensiva. El Alavés se llevó los tres puntos por la mínima (1-0), confirmando el acierto en Menos de 2.5 y Portería a Cero.",
-        modelProb: { home: "59.0%", draw: "26.5%", away: "14.5%" },
-        picks: [
-          { name: "Menos de 2.5 Goles Totales", odds: 1.80, tag: "GRATIS", ev: "+11.6%", isLocked: false },
-          { name: "Alavés Gana con Portería a Cero", odds: 2.60, tag: "VIP EXCLUSIVO", ev: "+18.4%", isLocked: true }
-        ]
-      }
-    };
-
-    let tacticalDB = { ...defaultTacticalDB };
+    let tacticalDB = {};
     let activeSlip = [
       { id: "s1", match: "Aston Villa vs City", pick: "Aston Villa +0.5", odds: 2.37 },
       { id: "s2", match: "Arsenal vs Everton", pick: "Arsenal Hándicap (-1.5)", odds: 1.95 }
@@ -722,7 +676,7 @@
                 </div>
                 <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Jornada Multiliga en Vivo</h2>
                 <p class="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
-                  Explora las competiciones en la barra lateral con sus logos oficiales, cuotas calculadas con valor matemático (+EV) y marcadores en directo.
+                  Explora las competiciones activas en la barra lateral con sus logos oficiales, cuotas con valor matemático (+EV) y marcadores en directo.
                 </p>
               </div>
               <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-problue/20 text-proaccent border border-problue/30 items-center justify-center text-2xl shrink-0">
@@ -734,7 +688,7 @@
               <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="px-3.5 py-2 rounded-lg bg-problue hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
                 <span>💣 Ver Pick Bomba: Villa vs City</span>
               </button>
-              <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">O haz clic en cualquier partido de la jornada.</span>
+              <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">O selecciona un partido de la cartelera activa.</span>
             </div>
           </div>
 
@@ -771,14 +725,22 @@
       `;
     }
 
+    // CARGA DE PARTIDOS ACTIVOS (OMITE AUTOMÁTICAMENTE PARTIDOS FINALIZADOS)
     async function fetchMatchesFromSupabase() {
       const { data: dbMatches } = await supabaseClient
         .from('matches')
         .select('*')
+        .eq('is_settled', false)
         .order('created_at', { ascending: false });
+
+      tacticalDB = {};
 
       if (dbMatches && dbMatches.length > 0) {
         dbMatches.forEach(m => {
+          const status = m.current_minute || m.match_status || 'PROGRAMADO';
+          // Si el minuto o status marca FINAL o FT, queda excluido de la lista de partidos
+          if (status.includes('FT') || status.includes('FINAL')) return;
+
           tacticalDB[m.match_key] = {
             query: `Análisis y valor matemático para ${m.match_name}.`,
             matchName: m.match_name,
@@ -790,8 +752,8 @@
             awayBadge: m.away_badge || '',
             homeScore: m.home_score !== undefined ? m.home_score : 0,
             awayScore: m.away_score !== undefined ? m.away_score : 0,
-            statusText: m.current_minute || m.match_status || 'PROGRAMADO',
-            isLive: (m.current_minute && m.current_minute.includes("'")) ? true : false,
+            statusText: status,
+            isLive: (status.includes("'")),
             apiFixtureId: m.api_fixture_id || null,
             xgHome: m.xg_home,
             xgAway: m.xg_away,
@@ -811,9 +773,15 @@
       const list = document.getElementById('match-sidebar-list');
       list.innerHTML = "";
 
+      const matchKeys = Object.keys(tacticalDB);
+      if (matchKeys.length === 0) {
+        list.innerHTML = `<div class="text-center py-10 text-slate-500 font-mono text-xs">No hay partidos activos en este momento.</div>`;
+        return;
+      }
+
       const leaguesMap = {};
 
-      Object.keys(tacticalDB).forEach(key => {
+      matchKeys.forEach(key => {
         const item = tacticalDB[key];
         let leagueName = item.league ? item.league.split('•')[0].trim() : 'Otras Ligas';
         if (!leaguesMap[leagueName]) {
@@ -886,20 +854,17 @@
             </div>
 
             <div class="grid grid-cols-12 gap-1 items-center">
-              <!-- EQUIPO LOCAL CON LOGO -->
               <div class="col-span-5 flex items-center gap-1.5 min-w-0">
                 <img src="${item.homeBadge}" class="w-5 h-5 team-badge-img shrink-0" onerror="handleImageError(this, '${item.home}')">
                 <span class="font-bold text-white text-[11px] truncate">${item.home}</span>
               </div>
 
-              <!-- MARCADOR -->
               <div class="col-span-2 text-center">
-                <span class="px-1.5 py-0.5 rounded bg-basebg border border-bordercolor font-mono font-bold text-[11px] ${isLive || item.statusText.includes('FT') ? 'text-amber-400' : 'text-slate-400'}">
+                <span class="px-1.5 py-0.5 rounded bg-basebg border border-bordercolor font-mono font-bold text-[11px] ${isLive ? 'text-amber-400' : 'text-slate-400'}">
                   ${item.homeScore}-${item.awayScore}
                 </span>
               </div>
 
-              <!-- EQUIPO VISITANTE CON LOGO -->
               <div class="col-span-5 flex items-center justify-end gap-1.5 min-w-0 text-right">
                 <span class="font-bold text-white text-[11px] truncate">${item.away}</span>
                 <img src="${item.awayBadge}" class="w-5 h-5 team-badge-img shrink-0" onerror="handleImageError(this, '${item.away}')">
@@ -1251,7 +1216,7 @@
       } else if (tab === 'tipsters') {
         viewTipsters.classList.remove('hidden');
         btnTipsters.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-amber-400 text-white flex items-center gap-1";
-        if (indicator) indicator.innerText = "Comunitario";
+        if (indicator) indicator.innerText = "Aciertos";
         loadCommunityTips();
       } else if (tab === 'tracker') {
         viewTracker.classList.remove('hidden');
@@ -1453,68 +1418,60 @@
       if (!error) fetchMatchVotes(matchKey);
     }
 
+    // CARGA DE RANKING COMUNITARIO: EXCLUSIVAMENTE PRONÓSTICOS GANADOS
     async function loadCommunityTips() {
       const { data: tips } = await supabaseClient
         .from('community_tips')
         .select('*')
+        .eq('status', 'GANADA')
         .order('created_at', { ascending: false })
-        .limit(40);
+        .limit(50);
 
       const container = document.getElementById('community-tips-list');
       container.innerHTML = "";
 
       if (!tips || tips.length === 0) {
-        container.innerHTML = `<div class="text-center py-8 text-slate-500 font-mono text-xs">No hay pronósticos activos aún. Sé el primero en publicar el tuyo.</div>`;
+        container.innerHTML = `<div class="text-center py-8 text-slate-500 font-mono text-xs">Aún no hay aciertos registrados en el ranking de esta jornada.</div>`;
         return;
       }
 
       const userStats = {};
       tips.forEach(t => {
-        if (!userStats[t.username]) userStats[t.username] = { won: 0, lost: 0, total: 0 };
-        if (t.status === 'GANADA') userStats[t.username].won++;
-        if (t.status === 'PERDIDA') userStats[t.username].lost++;
-        userStats[t.username].total++;
+        if (!userStats[t.username]) userStats[t.username] = { won: 0 };
+        userStats[t.username].won++;
       });
 
       const sortedUsers = Object.keys(userStats).sort((a, b) => userStats[b].won - userStats[a].won);
       if (sortedUsers[0]) {
         document.getElementById('rank-1-name').innerText = sortedUsers[0];
-        document.getElementById('rank-1-stats').innerText = `${userStats[sortedUsers[0]].won}A - ${userStats[sortedUsers[0]].lost}P`;
+        document.getElementById('rank-1-stats').innerText = `${userStats[sortedUsers[0]].won} Verdes ✅`;
       }
       if (sortedUsers[1]) {
         document.getElementById('rank-2-name').innerText = sortedUsers[1];
-        document.getElementById('rank-2-stats').innerText = `${userStats[sortedUsers[1]].won}A - ${userStats[sortedUsers[1]].lost}P`;
+        document.getElementById('rank-2-stats').innerText = `${userStats[sortedUsers[1]].won} Verdes ✅`;
       }
       if (sortedUsers[2]) {
         document.getElementById('rank-3-name').innerText = sortedUsers[2];
-        document.getElementById('rank-3-stats').innerText = `${userStats[sortedUsers[2]].won}A - ${userStats[sortedUsers[2]].lost}P`;
+        document.getElementById('rank-3-stats').innerText = `${userStats[sortedUsers[2]].won} Verdes ✅`;
       }
 
       tips.forEach(tip => {
-        const isAdmin = currentUser && currentUser.email === ADMIN_EMAIL;
-        let badgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/30";
-        if (tip.status === 'GANADA') badgeColor = "bg-emerald-500/20 text-progreen border-emerald-500/40";
-        if (tip.status === 'PERDIDA') badgeColor = "bg-rose-500/20 text-rose-400 border-rose-500/40";
-
+        const timeStr = new Date(tip.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' });
         const div = document.createElement('div');
-        div.className = "p-3 rounded-xl bg-innerbg border border-bordercolor flex items-center justify-between";
+        div.className = "p-3 rounded-xl bg-innerbg border border-emerald-500/30 flex items-center justify-between shadow-sm";
         div.innerHTML = `
           <div>
             <div class="flex items-center gap-1.5">
               ${tip.is_vip ? '<span class="text-amber-400 text-xs">👑</span>' : '<span class="text-slate-400 text-xs">👤</span>'}
               <span class="font-bold text-white text-[11px]">${tip.username}</span>
-              <span class="text-[9px] font-mono border px-1.5 py-0.2 rounded font-bold ${badgeColor}">${tip.status}</span>
+              <span class="text-[9px] font-mono border px-1.5 py-0.2 rounded font-bold bg-emerald-500/20 text-progreen border-emerald-500/40">ACERTADA ✅</span>
+              <span class="text-[9px] font-mono text-slate-500 ml-1">${timeStr}</span>
             </div>
             <div class="font-bold text-slate-200 text-xs mt-1">${tip.match_name}: <span class="text-proaccent">${tip.selection}</span></div>
-            <div class="text-[10px] font-mono text-slate-400">Cuota: <strong class="text-white">${parseFloat(tip.odds).toFixed(2)}</strong> · Stake: ${tip.stake}u</div>
+            <div class="text-[10px] font-mono text-slate-400">Cuota Oficial: <strong class="text-white">${parseFloat(tip.odds).toFixed(2)}</strong> · Stake: ${tip.stake}u</div>
           </div>
-          <div class="flex items-center gap-2">
-            ${isAdmin && tip.status === 'PENDIENTE' ? `
-              <button onclick="resolveCommunityTip('${tip.id}', 'GANADA')" class="px-2 py-1 bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded text-[10px] font-mono transition-all">✅ Win</button>
-              <button onclick="resolveCommunityTip('${tip.id}', 'PERDIDA')" class="px-2 py-1 bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white rounded text-[10px] font-mono transition-all">❌ Loss</button>
-            ` : `
-              <button onclick="addPickToSlip('${tip.match_name}', '${tip.selection}', ${tip.odds})" class="px-2 py-1 rounded bg-innerbg border border-bordercolor hover:border-proaccent text-white font-mono text-[10px] transition-all">+ Boleto</button>
-            `}
+          <div class="text-right">
+            <span class="text-xs font-mono font-black text-progreen bg-progreen/10 px-2 py-1 rounded border border-progreen/30">+${(tip.stake * tip.odds - tip.stake).toFixed(2)}u</span>
           </div>
         `;
         container.appendChild(div);
@@ -1536,7 +1493,7 @@
         .insert([{ user_id: currentUser.id, username, is_vip: isUserVip, match_name: matchName, selection, odds, stake, status: 'PENDIENTE' }]);
 
       if (!error) {
-        alert("¡Pronóstico publicado en el ranking!");
+        alert("¡Pronóstico publicado! En cuanto se confirme el verde entrará automáticamente al muro del ranking.");
         closeTipModal();
         loadCommunityTips();
       } else {
@@ -1618,7 +1575,7 @@
         return item.home.toLowerCase().includes(val) || item.away.toLowerCase().includes(val) || item.league.toLowerCase().includes(val);
       });
       if (foundKey) triggerTacticalPrompt(foundKey);
-      else triggerTacticalPrompt('astonvilla-mancity', document.getElementById('tactical-input').value.trim());
+      else if (Object.keys(tacticalDB).length > 0) triggerTacticalPrompt(Object.keys(tacticalDB)[0]);
       document.getElementById('tactical-input').value = "";
     }
 
@@ -1755,7 +1712,7 @@
 
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
-      { icon: "✅", title: "Pick Verificado", desc: "Alavés vs Málaga: Menos de 2.5 goles COBRADO ✅", color: "text-progreen", bg: "bg-progreen/20" },
+      { icon: "✅", title: "Pick Verificado Cobrado", desc: "Alavés 1-0: Menos de 2.5 Goles Ganada ✅", color: "text-progreen", bg: "bg-progreen/20" },
       { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Aston Villa +0.5 (Cuota 2.37) CONFIRMADO", color: "text-proaccent", bg: "bg-blue-500/20" },
       { icon: "👑", title: "Nuevo Miembro Premium", desc: "Acceso VIP activado con éxito desde Whop", color: "text-amber-400", bg: "bg-amber-500/20" }
     ];
