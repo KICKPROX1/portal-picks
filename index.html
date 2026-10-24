@@ -48,6 +48,1887 @@
     @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .toast-anim { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     
+    /* ANIMACIÓN DE FLOTACIÓN SUAVE PICKSBOMBA */
+    @keyframes bombaFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(0.8deg); }
+    }
+    .animate-bomba { animation: bombaFloat 3.8s ease-in-out infinite; }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.3; transform: scale(0.95); }
+      50% { opacity: 0.7; transform: scale(1.06); }
+    }
+    .animate-glow { animation: pulseGlow 3s ease-in-out infinite; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative pb-20 lg:pb-0">
+
+  <!-- TOP HEADER CON LOGO OFICIAL PICKSBOMBA -->
+  <header class="h-16 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="renderWelcomeScreen()">
+      <div class="relative w-11 h-11 rounded-xl bg-[#141824] flex items-center justify-center p-1 border border-emerald-500/40 shadow-lg shadow-emerald-500/20">
+        <img src="logo.png" alt="PicksBomba" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>💣</text></svg>';">
+        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+      </div>
+      <div>
+        <div class="text-base sm:text-lg font-black tracking-tight text-white uppercase leading-none flex items-center gap-1.5 font-sans">
+          Picks<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent italic">BOMBA</span>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 not-italic">PRO</span>
+        </div>
+        <span class="text-[9px] font-mono text-slate-400 block tracking-wider mt-1">Terminal Algorítmica & Valor +EV</span>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-2 sm:gap-3">
+      <button onclick="openAuditModal()" class="hidden md:flex items-center gap-2 bg-innerbg px-3 py-1.5 rounded-lg border border-bordercolor text-xs font-mono hover:border-emerald-500 transition-all cursor-pointer">
+        <span class="w-2 h-2 rounded-full bg-progreen animate-pulse"></span>
+        <span class="text-slate-300">Racha: <strong class="text-progreen">5 Verdes</strong></span>
+        <span class="text-slate-500">|</span>
+        <span class="text-slate-300">Win Rate: <strong class="text-white">77.4%</strong></span>
+        <span class="text-[10px] text-emerald-400 underline ml-1">Historial</span>
+      </button>
+
+      <!-- BOTON ADMIN ACCESO RAPIDO -->
+      <button id="admin-panel-btn" onclick="openAdminModal()" class="hidden text-xs font-bold px-2.5 py-1.5 rounded-lg bg-indigo-600/30 border border-indigo-500/50 hover:bg-indigo-600/50 text-indigo-300 flex items-center gap-1 transition-all">
+        ⚙️ Admin
+      </button>
+
+      <button onclick="openVipModal()" id="btn-header-vip" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 flex items-center gap-1.5 shadow-md transition-all active:scale-95 shrink-0">
+        <span>👑</span>
+        <span class="hidden sm:inline">Pase VIP $10/mes</span>
+        <span class="sm:hidden">VIP $10</span>
+      </button>
+
+      <div id="auth-header-container">
+        <button onclick="openAuthModal('login')" class="text-xs font-semibold px-2.5 sm:px-3 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-200 hover:text-white hover:border-slate-400 transition-all shrink-0">
+          Entrar
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- BANNER PROMO WHOP -->
+  <div class="bg-gradient-to-r from-emerald-950/40 via-innerbg to-blue-950/40 border-b border-bordercolor py-1.5 px-3 text-center text-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-slate-300 flex-wrap">
+      <span class="bg-emerald-600 text-slate-950 text-[9px] font-mono font-black px-1.5 py-0.2 rounded uppercase">MEMBRESÍA EXCLUSIVA</span>
+      <span class="text-[11px] sm:text-xs">Acceso inmediato a los Picks Bomba diarios:</span>
+      <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="text-emerald-400 font-bold hover:underline flex items-center gap-1 text-[11px] sm:text-xs">
+        <span>Desbloquear en Whop</span> →
+      </a>
+    </div>
+  </div>
+
+  <!-- WORKSPACE A 3 COLUMNAS -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+    <!-- COLUMNA 1 (IZQUIERDA): CARTELERA POR LIGAS -->
+    <aside id="col-fixture" class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
+      <div class="bg-cardbg border border-bordercolor rounded-xl p-3 flex flex-col max-h-[520px] lg:max-h-none lg:h-[750px] shadow-lg">
+        <div class="flex items-center justify-between pb-2.5 px-1 border-b border-bordercolor">
+          <div class="flex items-center gap-2">
+            <span class="text-sm">🏆</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Partidos Activos</span>
+          </div>
+          <span class="text-[9px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-emerald-400 font-bold">FILTRADO PRO</span>
+        </div>
+
+        <div id="match-sidebar-list" class="flex-1 overflow-y-auto custom-scroll space-y-2.5 mt-2.5 pr-1 text-xs">
+          <!-- Render dinámico con acordeones por liga y logos verificados -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- COLUMNA 2 (CENTRAL): PESTAÑAS (RADAR IA / CHAT / RANKING ACIERTOS / TRACKER) -->
+    <section id="col-center" class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden min-h-[560px] lg:h-[750px] shadow-lg">
+      
+      <!-- HEADER CON 4 PESTAÑAS -->
+      <div class="flex items-center justify-between px-3 py-2 border-b border-bordercolor bg-[#10141d] overflow-x-auto">
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="tab-tactics-btn" onclick="switchMainTab('tactics')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-emerald-500 text-white flex items-center gap-1">
+            <span>⚡ Radar IA</span>
+          </button>
+          <button id="tab-community-btn" onclick="switchMainTab('community')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1">
+            <span>💬 Chat</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          </button>
+          <button id="tab-tipsters-btn" onclick="switchMainTab('tipsters')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1">
+            <span>🏆 Ranking Aciertos</span>
+          </button>
+          <button id="tab-tracker-btn" onclick="switchMainTab('tracker')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1">
+            <span>📊 Mi Bitácora</span>
+          </button>
+        </div>
+        <span id="active-tab-indicator" class="text-[10px] font-mono text-slate-500 shrink-0 hidden sm:block">Terminal</span>
+      </div>
+
+      <!-- VISTA 1: RADAR TÁCTICO IA & BIENVENIDA ANIMADA -->
+      <div id="view-tactics" class="flex-1 flex flex-col overflow-hidden">
+        <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4"></div>
+        <div class="p-3 bg-[#10141d] border-t border-bordercolor">
+          <form onsubmit="handleUserSearch(event)" class="relative flex items-center">
+            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Arsenal, Aston Villa, Toluca)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
+            <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center transition-all">Enviar</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- VISTA 2: CHAT COMUNITARIO -->
+      <div id="view-community" class="flex-1 flex flex-col overflow-hidden hidden">
+        <div id="chat-messages-container" class="flex-1 overflow-y-auto custom-scroll p-4 space-y-3"></div>
+        <div class="p-3 bg-[#10141d] border-t border-bordercolor">
+          <form onsubmit="handleSendChatMessage(event)" class="relative flex items-center">
+            <input type="text" id="chat-message-input" placeholder="Escribe tu análisis o pick para la comunidad..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-16 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
+            <button type="submit" class="absolute right-2 px-3 py-1.5 rounded-md bg-progreen hover:bg-emerald-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center transition-all">Enviar</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- VISTA 3: RANKING DE ACIERTOS (SOLO GANADAS) -->
+      <div id="view-tipsters" class="flex-1 flex flex-col overflow-hidden hidden">
+        <div class="p-3 bg-innerbg/60 border-b border-bordercolor flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span>🏅</span> Muro de Aciertos & Podio de Tipsters
+            </span>
+            <span class="text-[10px] text-slate-400 block">Vitrina verificada de pronósticos cobrados con éxito.</span>
+          </div>
+          <button onclick="openTipModal()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1 shadow-md transition-all">
+            <span>+</span> Publicar
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-4">
+          <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+            <div class="bg-innerbg p-2.5 rounded-xl border border-amber-500/30">
+              <span class="text-amber-400 text-xs sm:text-sm block">🥇 1º</span>
+              <span id="rank-1-name" class="font-bold text-white block mt-1 truncate">Sin datos</span>
+              <span id="rank-1-stats" class="text-[10px] text-progreen">0 Verdes ✅</span>
+            </div>
+            <div class="bg-innerbg p-2.5 rounded-xl border border-slate-600">
+              <span class="text-slate-300 text-xs sm:text-sm block">🥈 2º</span>
+              <span id="rank-2-name" class="font-bold text-white block mt-1 truncate">Sin datos</span>
+              <span id="rank-2-stats" class="text-[10px] text-progreen">0 Verdes ✅</span>
+            </div>
+            <div class="bg-innerbg p-2.5 rounded-xl border border-amber-700/50">
+              <span class="text-amber-600 text-xs sm:text-sm block">🥉 3º</span>
+              <span id="rank-3-name" class="font-bold text-white block mt-1 truncate">Sin datos</span>
+              <span id="rank-3-stats" class="text-[10px] text-progreen">0 Verdes ✅</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <span class="text-[10px] font-mono uppercase font-bold text-slate-400 block tracking-wider">Pronósticos Cobrados Recientes</span>
+            <div id="community-tips-list" class="space-y-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA 4: RASTREADOR PERSONAL DE APUESTAS -->
+      <div id="view-tracker" class="flex-1 flex flex-col overflow-hidden hidden">
+        <div class="p-3.5 bg-innerbg/60 border-b border-bordercolor flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span>📊</span> Bitácora Personal de Inversión
+            </span>
+            <span class="text-[10px] text-slate-400 block">Audita tu balance, win rate y rendimiento.</span>
+          </div>
+          <button onclick="loadUserBets()" class="text-xs font-mono text-slate-400 hover:text-white px-2 py-1 bg-innerbg border border-bordercolor rounded">
+            🔄
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-4">
+          <div class="grid grid-cols-3 gap-2 sm:gap-3 text-center">
+            <div class="bg-innerbg p-2.5 sm:p-3 rounded-xl border border-bordercolor">
+              <span class="text-[9px] sm:text-[10px] font-mono uppercase text-slate-400 block">Balance</span>
+              <span id="tracker-net-profit" class="text-sm sm:text-base font-bold font-mono text-progreen mt-1 block">+0.00u</span>
+            </div>
+            <div class="bg-innerbg p-2.5 sm:p-3 rounded-xl border border-bordercolor">
+              <span class="text-[9px] sm:text-[10px] font-mono uppercase text-slate-400 block">Win Rate</span>
+              <span id="tracker-win-rate" class="text-sm sm:text-base font-bold font-mono text-white mt-1 block">0.0%</span>
+            </div>
+            <div class="bg-innerbg p-2.5 sm:p-3 rounded-xl border border-bordercolor">
+              <span class="text-[9px] sm:text-[10px] font-mono uppercase text-slate-400 block">Boletos</span>
+              <span id="tracker-total-bets" class="text-sm sm:text-base font-bold font-mono text-proaccent mt-1 block">0</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <span class="text-[10px] font-mono uppercase font-bold text-slate-400 block tracking-wider">Historial de Mis Boletos</span>
+            <div id="user-bets-list" class="space-y-2"></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- COLUMNA 3 (DERECHA): PARLAY BUILDER IA + BET SLIP (DESKTOP) -->
+    <aside id="col-slip-desktop" class="hidden lg:flex lg:col-span-3 xl:col-span-3 flex-col gap-3">
+      <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[750px] shadow-lg">
+        <div class="bg-innerbg/70 border border-bordercolor rounded-xl p-3 mb-2 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase font-bold text-emerald-400 flex items-center gap-1.5">⚡ Armar Parlay IA</span>
+            <span class="text-[9px] font-mono text-slate-400">Algorítmico</span>
+          </div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button onclick="generateAutoParlay('safe')" class="py-1.5 px-1 bg-cardbg hover:bg-white/5 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-progreen block">Segura</span>
+              <span class="text-[9px] font-mono text-slate-400">~2.50x</span>
+            </button>
+            <button onclick="generateAutoParlay('value')" class="py-1.5 px-1 bg-cardbg hover:bg-white/5 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-proaccent block">+EV</span>
+              <span class="text-[9px] font-mono text-slate-400">~5.20x</span>
+            </button>
+            <button onclick="generateAutoParlay('bomba')" class="py-1.5 px-1 bg-cardbg hover:bg-white/5 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-goldvip block">Bomba</span>
+              <span class="text-[9px] font-mono text-slate-400">~12.0x</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pb-2 border-b border-bordercolor">
+          <div class="flex items-center gap-2">
+            <span class="text-sm">🧾</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-white">Boleto de Apuestas</span>
+          </div>
+          <span id="slip-count" class="text-[10px] font-mono bg-emerald-600 text-slate-950 px-2 py-0.5 rounded-full font-black">2</span>
+        </div>
+
+        <div id="slip-items" class="flex-1 overflow-y-auto custom-scroll space-y-2 mt-2 pr-1 text-xs"></div>
+
+        <div class="border-t border-bordercolor pt-2.5 mt-2 space-y-2 text-xs font-mono">
+          <div class="flex justify-between items-center text-slate-400">
+            <span>Cuota Total:</span>
+            <span id="slip-total-odds" class="text-white font-bold text-sm">2.75</span>
+          </div>
+
+          <div class="flex justify-between items-center text-slate-400">
+            <span>Importe (Stake):</span>
+            <div class="flex items-center gap-1">
+              <input type="number" id="slip-stake-input" oninput="syncAndCalculateSlip()" value="2.0" step="0.5" class="w-16 bg-innerbg border border-bordercolor rounded p-1 text-right text-white font-bold">
+              <span>u</span>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center bg-innerbg p-2 rounded-lg border border-bordercolor">
+            <span class="text-slate-300">Retorno Estimado:</span>
+            <span id="slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
+          </div>
+          
+          <button onclick="exportSlipToImage()" class="w-full py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 border border-emerald-400/40 text-slate-950 font-black rounded-lg text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-md">
+            <span>📸</span>
+            <span id="export-slip-label">Exportar Boleto a Imagen</span>
+          </button>
+
+          <button id="copy-slip-btn" onclick="copySlipToClipboard()" class="w-full py-2 bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-200 font-bold rounded-lg text-[11px] flex items-center justify-center gap-1.5 transition-all">
+            <span>📋</span>
+            <span id="copy-btn-label">Copiar Boleto Formateado</span>
+          </button>
+          
+          <button id="btn-confirm-bet" onclick="confirmAndTrackBet()" class="w-full py-2.5 bg-progreen hover:bg-emerald-500 text-slate-950 font-bold rounded-lg uppercase tracking-wider text-[11px] transition-all shadow-md">
+            Confirmar en Mi Bitácora
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- BARRA DE NAVEGACIÓN INFERIOR MÓVIL (BOTTOM NAVIGATION BAR) -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#10141d]/95 backdrop-blur-md border-t border-bordercolor z-40 px-3 flex items-center justify-around shadow-2xl">
+    <button onclick="scrollToMobileSection('col-fixture')" class="flex flex-col items-center justify-center text-slate-400 hover:text-white transition-all py-1">
+      <span class="text-lg leading-none">⚽</span>
+      <span class="text-[10px] font-mono mt-1">Partidos</span>
+    </button>
+    <button onclick="switchMainTab('tactics'); scrollToMobileSection('col-center')" class="flex flex-col items-center justify-center text-slate-400 hover:text-white transition-all py-1">
+      <span class="text-lg leading-none">⚡</span>
+      <span class="text-[10px] font-mono mt-1">Radar IA</span>
+    </button>
+    <button onclick="switchMainTab('community'); scrollToMobileSection('col-center')" class="flex flex-col items-center justify-center text-slate-400 hover:text-white transition-all py-1 relative">
+      <span class="text-lg leading-none">💬</span>
+      <span class="text-[10px] font-mono mt-1">Chat</span>
+      <span class="absolute top-1 right-2 w-2 h-2 rounded-full bg-emerald-400"></span>
+    </button>
+    <button onclick="switchMainTab('tracker'); scrollToMobileSection('col-center')" class="flex flex-col items-center justify-center text-slate-400 hover:text-white transition-all py-1">
+      <span class="text-lg leading-none">📊</span>
+      <span class="text-[10px] font-mono mt-1">Bitácora</span>
+    </button>
+    <button onclick="openMobileSlipDrawer()" class="flex flex-col items-center justify-center text-emerald-400 hover:text-teal-300 transition-all py-1 relative">
+      <div class="relative">
+        <span class="text-lg leading-none">🧾</span>
+        <span id="mobile-bottom-slip-count" class="absolute -top-1 -right-2.5 bg-emerald-500 text-slate-950 text-[9px] font-mono font-bold px-1.5 rounded-full">2</span>
+      </div>
+      <span class="text-[10px] font-mono mt-1 font-bold">Boleto</span>
+    </button>
+  </nav>
+
+  <!-- PANEL DESLIZABLE DEL BOLETO EN MÓVIL (MOBILE SLIP DRAWER) -->
+  <div id="mobile-slip-drawer" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex flex-col justify-end">
+    <div class="bg-cardbg border-t border-bordercolor rounded-t-3xl max-h-[85vh] flex flex-col p-4 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">🧾</span>
+          <span class="text-sm font-bold text-white uppercase tracking-wider">Boleto de Apuestas</span>
+          <span id="mobile-drawer-count" class="text-[10px] font-mono bg-emerald-500 text-slate-950 px-2 py-0.5 rounded-full font-black">2</span>
+        </div>
+        <button onclick="closeMobileSlipDrawer()" class="text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
+      </div>
+
+      <div class="grid grid-cols-3 gap-1.5 my-3">
+        <button onclick="generateAutoParlay('safe')" class="py-1 px-1 bg-innerbg border border-bordercolor rounded text-center">
+          <span class="text-[10px] font-bold text-progreen block">Segura</span>
+          <span class="text-[9px] font-mono text-slate-400">~2.50x</span>
+        </button>
+        <button onclick="generateAutoParlay('value')" class="py-1 px-1 bg-innerbg border border-bordercolor rounded text-center">
+          <span class="text-[10px] font-bold text-proaccent block">+EV</span>
+          <span class="text-[9px] font-mono text-slate-400">~5.20x</span>
+        </button>
+        <button onclick="generateAutoParlay('bomba')" class="py-1 px-1 bg-innerbg border border-bordercolor rounded text-center">
+          <span class="text-[10px] font-bold text-goldvip block">Bomba</span>
+          <span class="text-[9px] font-mono text-slate-400">~12.0x</span>
+        </button>
+      </div>
+
+      <div id="mobile-slip-items" class="flex-1 overflow-y-auto custom-scroll space-y-2 pr-1 text-xs max-h-52"></div>
+
+      <div class="border-t border-bordercolor pt-3 mt-3 space-y-2 text-xs font-mono">
+        <div class="flex justify-between items-center text-slate-400">
+          <span>Cuota Total:</span>
+          <span id="mobile-slip-total-odds" class="text-white font-bold text-sm">2.75</span>
+        </div>
+
+        <div class="flex justify-between items-center text-slate-400">
+          <span>Importe (Stake):</span>
+          <div class="flex items-center gap-1">
+            <input type="number" id="mobile-slip-stake-input" oninput="syncAndCalculateSlip(true)" value="2.0" step="0.5" class="w-16 bg-innerbg border border-bordercolor rounded p-1 text-right text-white font-bold">
+            <span>u</span>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center bg-innerbg p-2 rounded-lg border border-bordercolor">
+          <span class="text-slate-300">Retorno Estimado:</span>
+          <span id="mobile-slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button onclick="exportSlipToImage()" class="py-2 bg-innerbg border border-bordercolor text-slate-200 font-bold rounded-lg text-[11px] flex items-center justify-center gap-1">
+            <span>📸</span> Exportar
+          </button>
+          <button onclick="copySlipToClipboard()" class="py-2 bg-innerbg border border-bordercolor text-slate-200 font-bold rounded-lg text-[11px] flex items-center justify-center gap-1">
+            <span>📋</span> Copiar
+          </button>
+        </div>
+
+        <button onclick="confirmAndTrackBet(); closeMobileSlipDrawer();" class="w-full py-2.5 bg-progreen hover:bg-emerald-500 text-slate-950 font-bold rounded-lg uppercase tracking-wider text-xs transition-all shadow-md">
+          Confirmar en Mi Bitácora
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIENZO OCULTO PARA EXPORTAR TARJETAS EN ALTA DEFINICIÓN -->
+  <div id="export-container" style="position: absolute; left: -9999px; top: -9999px;">
+    <div id="social-card" class="w-[600px] bg-gradient-to-br from-[#0c0e14] via-[#121722] to-[#0c0e14] border-2 border-emerald-500/40 rounded-3xl p-8 text-white font-sans flex flex-col justify-between shadow-2xl relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-56 h-56 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex items-center justify-between border-b border-bordercolor/80 pb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-14 h-14 rounded-2xl bg-[#141824] flex items-center justify-center p-1.5 border border-emerald-500/40 shadow-lg shadow-emerald-500/30">
+            <img src="logo.png" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>💣</text></svg>';">
+          </div>
+          <div>
+            <h1 class="text-xl font-black tracking-tight uppercase flex items-center gap-2">
+              Picks<span class="text-emerald-400 italic">BOMBA</span> <span class="text-amber-400 font-mono text-sm px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40">VIP</span>
+            </h1>
+            <span class="text-xs text-slate-400 font-mono">Pronósticos Cuantitativos & Valor Matemático</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <span id="card-badge-status" class="px-3 py-1 bg-progreen/20 text-progreen border border-progreen/40 font-mono font-bold text-xs rounded-full">✅ VERIFICADO</span>
+        </div>
+      </div>
+
+      <div class="my-6 space-y-5">
+        <div>
+          <span id="card-league" class="text-xs font-mono font-bold uppercase text-slate-400 tracking-wider">LALIGA • JORNADA 10</span>
+          <h2 id="card-match-title" class="text-2xl font-black text-white mt-1">Real Madrid vs Barcelona</h2>
+        </div>
+
+        <div class="p-5 bg-innerbg/80 border border-bordercolor rounded-2xl space-y-3 shadow-inner">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono uppercase text-emerald-400 font-bold">Pronóstico Seleccionado</span>
+            <span id="card-ev-label" class="text-xs font-mono font-black text-progreen bg-progreen/10 border border-progreen/30 px-2 py-0.5 rounded">+EV 14.2%</span>
+          </div>
+          <div id="card-pick-name" class="text-xl font-black text-white leading-tight">Stuttgart ML + Más de 1.5 Goles</div>
+          <div class="flex items-center justify-between pt-2 border-t border-bordercolor/60 font-mono text-sm">
+            <span class="text-slate-400">Cuota Oficial: <strong id="card-odds" class="text-white text-base">1.85</strong></span>
+            <span class="text-slate-400">Stake Sugerido: <strong id="card-stake" class="text-white text-base">2.0u</strong></span>
+          </div>
+        </div>
+
+        <div id="card-analysis-box" class="p-4 bg-basebg/70 border border-bordercolor rounded-xl text-xs text-slate-300 leading-relaxed italic">
+          "Ventaja estadística clara en volumen ofensivo y disparos generados."
+        </div>
+      </div>
+
+      <div class="border-t border-bordercolor/80 pt-4 flex items-center justify-between text-xs font-mono">
+        <span class="text-slate-400">portal-picks.vercel.app</span>
+        <span class="text-amber-400 font-bold flex items-center gap-1"><span>👑</span> Pase VIP: whop.com/portal-picks</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL TIPSTERS -->
+  <div id="tip-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-emerald-500/40 rounded-2xl max-w-sm w-full p-6 relative shadow-2xl">
+      <button onclick="closeTipModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      <div class="mb-4 pb-2 border-b border-bordercolor">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2"><span>🎯</span> Publicar Mi Pronóstico</h3>
+        <p class="text-[11px] text-slate-400">Compite en el Leaderboard oficial de la comunidad.</p>
+      </div>
+      <form onsubmit="handleCreateTipSubmit(event)" class="space-y-3 text-xs">
+        <div><label class="block text-slate-400 font-mono mb-1">Partido</label><input type="text" id="tip-match" required placeholder="Ej: Real Madrid vs Barcelona" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Tu Selección / Mercado</label><input type="text" id="tip-selection" required placeholder="Ej: Real Madrid ML" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-slate-400 font-mono mb-1">Cuota (Decimal)</label><input type="number" id="tip-odds" step="0.01" min="1.01" required placeholder="1.85" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Stake (Unidades)</label><input type="number" id="tip-stake" step="0.5" min="0.5" max="5.0" value="1.0" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-all text-xs">Enviar a la Comunidad</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL ADMIN CON VINCULACIÓN LIVE Y LOGOS -->
+  <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-indigo-500/40 rounded-2xl max-w-xl w-full p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+      <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      <div class="mb-4 pb-3 border-b border-bordercolor">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">⚙️ Panel de Control & API-Sports Sync</h3>
+        <p class="text-xs text-slate-400">Publica partidos y vincula su ID de API-Sports para automatizar goles y minutos.</p>
+      </div>
+      <form onsubmit="handleCreateMatchSubmit(event)" class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-slate-400 font-mono mb-1">Liga y Jornada</label><input type="text" id="adm-league" required placeholder="Ej: Premier League • J9" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Horario y Estadio</label><input type="text" id="adm-date" required placeholder="Ej: Hoy • 14:00 CDT" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-slate-400 font-mono mb-1">Equipo Local</label><input type="text" id="adm-home" required placeholder="Ej: Real Madrid" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label><input type="text" id="adm-away" required placeholder="Ej: Barcelona" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-slate-400 font-mono mb-1">URL Logo Local (Opcional)</label><input type="text" id="adm-home-badge" placeholder="https://..." class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white text-[11px]"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">URL Logo Visitante (Opcional)</label><input type="text" id="adm-away-badge" placeholder="https://..." class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white text-[11px]"></div>
+        </div>
+
+        <!-- CAMPO VINCULACIÓN FIXTURE API-SPORTS -->
+        <div class="p-3 bg-indigo-950/20 border border-indigo-500/40 rounded-xl space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono text-indigo-300 font-bold uppercase block">Automatización API-Sports</span>
+            <span class="text-[9px] font-mono text-emerald-400">Key Conectada ✅</span>
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-400 font-mono mb-0.5">ID Fixture API-Sports (Para actualización automática 24/7)</label>
+            <input type="number" id="adm-fixture-id" placeholder="Ej: 1208451" class="w-full bg-basebg border border-bordercolor rounded px-3 py-2 text-proaccent font-mono font-bold">
+          </div>
+          <div class="grid grid-cols-3 gap-2 pt-1">
+            <div>
+              <label class="block text-[10px] text-slate-400 font-mono mb-0.5">Goles Local</label>
+              <input type="number" id="adm-home-score" min="0" value="0" class="w-full bg-basebg border border-bordercolor rounded p-1.5 text-center text-white font-mono font-bold">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 font-mono mb-0.5">Goles Visitante</label>
+              <input type="number" id="adm-away-score" min="0" value="0" class="w-full bg-basebg border border-bordercolor rounded p-1.5 text-center text-white font-mono font-bold">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 font-mono mb-0.5">Minuto / Estado</label>
+              <input type="text" id="adm-current-minute" value="PROGRAMADO" class="w-full bg-basebg border border-bordercolor rounded p-1.5 text-center text-progreen font-mono font-bold text-xs" placeholder="Ej: 68' o FINAL">
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-slate-400 font-mono mb-1">xG Local</label><input type="text" id="adm-xghome" value="1.85" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">xG Visitante</label><input type="text" id="adm-xgaway" value="1.15" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
+        </div>
+        <div><label class="block text-slate-400 font-mono mb-1">Diagnóstico Táctico</label><textarea id="adm-tactical" rows="2" required placeholder="Análisis breve..." class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></textarea></div>
+        
+        <div class="p-3 bg-innerbg rounded-xl border border-bordercolor space-y-2">
+          <span class="text-[10px] font-mono text-proaccent font-bold uppercase block">Picks del Partido</span>
+          <div class="grid grid-cols-3 gap-2">
+            <input type="text" id="adm-p1-name" required placeholder="Pick 1 (Gratis)" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-white text-[11px]">
+            <input type="number" id="adm-p1-odds" step="0.01" required placeholder="Cuota 1.65" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-white font-mono text-[11px]">
+            <input type="text" id="adm-p1-ev" value="+10.5%" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-progreen font-mono text-[11px]">
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <input type="text" id="adm-p2-name" required placeholder="Pick 2 (VIP Candado)" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-white text-[11px]">
+            <input type="number" id="adm-p2-odds" step="0.01" required placeholder="Cuota 2.40" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-white font-mono text-[11px]">
+            <input type="text" id="adm-p2-ev" value="+22.0%" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-amber-400 font-mono text-[11px]">
+          </div>
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition-all text-xs">Guardar Partido & Vincular Live</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL AUTH -->
+  <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-bordercolor rounded-2xl max-w-sm w-full p-6 relative shadow-2xl">
+      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      <div class="flex items-center gap-2 mb-4 border-b border-bordercolor pb-3">
+        <button id="tab-login-btn" onclick="switchAuthTab('login')" class="text-xs font-bold text-white border-b-2 border-emerald-500 pb-1">Iniciar Sesión</button>
+        <button id="tab-signup-btn" onclick="switchAuthTab('signup')" class="text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors">Crear Cuenta</button>
+      </div>
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
+        <div><label class="block text-slate-400 font-mono mb-1">Correo Electrónico</label><input type="email" id="auth-email" required placeholder="tu@email.com" class="w-full bg-innerbg border border-bordercolor rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-sans"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Contraseña</label><input type="password" id="auth-password" required minlength="6" placeholder="Mínimo 6 caracteres" class="w-full bg-innerbg border border-bordercolor rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-sans"></div>
+        <div id="auth-error-msg" class="text-[11px] text-rose-400 font-mono hidden"></div>
+        <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition-all text-xs">Iniciar Sesión</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL VIP -->
+  <div id="vip-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-amber-500/30 rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+      <button onclick="closeVipModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      <div class="text-center space-y-2 mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center text-2xl mx-auto shadow-lg shadow-amber-500/20">👑</div>
+        <h3 class="text-lg font-bold text-white tracking-tight">Acceso VIP PicksBomba</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Desbloquea los **Picks Bomba**, análisis de cuotas con valor esperado (+EV), parlay óptimo y alertas instantáneas.</p>
+      </div>
+      <div class="space-y-3 mb-6">
+        <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="p-3.5 rounded-xl border-2 border-amber-500/70 bg-amber-950/20 flex items-center justify-between cursor-pointer shadow-lg shadow-amber-500/10 block hover:bg-amber-950/30 transition-all">
+          <div>
+            <div class="flex items-center gap-1.5"><span class="text-xs font-bold text-white">Pase Mensual VIP</span><span class="text-[9px] font-mono bg-amber-500 text-slate-950 px-1.5 py-0.2 rounded font-black uppercase">Recomendado</span></div>
+            <span class="text-[11px] text-slate-400 block mt-0.5">Acceso diario completo • Pago Seguro con Stripe / Apple Pay</span>
+          </div>
+          <div class="text-right"><span class="text-lg font-mono font-black text-amber-400">$9.99</span><span class="text-[10px] text-slate-400 block">/ mes</span></div>
+        </a>
+      </div>
+      <div class="space-y-2">
+        <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/20 block text-center">Desbloquear Acceso en Whop ($9.99/mes)</a>
+        <p class="text-[10px] text-center text-slate-500 font-mono">Sin plazos forzosos. Cancela en cualquier momento con un clic.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL AUDITORÍA PÚBLICA -->
+  <div id="audit-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-cardbg border border-bordercolor rounded-2xl max-w-2xl w-full p-6 relative shadow-2xl max-h-[85vh] flex flex-col">
+      <button onclick="closeAuditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
+      <div class="flex items-center justify-between pb-3 border-b border-bordercolor">
+        <div><h3 class="text-base font-bold text-white flex items-center gap-2"><span>📋</span> Historial Público Auditado</h3><p class="text-xs text-slate-400">Registro verificado de los últimos pronósticos del sistema.</p></div>
+        <span class="text-xs font-mono font-bold text-progreen bg-progreen/10 border border-progreen/30 px-2 py-1 rounded">Balance: +14.85u</span>
+      </div>
+      <div class="flex-1 overflow-y-auto custom-scroll mt-4">
+        <table class="w-full text-left text-xs font-sans">
+          <thead><tr class="border-b border-bordercolor text-slate-400 font-mono uppercase text-[10px]"><th class="py-2.5 px-2">Fecha</th><th class="py-2.5 px-2">Partido</th><th class="py-2.5 px-2">Selección</th><th class="py-2.5 px-2 text-center">Cuota</th><th class="py-2.5 px-2 text-center">Stake</th><th class="py-2.5 px-2 text-right">Resultado</th></tr></thead>
+          <tbody class="divide-y border-bordercolor font-mono text-[11px]">
+            <tr><td class="py-2.5 px-2 text-slate-400">22 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Freiburg vs Bayern</td><td class="py-2.5 px-2 text-slate-300">Ambos Marcan (Sí)</td><td class="py-2.5 px-2 text-center text-slate-300">1.45</td><td class="py-2.5 px-2 text-center text-slate-300">2.5u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.13u ✅</td></tr>
+            <tr><td class="py-2.5 px-2 text-slate-400">21 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Real Madrid vs Dortmund</td><td class="py-2.5 px-2 text-slate-300">Más de 2.5 Goles</td><td class="py-2.5 px-2 text-center text-slate-300">1.55</td><td class="py-2.5 px-2 text-center text-slate-300">3.0u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.65u ✅</td></tr>
+            <tr><td class="py-2.5 px-2 text-slate-400">20 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Arsenal vs Shakhtar</td><td class="py-2.5 px-2 text-slate-300">Arsenal -1.5 AH</td><td class="py-2.5 px-2 text-center text-slate-300">1.74</td><td class="py-2.5 px-2 text-center text-slate-300">2.0u</td><td class="py-2.5 px-2 text-right text-rose-400 font-bold">-2.00u ❌</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="live-toast" class="fixed bottom-20 lg:bottom-5 left-5 z-50 bg-[#161c28] border border-bordercolor text-white px-3.5 py-2.5 rounded-xl shadow-2xl flex items-center gap-3 hidden max-w-sm toast-anim">
+    <div id="toast-icon" class="w-8 h-8 rounded-lg bg-progreen/20 text-progreen flex items-center justify-center font-bold text-sm shrink-0">⚡</div>
+    <div>
+      <div id="toast-title" class="text-xs font-bold text-white leading-tight">Pick Verificado en Vivo</div>
+      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">Aston Villa +0.5 (Cuota 2.37) CONFIRMADO</div>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC: SUPABASE AUTH + TRACKER + ADMIN + REALTIME SYNC + LOGOS + LIMPIEZA FT -->
+  <script>
+    const SUPABASE_URL = "https://ukgvoeblxzspffngumpk.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrZ3ZvZWJseHpzcGZmbmd1bXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3MzM4MzUsImV4cCI6MjEwODMwOTgzNX0._P82lM8TyzNdrQbCvqDt_0AZ1F0pzJ1s5Vx2jstPT7U";
+    const ADMIN_EMAIL = "yoneleal02@gmail.com";
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let currentUser = null;
+    let isUserVip = false;
+    let authMode = 'login';
+    let isTyping = false;
+    let currentMatchKey = 'astonvilla-mancity';
+    const WHOP_CHECKOUT_URL = "https://whop.com/portal-picks/portal-picks-daily-winning-predictions";
+
+    // CATÁLOGO DE LOGOS OFICIALES (ESPN CDN)
+    const TEAM_BADGES_BACKUP = {
+      "aston villa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/362.png&w=100&h=100",
+      "manchester city": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=100&h=100",
+      "arsenal": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/359.png&w=100&h=100",
+      "everton": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/368.png&w=100&h=100",
+      "coventry": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/394.png&w=100&h=100",
+      "fulham": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/370.png&w=100&h=100",
+      "chelsea": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/363.png&w=100&h=100",
+      "tottenham": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/367.png&w=100&h=100",
+      "rayo vallecano": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/101.png&w=100&h=100",
+      "elche": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3751.png&w=100&h=100",
+      "racing": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/90.png&w=100&h=100",
+      "espanyol": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/88.png&w=100&h=100",
+      "valencia": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/94.png&w=100&h=100",
+      "villarreal": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/102.png&w=100&h=100",
+      "atletico": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/1068.png&w=100&h=100",
+      "deportivo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/95.png&w=100&h=100",
+      "cagliari": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/105.png&w=100&h=100",
+      "bologna": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/107.png&w=100&h=100",
+      "como": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/2765.png&w=100&h=100",
+      "sassuolo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3811.png&w=100&h=100",
+      "napoli": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/114.png&w=100&h=100",
+      "roma": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/104.png&w=100&h=100",
+      "lazio": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=100&h=100",
+      "parma": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/111.png&w=100&h=100",
+      "koln": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/122.png&w=100&h=100",
+      "schalke": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/133.png&w=100&h=100",
+      "mainz": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/2959.png&w=100&h=100",
+      "bremen": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/137.png&w=100&h=100",
+      "paderborn": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/6440.png&w=100&h=100",
+      "hamburgo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/126.png&w=100&h=100",
+      "dortmund": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/124.png&w=100&h=100",
+      "frankfurt": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/125.png&w=100&h=100",
+      "leon": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/225.png&w=100&h=100",
+      "toluca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/230.png&w=100&h=100",
+      "monterrey": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/226.png&w=100&h=100",
+      "chivas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/217.png&w=100&h=100",
+      "columbus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18267.png&w=100&h=100",
+      "toronto": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7318.png&w=100&h=100",
+      "red bulls": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/189.png&w=100&h=100",
+      "miami": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20232.png&w=100&h=100",
+      "atlanta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18418.png&w=100&h=100",
+      "chicago": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/182.png&w=100&h=100",
+      "dc united": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/193.png&w=100&h=100",
+      "cincinnati": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18268.png&w=100&h=100",
+      "orlando": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17726.png&w=100&h=100",
+      "nycfc": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17606.png&w=100&h=100",
+      "philadelphia": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10971.png&w=100&h=100",
+      "new england": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/188.png&w=100&h=100",
+      "houston": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/6077.png&w=100&h=100",
+      "minnesota": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18417.png&w=100&h=100",
+      "kansas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/186.png&w=100&h=100",
+      "austin": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20906.png&w=100&h=100",
+      "portland": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10972.png&w=100&h=100",
+      "charlotte": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/21300.png&w=100&h=100",
+      "banfield": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3.png&w=100&h=100",
+      "lanus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14.png&w=100&h=100",
+      "talleres": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20.png&w=100&h=100",
+      "defensa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10041.png&w=100&h=100",
+      "san lorenzo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18.png&w=100&h=100",
+      "newell": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/16.png&w=100&h=100",
+      "rosario central": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17.png&w=100&h=100",
+      "huracan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/11.png&w=100&h=100",
+      "fortaleza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14467.png&w=100&h=100",
+      "cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/328.png&w=100&h=100",
+      "alianza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14468.png&w=100&h=100",
+      "inter bogota": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20340.png&w=100&h=100",
+      "america": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/326.png&w=100&h=100",
+      "cucuta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/330.png&w=100&h=100"
+    };
+
+    function resolveTeamBadge(teamName, currentUrl) {
+      if (currentUrl && currentUrl.startsWith('http') && !currentUrl.includes('default.png') && !currentUrl.includes('undefined')) {
+        return currentUrl;
+      }
+      const lower = (teamName || '').toLowerCase();
+      for (const key in TEAM_BADGES_BACKUP) {
+        if (lower.includes(key)) {
+          return TEAM_BADGES_BACKUP[key];
+        }
+      }
+      return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%23141820" stroke="%2310b981" stroke-width="2.5"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="16" fill="%2310b981" text-anchor="middle" dominant-baseline="middle">${encodeURIComponent((teamName || 'PB').slice(0, 3).toUpperCase())}</text></svg>`;
+    }
+
+    function handleImageError(imgEl, teamName) {
+      imgEl.onerror = null;
+      imgEl.src = resolveTeamBadge(teamName, null);
+    }
+
+    let tacticalDB = {};
+    let activeSlip = [
+      { id: "s1", match: "Aston Villa vs City", pick: "Aston Villa +0.5", odds: 2.37 },
+      { id: "s2", match: "Arsenal vs Everton", pick: "Arsenal Hándicap (-1.5)", odds: 1.95 }
+    ];
+
+    function scrollToMobileSection(sectionId) {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function openMobileSlipDrawer() {
+      renderSlip();
+      document.getElementById('mobile-slip-drawer').classList.remove('hidden');
+    }
+
+    function closeMobileSlipDrawer() {
+      document.getElementById('mobile-slip-drawer').classList.add('hidden');
+    }
+
+    // BIENVENIDA VISUAL CON EL LOGO OFICIAL ANIMADO
+    function renderWelcomeScreen() {
+      const stream = document.getElementById('tactical-stream');
+      stream.innerHTML = `
+        <div class="space-y-5 animate-fade-in">
+          
+          <!-- BANNER HERO PRINCIPAL CON LOGO ANIMADO -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0e131d] via-[#141b29] to-[#0a0d14] border-2 border-emerald-500/40 p-6 sm:p-8 text-center shadow-2xl">
+            
+            <!-- AURA LUMINOSA EXPANSIVA -->
+            <div class="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none animate-glow"></div>
+            <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-amber-500/15 rounded-full blur-3xl pointer-events-none animate-glow"></div>
+
+            <div class="relative z-10 flex flex-col items-center">
+              
+              <!-- CONTENEDOR DEL LOGO ANIMADO CON FLOTACIÓN -->
+              <div class="relative mb-4 animate-bomba">
+                <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-b from-innerbg to-basebg p-2 shadow-2xl shadow-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center">
+                  <img src="logo.png" alt="PicksBomba" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(16,185,129,0.35)]" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>💣</text></svg>';">
+                </div>
+                <!-- INSIGNIA FLOTANTE EN VIVO -->
+                <span class="absolute -bottom-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-black font-mono text-[10px] px-3 py-0.5 rounded-full uppercase tracking-wider shadow-lg border border-emerald-300/40">
+                  ⚡ RADAR CUÁNTICO
+                </span>
+              </div>
+
+              <!-- TÍTULO Y DESCRIPCIÓN -->
+              <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase font-sans mt-2">
+                Picks<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent italic">BOMBA</span> <span class="text-amber-400 font-mono text-sm px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 not-italic">VIP</span>
+              </h2>
+              
+              <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-lg leading-relaxed font-sans">
+                Sistema matemático que rastrea ineficiencias de cuotas en tiempo real. Selecciona un partido de la cartelera para ver el análisis de valor esperado (<strong class="text-emerald-400">+EV</strong>) y los <strong class="text-amber-400">Picks Bomba</strong> del día.
+              </p>
+
+              <!-- MÉTRICAS EN VIVO -->
+              <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-md mt-6 pt-5 border-t border-bordercolor/80">
+                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
+                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Win Rate</span>
+                  <span class="text-sm sm:text-base font-black font-mono text-emerald-400 mt-0.5 block">77.4%</span>
+                </div>
+                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
+                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Racha Actual</span>
+                  <span class="text-sm sm:text-base font-black font-mono text-progreen mt-0.5 block">5 Verdes 🔥</span>
+                </div>
+                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
+                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Valor Promedio</span>
+                  <span class="text-sm sm:text-base font-black font-mono text-amber-400 mt-0.5 block">+18.5% EV</span>
+                </div>
+              </div>
+
+              <!-- BOTÓN CTA PRINCIPAL -->
+              <div class="mt-6 flex flex-col sm:flex-row items-center gap-3">
+                <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-emerald-500/25 active:scale-95 cursor-pointer">
+                  <span>💣 Desbloquear Pick Bomba Destacado</span>
+                </button>
+                <button onclick="switchMainTab('tipsters')" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                  <span>🏆 Ver Muro de Aciertos</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- REGLAS DE GESTIÓN Y PROTOCOLO -->
+          <div class="bg-innerbg/60 border border-bordercolor rounded-2xl p-4 sm:p-5 space-y-3">
+            <div class="flex items-center justify-between border-b border-bordercolor/70 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="text-sm">🛡️</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Protocolo de Gestión PicksBomba</span>
+              </div>
+              <span class="text-[10px] font-mono bg-basebg px-2 py-0.5 rounded text-amber-400 font-bold">REGLAS DE ORO</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 rounded-xl bg-basebg/60 border border-bordercolor/80 space-y-1">
+                <div class="font-bold text-white flex items-center gap-1.5 text-[11px]">
+                  <span class="text-progreen font-mono">01.</span> Asignación Estricta de Banca
+                </div>
+                <p class="text-[11px] text-slate-400 leading-relaxed">
+                  Nunca arriesgues más del <strong>1% al 3%</strong> de tu capital total por jugada.
+                </p>
+              </div>
+
+              <div class="p-3 rounded-xl bg-basebg/60 border border-bordercolor/80 space-y-1">
+                <div class="font-bold text-white flex items-center gap-1.5 text-[11px]">
+                  <span class="text-emerald-400 font-mono">02.</span> Ventaja Matemática (+EV)
+                </div>
+                <p class="text-[11px] text-slate-400 leading-relaxed">
+                  Apuesta únicamente cuando la probabilidad estimada supere el precio que paga la casa.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // CARGA DE PARTIDOS ACTIVOS (OMITE AUTOMÁTICAMENTE PARTIDOS FINALIZADOS)
+    async function fetchMatchesFromSupabase() {
+      const { data: dbMatches } = await supabaseClient
+        .from('matches')
+        .select('*')
+        .eq('is_settled', false)
+        .order('created_at', { ascending: false });
+
+      tacticalDB = {};
+
+      if (dbMatches && dbMatches.length > 0) {
+        dbMatches.forEach(m => {
+          const status = m.current_minute || m.match_status || 'PROGRAMADO';
+          if (status.includes('FT') || status.includes('FINAL')) return;
+
+          tacticalDB[m.match_key] = {
+            query: `Análisis y valor matemático para ${m.match_name}.`,
+            matchName: m.match_name,
+            league: m.league,
+            date: m.match_date,
+            home: m.home_team,
+            homeBadge: resolveTeamBadge(m.home_team, m.home_badge),
+            away: m.away_team,
+            awayBadge: resolveTeamBadge(m.away_team, m.away_badge),
+            homeScore: m.home_score !== undefined ? m.home_score : 0,
+            awayScore: m.away_score !== undefined ? m.away_score : 0,
+            statusText: status,
+            isLive: (status.includes("'")),
+            apiFixtureId: m.api_fixture_id || null,
+            xgHome: m.xg_home,
+            xgAway: m.xg_away,
+            possessionHome: m.possession_home,
+            possessionAway: m.possession_away,
+            tacticalRead: m.tactical_read,
+            modelProb: { home: m.prob_home, draw: m.prob_draw, away: m.prob_away },
+            picks: m.picks || []
+          };
+        });
+      }
+      renderMatchSidebar();
+    }
+
+    // RENDERIZADO AGRUPADO Y ARCHIVADO POR LIGAS CON LOGOS HD
+    function renderMatchSidebar() {
+      const list = document.getElementById('match-sidebar-list');
+      list.innerHTML = "";
+
+      const matchKeys = Object.keys(tacticalDB);
+      if (matchKeys.length === 0) {
+        list.innerHTML = `<div class="text-center py-10 text-slate-500 font-mono text-xs">No hay partidos activos en este momento.</div>`;
+        return;
+      }
+
+      const leaguesMap = {};
+
+      matchKeys.forEach(key => {
+        const item = tacticalDB[key];
+        let leagueName = item.league ? item.league.split('•')[0].trim() : 'Otras Ligas';
+        if (!leaguesMap[leagueName]) {
+          leaguesMap[leagueName] = [];
+        }
+        leaguesMap[leagueName].push({ key, ...item });
+      });
+
+      const leagueBadges = {
+        'Premier League': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+        'LaLiga': '🇪🇸',
+        'Fútbol Español': '🇪🇸',
+        'Serie A': '🇮🇹',
+        'Fútbol Italiano': '🇮🇹',
+        'Bundesliga': '🇩🇪',
+        'Fútbol Alemán': '🇩🇪',
+        'Liga MX': '🇲🇽',
+        'MLS': '🇺🇸',
+        'Liga Argentina': '🇦🇷',
+        'Liga BetPlay': '🇨🇴',
+        'Fútbol Colombiano': '🇨🇴',
+        'Copa / Premier Matchup': '🏆'
+      };
+
+      Object.keys(leaguesMap).forEach((league, idx) => {
+        const matches = leaguesMap[league];
+        const hasLive = matches.some(m => m.isLive);
+        const icon = leagueBadges[league] || '⚽';
+        const sectionId = `league-group-${idx}`;
+
+        const leagueContainer = document.createElement('div');
+        leagueContainer.className = "rounded-xl border border-bordercolor/80 overflow-hidden bg-innerbg/30 mb-2 shadow-sm";
+
+        leagueContainer.innerHTML = `
+          <button onclick="toggleLeagueAccordion('${sectionId}', this)" class="w-full px-3 py-2 bg-[#121622] hover:bg-[#181e2e] flex items-center justify-between text-left transition-colors cursor-pointer border-b border-bordercolor/50">
+            <div class="flex items-center gap-2 truncate">
+              <span class="text-sm shrink-0">${icon}</span>
+              <span class="text-[11px] font-bold text-white tracking-wide uppercase font-sans truncate">${league}</span>
+              <span class="text-[9px] font-mono bg-basebg text-slate-400 px-1.5 py-0.2 rounded border border-bordercolor shrink-0">${matches.length}</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              ${hasLive ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>' : ''}
+              <span class="text-slate-400 text-[10px] font-mono transition-transform duration-200 arrow-icon">▼</span>
+            </div>
+          </button>
+          
+          <div id="${sectionId}" class="p-1.5 space-y-1.5"></div>
+        `;
+
+        const matchContainer = leagueContainer.querySelector(`#${sectionId}`);
+
+        matches.forEach(item => {
+          const isLive = item.isLive;
+          const statusBadge = isLive 
+            ? `<span class="text-[8px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1 py-0.2 rounded font-bold animate-pulse">🟢 ${item.statusText}</span>`
+            : `<span class="text-[8px] font-mono text-slate-400 bg-white/5 border border-white/10 px-1 py-0.2 rounded">${item.statusText}</span>`;
+
+          const card = document.createElement('div');
+          card.onclick = () => {
+            switchMainTab('tactics');
+            triggerTacticalPrompt(item.key);
+            scrollToMobileSection('col-center');
+          };
+          card.className = "p-2 rounded-lg bg-cardbg hover:bg-[#1a202c] border border-bordercolor/70 hover:border-emerald-500 cursor-pointer transition-all space-y-1.5 shadow-sm";
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-[9px] font-mono text-slate-400 truncate max-w-[130px]">${item.date}</span>
+              ${statusBadge}
+            </div>
+
+            <div class="grid grid-cols-12 gap-1 items-center">
+              <div class="col-span-5 flex items-center gap-1.5 min-w-0">
+                <img src="${item.homeBadge}" class="w-5 h-5 team-badge-img shrink-0" onerror="handleImageError(this, '${item.home}')">
+                <span class="font-bold text-white text-[11px] truncate">${item.home}</span>
+              </div>
+
+              <div class="col-span-2 text-center">
+                <span class="px-1.5 py-0.5 rounded bg-basebg border border-bordercolor font-mono font-bold text-[11px] ${isLive ? 'text-amber-400' : 'text-slate-400'}">
+                  ${item.homeScore}-${item.awayScore}
+                </span>
+              </div>
+
+              <div class="col-span-5 flex items-center justify-end gap-1.5 min-w-0 text-right">
+                <span class="font-bold text-white text-[11px] truncate">${item.away}</span>
+                <img src="${item.awayBadge}" class="w-5 h-5 team-badge-img shrink-0" onerror="handleImageError(this, '${item.away}')">
+              </div>
+            </div>
+          `;
+          matchContainer.appendChild(card);
+        });
+
+        list.appendChild(leagueContainer);
+      });
+    }
+
+    function toggleLeagueAccordion(sectionId, btn) {
+      const el = document.getElementById(sectionId);
+      const arrow = btn.querySelector('.arrow-icon');
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      } else {
+        el.classList.add('hidden');
+        if (arrow) arrow.style.transform = 'rotate(-90deg)';
+      }
+    }
+
+    function renderSlip() {
+      const containerDesktop = document.getElementById('slip-items');
+      const containerMobile = document.getElementById('mobile-slip-items');
+      
+      if (containerDesktop) containerDesktop.innerHTML = "";
+      if (containerMobile) containerMobile.innerHTML = "";
+
+      const count = activeSlip.length;
+      document.getElementById('slip-count').innerText = count;
+      document.getElementById('mobile-bottom-slip-count').innerText = count;
+      document.getElementById('mobile-drawer-count').innerText = count;
+
+      let totalOdds = 1.0;
+      activeSlip.forEach((item, index) => {
+        totalOdds *= item.odds;
+        const itemHtml = `
+          <div class="p-2.5 rounded-lg bg-innerbg border border-bordercolor flex justify-between items-start">
+            <div>
+              <div class="text-[10px] text-slate-400 font-mono">${item.match}</div>
+              <div class="text-[11px] font-bold text-white mt-0.5">${item.pick}</div>
+              <span class="text-[10px] text-emerald-400 font-mono font-bold">${item.odds.toFixed(2)}</span>
+            </div>
+            <button onclick="removeSlipItem(${index})" class="text-slate-500 hover:text-rose-400 text-xs p-1">✕</button>
+          </div>
+        `;
+        if (containerDesktop) containerDesktop.innerHTML += itemHtml;
+        if (containerMobile) containerMobile.innerHTML += itemHtml;
+      });
+
+      const finalOdds = activeSlip.length > 0 ? totalOdds.toFixed(2) : "0.00";
+      document.getElementById('slip-total-odds').innerText = finalOdds;
+      document.getElementById('mobile-slip-total-odds').innerText = finalOdds;
+      syncAndCalculateSlip();
+    }
+
+    function removeSlipItem(index) {
+      activeSlip.splice(index, 1);
+      renderSlip();
+    }
+
+    function addPickToSlip(matchName, pickName, odds) {
+      activeSlip.push({ id: "s" + Date.now(), match: matchName, pick: pickName, odds: parseFloat(odds) });
+      renderSlip();
+      const mobileBadge = document.getElementById('mobile-bottom-slip-count');
+      mobileBadge.classList.add('scale-125', 'bg-emerald-500');
+      setTimeout(() => mobileBadge.classList.remove('scale-125', 'bg-emerald-500'), 300);
+    }
+
+    function syncAndCalculateSlip(fromMobile = false) {
+      const desktopInput = document.getElementById('slip-stake-input');
+      const mobileInput = document.getElementById('mobile-slip-stake-input');
+      let stake = 2.0;
+
+      if (fromMobile && mobileInput) {
+        stake = parseFloat(mobileInput.value) || 0;
+        if (desktopInput) desktopInput.value = stake;
+      } else if (desktopInput) {
+        stake = parseFloat(desktopInput.value) || 0;
+        if (mobileInput) mobileInput.value = stake;
+      }
+
+      const totalOdds = parseFloat(document.getElementById('slip-total-odds').innerText) || 0;
+      const payout = stake * totalOdds - stake;
+      const payoutStr = (payout >= 0 ? `+${payout.toFixed(2)}u` : "0.00u");
+
+      document.getElementById('slip-payout').innerText = payoutStr;
+      document.getElementById('mobile-slip-payout').innerText = payoutStr;
+    }
+
+    function generateAutoParlay(type) {
+      if (type === 'safe') {
+        activeSlip = [
+          { id: "p1", match: "Arsenal vs Everton", pick: "Arsenal Gana Directo (ML)", odds: 1.35 },
+          { id: "p2", match: "Chelsea vs Spurs", pick: "Ambos Marcan (Sí)", odds: 1.52 }
+        ];
+      } else if (type === 'value') {
+        activeSlip = [
+          { id: "p1", match: "Aston Villa vs City", pick: "Aston Villa +0.5", odds: 2.37 },
+          { id: "p2", match: "Arsenal vs Everton", pick: "Arsenal -1.5 AH", odds: 1.95 }
+        ];
+      } else if (type === 'bomba') {
+        activeSlip = [
+          { id: "p1", match: "Aston Villa vs City", pick: "Gana Aston Villa (ML)", odds: 5.12 },
+          { id: "p2", match: "Dortmund vs Frankfurt", pick: "Dortmund Gana & Over 3.5", odds: 3.60 }
+        ];
+      }
+      renderSlip();
+    }
+
+    function copySlipToClipboard() {
+      if (activeSlip.length === 0) return;
+      const stake = document.getElementById('slip-stake-input').value;
+      const totalOdds = document.getElementById('slip-total-odds').innerText;
+      const payout = document.getElementById('slip-payout').innerText;
+
+      let text = `💣 *JUGADA OFICIAL • PICKSBOMBA VIP*\n\n`;
+      activeSlip.forEach(item => {
+        text += `⚽ ${item.match}\n🎯 ${item.pick} (Cuota: ${item.odds.toFixed(2)})\n\n`;
+      });
+      text += `📊 *Cuota Combinada:* ${totalOdds}\n💰 *Stake sugerido:* ${stake}u\n📈 *Retorno estimado:* ${payout}\n\n👑 *Desbloquea todos los pronósticos VIP ($9.99/mes):*\n${WHOP_CHECKOUT_URL}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn-label');
+        if (btn) btn.innerText = "¡Copiado con tu link! ✅";
+        setTimeout(() => { if (btn) btn.innerText = "Copiar Boleto Formateado"; }, 2500);
+      });
+    }
+
+    async function confirmAndTrackBet() {
+      if (!currentUser) {
+        openAuthModal('login');
+        return;
+      }
+      if (activeSlip.length === 0) {
+        alert("El cupón de apuestas está vacío.");
+        return;
+      }
+
+      const totalOdds = parseFloat(document.getElementById('slip-total-odds').innerText);
+      const stake = parseFloat(document.getElementById('slip-stake-input').value);
+      const potentialPayout = parseFloat((stake * totalOdds - stake).toFixed(2));
+
+      const { data, error } = await supabaseClient
+        .from('user_bets')
+        .insert([
+          {
+            user_id: currentUser.id,
+            picks: activeSlip,
+            total_odds: totalOdds,
+            stake: stake,
+            potential_payout: potentialPayout,
+            status: 'PENDIENTE',
+            profit: 0.0
+          }
+        ]);
+
+      if (!error) {
+        alert("¡Boleto registrado exitosamente en tu bitácora personal!");
+        switchMainTab('tracker');
+        scrollToMobileSection('col-center');
+      } else {
+        alert("Error al registrar apuesta: " + error.message);
+      }
+    }
+
+    async function loadUserBets() {
+      if (!currentUser) return;
+
+      const { data: bets } = await supabaseClient
+        .from('user_bets')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false });
+
+      const container = document.getElementById('user-bets-list');
+      container.innerHTML = "";
+
+      if (!bets || bets.length === 0) {
+        container.innerHTML = `<div class="text-center py-10 text-slate-500 font-mono text-xs">No has registrado ningún boleto todavía. Agrega picks en el cupón y presiona "Confirmar en Mi Bitácora".</div>`;
+        document.getElementById('tracker-net-profit').innerText = "+0.00u";
+        document.getElementById('tracker-win-rate').innerText = "0.0%";
+        document.getElementById('tracker-total-bets').innerText = "0";
+        return;
+      }
+
+      let wonCount = 0;
+      let resolvedCount = 0;
+      let totalProfit = 0.0;
+
+      bets.forEach(b => {
+        if (b.status === 'GANADA') {
+          wonCount++;
+          resolvedCount++;
+          totalProfit += parseFloat(b.profit);
+        } else if (b.status === 'PERDIDA') {
+          resolvedCount++;
+          totalProfit += parseFloat(b.profit);
+        }
+      });
+
+      const winRate = resolvedCount > 0 ? ((wonCount / resolvedCount) * 100).toFixed(1) : "0.0";
+      const profitEl = document.getElementById('tracker-net-profit');
+      profitEl.innerText = (totalProfit >= 0 ? `+${totalProfit.toFixed(2)}u` : `${totalProfit.toFixed(2)}u`);
+      profitEl.className = `text-sm sm:text-base font-bold font-mono mt-1 block ${totalProfit >= 0 ? 'text-progreen' : 'text-rose-400'}`;
+
+      document.getElementById('tracker-win-rate').innerText = `${winRate}%`;
+      document.getElementById('tracker-total-bets').innerText = bets.length;
+
+      bets.forEach(b => {
+        let badgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/30";
+        if (b.status === 'GANADA') badgeColor = "bg-emerald-500/20 text-progreen border-emerald-500/40";
+        if (b.status === 'PERDIDA') badgeColor = "bg-rose-500/20 text-rose-400 border-rose-500/40";
+
+        const timeStr = new Date(b.created_at).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const picksSummary = b.picks.map(p => `<div class="text-[11px] text-slate-300">• ${p.match}: <strong class="text-white">${p.pick}</strong> (${p.odds.toFixed(2)})</div>`).join('');
+
+        const div = document.createElement('div');
+        div.className = "p-3 sm:p-3.5 rounded-xl bg-innerbg border border-bordercolor space-y-2";
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-[9px] font-mono border px-1.5 py-0.2 rounded font-bold ${badgeColor}">${b.status}</span>
+              <span class="text-[10px] font-mono text-slate-400">${timeStr}</span>
+            </div>
+            <div class="text-right font-mono text-xs">
+              <span class="text-slate-400">Cuota: <strong class="text-emerald-400">${parseFloat(b.total_odds).toFixed(2)}</strong></span>
+            </div>
+          </div>
+
+          <div class="space-y-1 bg-basebg/50 p-2.5 rounded-lg border border-bordercolor/60">
+            ${picksSummary}
+          </div>
+
+          <div class="flex items-center justify-between text-xs font-mono pt-1">
+            <span class="text-slate-400 text-[11px]">Stake: <strong class="text-white">${b.stake}u</strong> | Retorno: <strong class="text-progreen">+${b.potential_payout}u</strong></span>
+            ${b.status === 'PENDIENTE' ? `
+              <div class="flex items-center gap-1.5">
+                <button onclick="updateBetStatus('${b.id}', 'GANADA', ${b.potential_payout})" class="px-2 py-1 bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded text-[10px] font-bold transition-all">✅ Win</button>
+                <button onclick="updateBetStatus('${b.id}', 'PERDIDA', -${b.stake})" class="px-2 py-1 bg-rose-600/30 hover:bg-rose-600 text-rose-300 hover:text-white rounded text-[10px] font-bold transition-all">❌ Loss</button>
+                <button onclick="deleteUserBet('${b.id}')" class="text-slate-500 hover:text-rose-400 text-xs px-1">✕</button>
+              </div>
+            ` : `
+              <span class="font-bold ${b.profit >= 0 ? 'text-progreen' : 'text-rose-400'}">${b.profit >= 0 ? '+' + b.profit : b.profit}u</span>
+            `}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function updateBetStatus(betId, newStatus, profitVal) {
+      const { error } = await supabaseClient
+        .from('user_bets')
+        .update({ status: newStatus, profit: parseFloat(profitVal) })
+        .eq('id', betId);
+
+      if (!error) loadUserBets();
+      else alert("Error al actualizar estado: " + error.message);
+    }
+
+    async function deleteUserBet(betId) {
+      if (!confirm("¿Eliminar este boleto de tu bitácora?")) return;
+      const { error } = await supabaseClient
+        .from('user_bets')
+        .delete()
+        .eq('id', betId);
+
+      if (!error) loadUserBets();
+      else alert("Error al eliminar: " + error.message);
+    }
+
+    function generateSocialCard(league, matchName, pickName, odds, ev, readText) {
+      document.getElementById('card-league').innerText = league.toUpperCase();
+      document.getElementById('card-match-title').innerText = matchName;
+      document.getElementById('card-pick-name').innerText = pickName;
+      document.getElementById('card-odds').innerText = parseFloat(odds).toFixed(2);
+      document.getElementById('card-stake').innerText = "2.0u";
+      document.getElementById('card-ev-label').innerText = `EV: ${ev || '+12.5%'}`;
+      document.getElementById('card-analysis-box').innerText = `"${readText || 'Análisis cuantitativo validado por modelo matemático.'}"`;
+
+      const cardElement = document.getElementById('social-card');
+      const filename = `PicksBomba_${matchName.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+
+      html2canvas(cardElement, { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        alert("Error al exportar imagen: " + err);
+      });
+    }
+
+    function exportSlipToImage() {
+      if (activeSlip.length === 0) { alert("Agrega primero selecciones a tu boleto."); return; }
+      const label = document.getElementById('export-slip-label');
+      if (label) label.innerText = "Generando Imagen...";
+
+      const totalOdds = document.getElementById('slip-total-odds').innerText;
+      const combinedTitle = activeSlip.map(s => s.match).join(" + ");
+      const combinedPicks = activeSlip.map(s => s.pick).join(" & ");
+
+      generateSocialCard(
+        "COMBINADA EXCLUSIVA PRO",
+        combinedTitle,
+        combinedPicks,
+        totalOdds,
+        "+EV ACUMULADO",
+        "Jugada combinada generada algorítmicamente por PicksBomba PRO con cuota total de alto retorno."
+      );
+
+      setTimeout(() => { if (label) label.innerText = "Exportar Boleto a Imagen"; }, 2000);
+    }
+
+    function switchMainTab(tab) {
+      const viewTactics = document.getElementById('view-tactics');
+      const viewCommunity = document.getElementById('view-community');
+      const viewTipsters = document.getElementById('view-tipsters');
+      const viewTracker = document.getElementById('view-tracker');
+      const btnTactics = document.getElementById('tab-tactics-btn');
+      const btnCommunity = document.getElementById('tab-community-btn');
+      const btnTipsters = document.getElementById('tab-tipsters-btn');
+      const btnTracker = document.getElementById('tab-tracker-btn');
+      const indicator = document.getElementById('active-tab-indicator');
+
+      viewTactics.classList.add('hidden');
+      viewCommunity.classList.add('hidden');
+      viewTipsters.classList.add('hidden');
+      viewTracker.classList.add('hidden');
+      btnTactics.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1";
+      btnCommunity.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1";
+      btnTipsters.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1";
+      btnTracker.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1";
+
+      if (tab === 'tactics') {
+        viewTactics.classList.remove('hidden');
+        btnTactics.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-emerald-500 text-white flex items-center gap-1";
+        if (indicator) indicator.innerText = "Terminal";
+      } else if (tab === 'community') {
+        viewCommunity.classList.remove('hidden');
+        btnCommunity.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-emerald-400 text-white flex items-center gap-1";
+        if (indicator) indicator.innerText = "En Vivo";
+        loadChatMessages();
+      } else if (tab === 'tipsters') {
+        viewTipsters.classList.remove('hidden');
+        btnTipsters.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-amber-400 text-white flex items-center gap-1";
+        if (indicator) indicator.innerText = "Aciertos";
+        loadCommunityTips();
+      } else if (tab === 'tracker') {
+        viewTracker.classList.remove('hidden');
+        btnTracker.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-emerald-500 text-white flex items-center gap-1";
+        if (indicator) indicator.innerText = "Personal";
+        loadUserBets();
+      }
+    }
+
+    function triggerTacticalPrompt(matchKey, customPrompt = null) {
+      if (isTyping) return;
+      currentMatchKey = matchKey;
+      const data = tacticalDB[matchKey];
+      if (!data) return;
+
+      isTyping = true;
+      const textToType = customPrompt || data.query;
+      const stream = document.getElementById('tactical-stream');
+      stream.innerHTML = "";
+
+      const userBubble = document.createElement('div');
+      userBubble.className = "flex justify-end";
+      userBubble.innerHTML = `<div class="bg-innerbg border border-bordercolor text-slate-200 text-xs font-medium px-3.5 py-2 rounded-lg max-w-lg"><span id="target-type" class="cursor-blink"></span></div>`;
+      stream.appendChild(userBubble);
+
+      let idx = 0;
+      const target = document.getElementById('target-type');
+      const timer = setInterval(() => {
+        if (idx < textToType.length) {
+          target.textContent += textToType.charAt(idx);
+          idx++;
+          stream.scrollTop = stream.scrollHeight;
+        } else {
+          clearInterval(timer);
+          target.classList.remove('cursor-blink');
+
+          const loader = document.createElement('div');
+          loader.id = "feed-loader";
+          loader.className = "text-[11px] font-mono text-emerald-400 flex items-center gap-2 p-2";
+          loader.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Conectando datos en directo...`;
+          stream.appendChild(loader);
+
+          setTimeout(() => {
+            const l = document.getElementById('feed-loader');
+            if (l) l.remove();
+            renderTacticalReport(data, matchKey);
+            isTyping = false;
+          }, 350);
+        }
+      }, 12);
+    }
+
+    function renderTacticalReport(data, matchKey) {
+      const stream = document.getElementById('tactical-stream');
+      const card = document.createElement('div');
+      card.className = "bg-innerbg border border-bordercolor rounded-xl p-4 space-y-4 text-xs shadow-md";
+
+      const isLive = data.isLive;
+      const statusBadge = isLive 
+        ? `<span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-bold animate-pulse">🟢 EN VIVO ${data.statusText}</span>`
+        : `<span class="text-[10px] font-mono text-slate-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded">${data.statusText}</span>`;
+
+      card.innerHTML = `
+        <div class="flex items-center justify-between border-b border-bordercolor pb-3">
+          <div><span class="text-[10px] font-mono text-slate-400 block">${data.league}</span><h2 class="text-sm font-bold text-white mt-0.5">${data.matchName}</h2></div>
+          ${statusBadge}
+        </div>
+
+        <!-- TABLERO PRINCIPAL CON MARCADOR Y LOGOS HD -->
+        <div class="grid grid-cols-12 gap-2 items-center bg-basebg/70 p-4 rounded-xl border border-bordercolor">
+          <!-- LOCAL -->
+          <div class="col-span-4 flex items-center gap-2.5">
+            <img src="${data.homeBadge}" class="w-10 h-10 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,3)}')">
+            <div class="truncate">
+              <div class="font-bold text-white text-xs truncate">${data.home}</div>
+              <div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-progreen">${data.xgHome}</strong></div>
+            </div>
+          </div>
+
+          <!-- MARCADOR CENTRAL -->
+          <div class="col-span-4 flex flex-col items-center justify-center text-center">
+            <div class="flex items-center gap-2 bg-[#10141d] px-3.5 py-1.5 rounded-xl border border-bordercolor font-mono shadow-inner">
+              <span class="text-xl font-black ${data.homeScore > data.awayScore ? 'text-progreen' : 'text-white'}">${data.homeScore}</span>
+              <span class="text-slate-500 text-xs">-</span>
+              <span class="text-xl font-black ${data.awayScore > data.homeScore ? 'text-progreen' : 'text-white'}">${data.awayScore}</span>
+            </div>
+            <span class="text-[9px] font-mono text-slate-500 mt-1 uppercase">${data.date}</span>
+          </div>
+
+          <!-- VISITANTE -->
+          <div class="col-span-4 flex items-center justify-end gap-2.5 text-right">
+            <div class="truncate">
+              <div class="font-bold text-white text-xs truncate">${data.away}</div>
+              <div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-slate-300">${data.xgAway}</strong></div>
+            </div>
+            <img src="${data.awayBadge}" class="w-10 h-10 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,3)}')">
+          </div>
+        </div>
+
+        <div class="text-slate-300 leading-relaxed bg-[#121620] p-3 rounded-lg border border-bordercolor">
+          <span class="font-mono text-emerald-400 text-[10px] uppercase font-bold block mb-1">Diagnóstico Táctico:</span>
+          ${data.tacticalRead}
+        </div>
+
+        <!-- SENTIMIENTO DE LA TRIBUNA -->
+        <div class="p-3 bg-[#10141d] rounded-lg border border-bordercolor space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono text-slate-400 uppercase font-bold flex items-center gap-1.5"><span>📊 Sentimiento de la Tribuna</span></span>
+            <span id="vote-total-label" class="text-[10px] font-mono text-emerald-400">Cargando votos...</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="handleCastVote('${matchKey}', '1')" class="py-1.5 bg-innerbg hover:border-progreen border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-white block">1 ${data.home.slice(0, 10)}</span>
+              <span id="vote-pct-1" class="text-[9px] font-mono text-progreen font-bold">--%</span>
+            </button>
+            <button onclick="handleCastVote('${matchKey}', 'X')" class="py-1.5 bg-innerbg hover:border-slate-400 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-white block">X Empate</span>
+              <span id="vote-pct-x" class="text-[9px] font-mono text-slate-300 font-bold">--%</span>
+            </button>
+            <button onclick="handleCastVote('${matchKey}', '2')" class="py-1.5 bg-innerbg hover:border-rose-400 border border-bordercolor rounded-lg text-center transition-all">
+              <span class="text-[10px] font-bold text-white block">2 ${data.away.slice(0, 10)}</span>
+              <span id="vote-pct-2" class="text-[9px] font-mono text-rose-400 font-bold">--%</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- PICKS SELECTION -->
+        <div class="space-y-2 pt-1">
+          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider flex items-center justify-between">
+            <span>Picks Recomendados (+EV)</span>
+            ${isUserVip ? `<span class="text-progreen font-bold">👑 Acceso VIP Activo</span>` : `<span class="text-amber-400 font-bold">👑 Pase VIP ($10/mes)</span>`}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            ${data.picks.map(p => {
+              const isLocked = isUserVip ? false : p.isLocked;
+              if (!isLocked) {
+                return `
+                  <div class="p-2.5 rounded-lg bg-basebg border border-bordercolor flex items-center justify-between">
+                    <div>
+                      <div class="text-[9px] font-mono text-emerald-400 font-bold">${p.tag} · EV: ${p.ev}</div>
+                      <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
+                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${parseFloat(p.odds).toFixed(2)}</span></div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <button onclick="generateSocialCard('${data.league}', '${data.matchName}', '${p.name}', ${p.odds}, '${p.ev}', '${data.tacticalRead.replace(/'/g, "\\'")}')" title="Descargar Tarjeta" class="px-2 py-1 rounded bg-innerbg hover:bg-white/10 text-slate-300 border border-bordercolor text-[10px] font-bold transition-all">📸</button>
+                      <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-mono text-[10px] font-black transition-all">+ Boleto</button>
+                    </div>
+                  </div>
+                `;
+              } else {
+                return `
+                  <div class="p-2.5 rounded-lg bg-amber-950/20 border border-amber-500/40 relative overflow-hidden flex items-center justify-between">
+                    <div class="vip-blur">
+                      <div class="text-[9px] font-mono text-amber-400 font-bold">${p.tag} · EV: ${p.ev}</div>
+                      <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
+                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${parseFloat(p.odds).toFixed(2)}</span></div>
+                    </div>
+                    <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-between px-3">
+                      <div class="flex items-center gap-1.5"><span class="text-amber-400 text-sm">🔒</span><span class="text-[10px] font-bold text-white uppercase tracking-wider">Pick VIP Exclusivo</span></div>
+                      <a href="${WHOP_CHECKOUT_URL}" target="_blank" class="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold font-mono text-[10px] transition-all shadow-md">Ver por $10</a>
+                    </div>
+                  </div>
+                `;
+              }
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      stream.appendChild(card);
+      stream.scrollTop = stream.scrollHeight;
+      fetchMatchVotes(matchKey);
+    }
+
+    async function fetchMatchVotes(matchKey) {
+      const { data: votes } = await supabaseClient.from('match_votes').select('vote').eq('match_key', matchKey);
+      if (!votes || votes.length === 0) {
+        document.getElementById('vote-total-label').innerText = "0 votos registrados";
+        document.getElementById('vote-pct-1').innerText = "33%";
+        document.getElementById('vote-pct-x').innerText = "33%";
+        document.getElementById('vote-pct-2').innerText = "34%";
+        return;
+      }
+      const total = votes.length;
+      const count1 = votes.filter(v => v.vote === '1').length;
+      const countX = votes.filter(v => v.vote === 'X').length;
+      const count2 = votes.filter(v => v.vote === '2').length;
+      document.getElementById('vote-total-label').innerText = `${total} aficionado${total > 1 ? 's' : ''} han votado`;
+      document.getElementById('vote-pct-1').innerText = `${Math.round((count1 / total) * 100)}%`;
+      document.getElementById('vote-pct-x').innerText = `${Math.round((countX / total) * 100)}%`;
+      document.getElementById('vote-pct-2').innerText = `${Math.round((count2 / total) * 100)}%`;
+    }
+
+    async function handleCastVote(matchKey, voteOption) {
+      if (!currentUser) { openAuthModal('login'); return; }
+      const { error } = await supabaseClient
+        .from('match_votes')
+        .upsert({ match_key: matchKey, user_id: currentUser.id, vote: voteOption }, { onConflict: 'match_key,user_id' });
+      if (!error) fetchMatchVotes(matchKey);
+    }
+
+    // CARGA DE RANKING COMUNITARIO: EXCLUSIVAMENTE PRONÓSTICOS GANADOS
+    async function loadCommunityTips() {
+      const { data: tips } = await supabaseClient
+        .from('community_tips')
+        .select('*')
+        .eq('status', 'GANADA')
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      const container = document.getElementById('community-tips-list');
+      container.innerHTML = "";
+
+      if (!tips || tips.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-slate-500 font-mono text-xs">Aún no hay aciertos registrados en el ranking de esta jornada.</div>`;
+        return;
+      }
+
+      const userStats = {};
+      tips.forEach(t => {
+        if (!userStats[t.username]) userStats[t.username] = { won: 0 };
+        userStats[t.username].won++;
+      });
+
+      const sortedUsers = Object.keys(userStats).sort((a, b) => userStats[b].won - userStats[a].won);
+      if (sortedUsers[0]) {
+        document.getElementById('rank-1-name').innerText = sortedUsers[0];
+        document.getElementById('rank-1-stats').innerText = `${userStats[sortedUsers[0]].won} Verdes ✅`;
+      }
+      if (sortedUsers[1]) {
+        document.getElementById('rank-2-name').innerText = sortedUsers[1];
+        document.getElementById('rank-2-stats').innerText = `${userStats[sortedUsers[1]].won} Verdes ✅`;
+      }
+      if (sortedUsers[2]) {
+        document.getElementById('rank-3-name').innerText = sortedUsers[2];
+        document.getElementById('rank-3-stats').innerText = `${userStats[sortedUsers[2]].won} Verdes ✅`;
+      }
+
+      tips.forEach(tip => {
+        const timeStr = new Date(tip.created_at).toLocaleDateString([], { month: 'short', day: 'numeric' });
+        const div = document.createElement('div');
+        div.className = "p-3 rounded-xl bg-innerbg border border-emerald-500/30 flex items-center justify-between shadow-sm";
+        div.innerHTML = `
+          <div>
+            <div class="flex items-center gap-1.5">
+              ${tip.is_vip ? '<span class="text-amber-400 text-xs">👑</span>' : '<span class="text-slate-400 text-xs">👤</span>'}
+              <span class="font-bold text-white text-[11px]">${tip.username}</span>
+              <span class="text-[9px] font-mono border px-1.5 py-0.2 rounded font-bold bg-emerald-500/20 text-progreen border-emerald-500/40">ACERTADA ✅</span>
+              <span class="text-[9px] font-mono text-slate-500 ml-1">${timeStr}</span>
+            </div>
+            <div class="font-bold text-slate-200 text-xs mt-1">${tip.match_name}: <span class="text-emerald-400">${tip.selection}</span></div>
+            <div class="text-[10px] font-mono text-slate-400">Cuota Oficial: <strong class="text-white">${parseFloat(tip.odds).toFixed(2)}</strong> · Stake: ${tip.stake}u</div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-mono font-black text-progreen bg-progreen/10 px-2 py-1 rounded border border-progreen/30">+${(tip.stake * tip.odds - tip.stake).toFixed(2)}u</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function handleCreateTipSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) { openAuthModal('login'); return; }
+
+      const matchName = document.getElementById('tip-match').value.trim();
+      const selection = document.getElementById('tip-selection').value.trim();
+      const odds = parseFloat(document.getElementById('tip-odds').value);
+      const stake = parseFloat(document.getElementById('tip-stake').value);
+      const username = currentUser.email.split('@')[0];
+
+      const { error } = await supabaseClient
+        .from('community_tips')
+        .insert([{ user_id: currentUser.id, username, is_vip: isUserVip, match_name: matchName, selection, odds, stake, status: 'PENDIENTE' }]);
+
+      if (!error) {
+        alert("¡Pronóstico publicado! En cuanto se confirme el verde entrará automáticamente al muro del ranking.");
+        closeTipModal();
+        loadCommunityTips();
+      } else {
+        alert("Error al publicar: " + error.message);
+      }
+    }
+
+    async function resolveCommunityTip(tipId, resultStatus) {
+      const { error } = await supabaseClient
+        .from('community_tips')
+        .update({ status: resultStatus })
+        .eq('id', tipId);
+
+      if (!error) loadCommunityTips();
+      else alert("Error al actualizar estado: " + error.message);
+    }
+
+    function openTipModal() {
+      if (!currentUser) { openAuthModal('login'); return; }
+      document.getElementById('tip-modal').classList.remove('hidden');
+    }
+    function closeTipModal() {
+      document.getElementById('tip-modal').classList.add('hidden');
+    }
+
+    async function handleCreateMatchSubmit(e) {
+      e.preventDefault();
+      if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
+
+      const home = document.getElementById('adm-home').value.trim();
+      const away = document.getElementById('adm-away').value.trim();
+      const matchKey = (home + "-" + away).toLowerCase().replace(/[^a-z0-9]/g, '');
+      const fixtureId = parseInt(document.getElementById('adm-fixture-id').value) || null;
+      const homeBadge = resolveTeamBadge(home, document.getElementById('adm-home-badge').value.trim());
+      const awayBadge = resolveTeamBadge(away, document.getElementById('adm-away-badge').value.trim());
+
+      const newMatch = {
+        match_key: matchKey,
+        api_fixture_id: fixtureId,
+        league: document.getElementById('adm-league').value.trim(),
+        match_name: `${home} vs ${away}`,
+        match_date: document.getElementById('adm-date').value.trim(),
+        home_team: home,
+        away_team: away,
+        home_badge: homeBadge,
+        away_badge: awayBadge,
+        home_score: parseInt(document.getElementById('adm-home-score').value) || 0,
+        away_score: parseInt(document.getElementById('adm-away-score').value) || 0,
+        current_minute: document.getElementById('adm-current-minute').value.trim() || 'PROGRAMADO',
+        match_status: document.getElementById('adm-current-minute').value.trim() || 'PROGRAMADO',
+        xg_home: document.getElementById('adm-xghome').value.trim(),
+        xg_away: document.getElementById('adm-xgaway').value.trim(),
+        possession_home: "55%", possession_away: "45%",
+        tactical_read: document.getElementById('adm-tactical').value.trim(),
+        prob_home: "50%", prob_draw: "26%", prob_away: "24%",
+        picks: [
+          { name: document.getElementById('adm-p1-name').value.trim(), odds: parseFloat(document.getElementById('adm-p1-odds').value), tag: "GRATIS", ev: document.getElementById('adm-p1-ev').value.trim(), isLocked: false },
+          { name: document.getElementById('adm-p2-name').value.trim(), odds: parseFloat(document.getElementById('adm-p2-odds').value), tag: "VIP EXCLUSIVO", ev: document.getElementById('adm-p2-ev').value.trim(), isLocked: true }
+        ]
+      };
+
+      const { error } = await supabaseClient.from('matches').upsert(newMatch, { onConflict: 'match_key' });
+      if (!error) {
+        alert("¡Partido guardado con éxito! Se reflejará con sus logos y marcadores.");
+        closeAdminModal();
+        await fetchMatchesFromSupabase();
+        triggerTacticalPrompt(matchKey);
+      } else {
+        alert("Error: " + error.message);
+      }
+    }
+
+    function handleUserSearch(e) {
+      e.preventDefault();
+      const val = document.getElementById('tactical-input').value.trim().toLowerCase();
+      if (!val) return;
+      const foundKey = Object.keys(tacticalDB).find(k => {
+        const item = tacticalDB[k];
+        return item.home.toLowerCase().includes(val) || item.away.toLowerCase().includes(val) || item.league.toLowerCase().includes(val);
+      });
+      if (foundKey) triggerTacticalPrompt(foundKey);
+      else if (Object.keys(tacticalDB).length > 0) triggerTacticalPrompt(Object.keys(tacticalDB)[0]);
+      document.getElementById('tactical-input').value = "";
+    }
+
+    function openVipModal() { document.getElementById('vip-modal').classList.remove('hidden'); }
+    function closeVipModal() { document.getElementById('vip-modal').classList.add('hidden'); }
+    function openAuditModal() { document.getElementById('audit-modal').classList.remove('hidden'); }
+    function closeAuditModal() { document.getElementById('audit-modal').classList.add('hidden'); }
+    function openAdminModal() { document.getElementById('admin-modal').classList.remove('hidden'); }
+    function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+    function openAuthModal(mode = 'login') { switchAuthTab(mode); document.getElementById('auth-modal').classList.remove('hidden'); }
+    function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); document.getElementById('auth-error-msg').classList.add('hidden'); document.getElementById('auth-form').reset(); }
+
+    function switchAuthTab(mode) {
+      authMode = mode;
+      const tabLogin = document.getElementById('tab-login-btn');
+      const tabSignup = document.getElementById('tab-signup-btn');
+      const submitBtn = document.getElementById('auth-submit-btn');
+      if (mode === 'login') {
+        tabLogin.className = "text-xs font-bold text-white border-b-2 border-emerald-500 pb-1";
+        tabSignup.className = "text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors";
+        submitBtn.innerText = "Iniciar Sesión";
+      } else {
+        tabSignup.className = "text-xs font-bold text-white border-b-2 border-emerald-500 pb-1";
+        tabLogin.className = "text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors";
+        submitBtn.innerText = "Crear Cuenta Gratuita";
+      }
+    }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value;
+      const errBox = document.getElementById('auth-error-msg');
+      errBox.classList.add('hidden');
+
+      if (authMode === 'signup') {
+        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        if (error) { errBox.innerText = error.message; errBox.classList.remove('hidden'); }
+        else { alert("Cuenta creada con éxito. Ya puedes iniciar sesión."); switchAuthTab('login'); }
+      } else {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) { errBox.innerText = error.message; errBox.classList.remove('hidden'); }
+        else { closeAuthModal(); checkUserSession(); }
+      }
+    }
+
+    async function checkUserSession() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      const container = document.getElementById('auth-header-container');
+      const adminBtn = document.getElementById('admin-panel-btn');
+
+      if (session && session.user) {
+        currentUser = session.user;
+        const { data: profile } = await supabaseClient.from('profiles').select('is_vip').eq('id', currentUser.id).single();
+        isUserVip = profile ? profile.is_vip : false;
+
+        if (currentUser.email === ADMIN_EMAIL) adminBtn.classList.remove('hidden');
+        else adminBtn.classList.add('hidden');
+
+        container.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono text-slate-300 bg-innerbg px-2 sm:px-2.5 py-1 rounded-lg border border-bordercolor flex items-center gap-1.5">
+              ${isUserVip ? '<span class="text-amber-400">👑</span>' : '👤'}
+              <span class="max-w-[80px] sm:max-w-[120px] truncate">${currentUser.email.split('@')[0]}</span>
+            </span>
+            <button onclick="handleLogout()" class="text-xs text-slate-500 hover:text-rose-400 font-mono">Salir</button>
+          </div>
+        `;
+        if (isUserVip) document.getElementById('btn-header-vip').classList.add('hidden');
+      } else {
+        currentUser = null;
+        isUserVip = false;
+        adminBtn.classList.add('hidden');
+        container.innerHTML = `<button onclick="openAuthModal('login')" class="text-xs font-semibold px-2.5 sm:px-3 py-1.5 rounded-lg bg-innerbg border border-bordercolor text-slate-200 hover:text-white hover:border-slate-400 transition-all shrink-0">Entrar</button>`;
+        document.getElementById('btn-header-vip').classList.remove('hidden');
+      }
+    }
+
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+      checkUserSession();
+    }
+
+    async function loadChatMessages() {
+      const { data: messages } = await supabaseClient.from('community_chat').select('*').order('created_at', { ascending: true }).limit(50);
+      const container = document.getElementById('chat-messages-container');
+      container.innerHTML = "";
+      if (messages && messages.length > 0) messages.forEach(msg => appendChatMessage(msg));
+      else container.innerHTML = `<div class="text-center py-12 text-slate-500 text-xs font-mono">Sé el primero en compartir un pick o análisis con la comunidad.</div>`;
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendChatMessage(msg) {
+      const container = document.getElementById('chat-messages-container');
+      const timeStr = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const senderName = msg.email ? msg.email.split('@')[0] : 'Usuario';
+      const div = document.createElement('div');
+      div.className = "p-3 rounded-xl bg-innerbg border border-bordercolor flex flex-col space-y-1";
+      div.innerHTML = `
+        <div class="flex items-center justify-between text-[11px]">
+          <div class="flex items-center gap-1.5">
+            ${msg.is_vip ? '<span class="text-xs">👑</span><span class="text-[9px] font-mono font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1 py-0.2 rounded">VIP</span>' : '<span class="text-slate-400 font-mono">👤</span>'}
+            <span class="font-bold ${msg.is_vip ? 'text-amber-300' : 'text-slate-200'}">${senderName}</span>
+          </div>
+          <span class="text-[10px] font-mono text-slate-500">${timeStr}</span>
+        </div>
+        <p class="text-xs text-slate-300 font-sans leading-relaxed break-words">${msg.message}</p>
+      `;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function handleSendChatMessage(e) {
+      e.preventDefault();
+      if (!currentUser) { openAuthModal('login'); return; }
+      const input = document.getElementById('chat-message-input');
+      const text = input.value.trim();
+      if (!text) return;
+      const { error } = await supabaseClient.from('community_chat').insert([{ user_id: currentUser.id, email: currentUser.email, is_vip: isUserVip, message: text }]);
+      if (!error) input.value = "";
+    }
+
+    function setupRealtimeListeners() {
+      supabaseClient.channel('public:community_chat').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'community_chat' }, payload => appendChatMessage(payload.new)).subscribe();
+      supabaseClient.channel('public:matches').on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
+        fetchMatchesFromSupabase();
+        if (tacticalDB[currentMatchKey]) {
+          renderTacticalReport(tacticalDB[currentMatchKey], currentMatchKey);
+        }
+      }).subscribe();
+      supabaseClient.channel('public:community_tips').on('postgres_changes', { event: '*', schema: 'public', table: 'community_tips' }, () => loadCommunityTips()).subscribe();
+      supabaseClient.channel('public:user_bets').on('postgres_changes', { event: '*', schema: 'public', table: 'user_bets' }, () => loadUserBets()).subscribe();
+    }
+
+    const toastNotifications = [
+      { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
+      { icon: "✅", title: "Pick Bomba Cobrado", desc: "Pronóstico Verificado en Verde ✅", color: "text-progreen", bg: "bg-progreen/20" },
+      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Aston Villa +0.5 (Cuota 2.37) CONFIRMADO", color: "text-emerald-400", bg: "bg-emerald-500/20" },
+      { icon: "👑", title: "Nuevo Miembro Premium", desc: "Acceso VIP activado con éxito desde Whop", color: "text-amber-400", bg: "bg-amber-500/20" }
+    ];
+    let toastIndex = 0;
+
+    function triggerNextToast() {
+      const toastEl = document.getElementById('live-toast');
+      const item = toastNotifications[toastIndex];
+      document.getElementById('toast-icon').innerText = item.icon;
+      document.getElementById('toast-icon').className = `w-8 h-8 rounded-lg ${item.bg} ${item.color} flex items-center justify-center font-bold text-sm shrink-0`;
+      document.getElementById('toast-title').innerText = item.title;
+      document.getElementById('toast-desc').innerText = item.desc;
+      toastEl.classList.remove('hidden');
+      setTimeout(() => { toastEl.classList.add('hidden'); }, 5500);
+      toastIndex = (toastIndex + 1) % toastNotifications.length;
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      renderSlip();
+      await fetchMatchesFromSupabase();
+      await checkUserSession();
+      renderWelcomeScreen();
+      setupRealtimeListeners();
+      setInterval(triggerNextToast, 18000);
+      setTimeout(triggerNextToast, 4000);
+    });
+  </script>
+</body>
+</html>ewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PicksBomba VIP | Terminal Algorítmica & Pronósticos Deportivos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SUPABASE JS CLIENT -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- HTML2CANVAS PARA EXPORTACIÓN GRÁFICA -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            basebg: '#0c0e12',
+            cardbg: '#141820',
+            innerbg: '#1a1f2c',
+            bordercolor: '#232938',
+            progreen: '#10b981',
+            problue: '#2563eb',
+            proaccent: '#38bdf8',
+            goldvip: '#f59e0b'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0c0e12; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #10141d; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #232938; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #10b981; }
+    .team-badge-img { object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+    .cursor-blink::after { content: '|'; animation: blink 1s step-start infinite; color: #10b981; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .vip-blur { filter: blur(5px); user-select: none; pointer-events: none; }
+    @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .toast-anim { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    
     /* ANIMACIONES DEL LOGO PICKSBOMBA */
     @keyframes bombaFloat {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
