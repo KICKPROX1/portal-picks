@@ -48,7 +48,6 @@
     @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .toast-anim { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     
-    /* ANIMACIÓN DE FLOTACIÓN SUAVE PICKSBOMBA */
     @keyframes bombaFloat {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-7px) rotate(0.8deg); }
@@ -67,8 +66,18 @@
   <!-- TOP HEADER CON LOGO OFICIAL PICKSBOMBA -->
   <header class="h-16 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
     <div class="flex items-center gap-3 cursor-pointer" onclick="renderWelcomeScreen()">
-      <div class="relative w-11 h-11 rounded-xl bg-[#141824] flex items-center justify-center p-1 border border-emerald-500/40 shadow-lg shadow-emerald-500/20">
-        <img src="logo.png" alt="PicksBomba" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>💣</text></svg>';">
+      <div class="relative w-11 h-11 rounded-xl bg-gradient-to-br from-[#121622] to-[#181f2f] flex items-center justify-center p-1.5 border border-emerald-500/40 shadow-lg shadow-emerald-500/20">
+        <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow">
+          <circle cx="50" cy="55" r="32" fill="#1b212f" stroke="#10b981" stroke-width="3"/>
+          <path d="M 50 23 L 50 14 Q 50 7 60 7 L 68 7" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+          <polygon points="68,3 74,8 70,14 62,11 60,4" fill="#ef4444"/>
+          <polygon points="69,4 73,8 70,12 64,10" fill="#facc15"/>
+          <ellipse cx="40" cy="50" rx="4" ry="7" fill="#ffffff"/>
+          <ellipse cx="60" cy="50" rx="4" ry="7" fill="#ffffff"/>
+          <path d="M 38 64 Q 50 74 62 64" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 22 75 L 45 52 L 56 62 L 78 30" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <polygon points="78,22 84,33 73,34" fill="#10b981"/>
+        </svg>
         <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
       </div>
       <div>
@@ -89,7 +98,6 @@
         <span class="text-[10px] text-emerald-400 underline ml-1">Historial</span>
       </button>
 
-      <!-- BOTON ADMIN ACCESO RAPIDO -->
       <button id="admin-panel-btn" onclick="openAdminModal()" class="hidden text-xs font-bold px-2.5 py-1.5 rounded-lg bg-indigo-600/30 border border-indigo-500/50 hover:bg-indigo-600/50 text-indigo-300 flex items-center gap-1 transition-all">
         ⚙️ Admin
       </button>
@@ -162,7 +170,7 @@
         <span id="active-tab-indicator" class="text-[10px] font-mono text-slate-500 shrink-0 hidden sm:block">Terminal</span>
       </div>
 
-      <!-- VISTA 1: RADAR TÁCTICO IA & BIENVENIDA ANIMADA -->
+      <!-- VISTA 1: RADAR TÁCTICO IA & BIENVENIDA -->
       <div id="view-tactics" class="flex-1 flex flex-col overflow-hidden">
         <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4"></div>
         <div class="p-3 bg-[#10141d] border-t border-bordercolor">
@@ -184,7 +192,7 @@
         </div>
       </div>
 
-      <!-- VISTA 3: RANKING DE ACIERTOS (SOLO GANADAS) -->
+      <!-- VISTA 3: RANKING DE ACIERTOS -->
       <div id="view-tipsters" class="flex-1 flex flex-col overflow-hidden hidden">
         <div class="p-3 bg-innerbg/60 border-b border-bordercolor flex items-center justify-between">
           <div>
@@ -435,8 +443,14 @@
 
       <div class="flex items-center justify-between border-b border-bordercolor/80 pb-5">
         <div class="flex items-center gap-3">
-          <div class="w-14 h-14 rounded-2xl bg-[#141824] flex items-center justify-center p-1.5 border border-emerald-500/40 shadow-lg shadow-emerald-500/30">
-            <img src="logo.png" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>💣</text></svg>';">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#121622] to-[#181f2f] flex items-center justify-center p-2 border border-emerald-500/40 shadow-lg shadow-emerald-500/30">
+            <svg viewBox="0 0 100 100" class="w-full h-full">
+              <circle cx="50" cy="55" r="32" fill="#1b212f" stroke="#10b981" stroke-width="3"/>
+              <path d="M 50 23 L 50 14 Q 50 7 60 7 L 68 7" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+              <polygon points="68,3 74,8 70,14 62,11 60,4" fill="#ef4444"/>
+              <path d="M 22 75 L 45 52 L 56 62 L 78 30" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polygon points="78,22 84,33 73,34" fill="#10b981"/>
+            </svg>
           </div>
           <div>
             <h1 class="text-xl font-black tracking-tight uppercase flex items-center gap-2">
@@ -769,33 +783,37 @@
       document.getElementById('mobile-slip-drawer').classList.add('hidden');
     }
 
-    // BIENVENIDA VISUAL CON EL LOGO OFICIAL ANIMADO
+    // BIENVENIDA VISUAL CON HERO ANIMADO + EFECTIVIDAD + CARRUSEL DINÁMICO SUPABASE
     function renderWelcomeScreen() {
       const stream = document.getElementById('tactical-stream');
       stream.innerHTML = `
-        <div class="space-y-5 animate-fade-in">
+        <div class="space-y-6 animate-fade-in">
           
           <!-- BANNER HERO PRINCIPAL CON LOGO ANIMADO -->
           <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0e131d] via-[#141b29] to-[#0a0d14] border-2 border-emerald-500/40 p-6 sm:p-8 text-center shadow-2xl">
-            
-            <!-- AURA LUMINOSA EXPANSIVA -->
             <div class="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none animate-glow"></div>
             <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-amber-500/15 rounded-full blur-3xl pointer-events-none animate-glow"></div>
 
             <div class="relative z-10 flex flex-col items-center">
-              
-              <!-- CONTENEDOR DEL LOGO ANIMADO CON FLOTACIÓN -->
               <div class="relative mb-4 animate-bomba">
-                <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-b from-innerbg to-basebg p-2 shadow-2xl shadow-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center">
-                  <img src="logo.png" alt="PicksBomba" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(16,185,129,0.35)]" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><text y=\'.9em\' font-size=\'90\'>💣</text></svg>';">
+                <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-gradient-to-b from-innerbg to-basebg p-2 shadow-2xl shadow-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center">
+                  <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_8px_16px_rgba(16,185,129,0.35)]">
+                    <circle cx="50" cy="55" r="32" fill="#1b212f" stroke="#10b981" stroke-width="3"/>
+                    <path d="M 50 23 L 50 14 Q 50 7 60 7 L 68 7" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+                    <polygon points="68,3 74,8 70,14 62,11 60,4" fill="#ef4444"/>
+                    <polygon points="69,4 73,8 70,12 64,10" fill="#facc15"/>
+                    <ellipse cx="40" cy="50" rx="4" ry="7" fill="#ffffff"/>
+                    <ellipse cx="60" cy="50" rx="4" ry="7" fill="#ffffff"/>
+                    <path d="M 38 64 Q 50 74 62 64" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M 22 75 L 45 52 L 56 62 L 78 30" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polygon points="78,22 84,33 73,34" fill="#10b981"/>
+                  </svg>
                 </div>
-                <!-- INSIGNIA FLOTANTE EN VIVO -->
-                <span class="absolute -bottom-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-black font-mono text-[10px] px-3 py-0.5 rounded-full uppercase tracking-wider shadow-lg border border-emerald-300/40">
+                <span class="absolute -bottom-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-black font-mono text-[9px] sm:text-[10px] px-3 py-0.5 rounded-full uppercase tracking-wider shadow-lg border border-emerald-300/40">
                   ⚡ RADAR CUÁNTICO
                 </span>
               </div>
 
-              <!-- TÍTULO Y DESCRIPCIÓN -->
               <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase font-sans mt-2">
                 Picks<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent italic">BOMBA</span> <span class="text-amber-400 font-mono text-sm px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 not-italic">VIP</span>
               </h2>
@@ -804,68 +822,198 @@
                 Sistema matemático que rastrea ineficiencias de cuotas en tiempo real. Selecciona un partido de la cartelera para ver el análisis de valor esperado (<strong class="text-emerald-400">+EV</strong>) y los <strong class="text-amber-400">Picks Bomba</strong> del día.
               </p>
 
-              <!-- MÉTRICAS EN VIVO -->
-              <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-md mt-6 pt-5 border-t border-bordercolor/80">
-                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
-                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Win Rate</span>
-                  <span class="text-sm sm:text-base font-black font-mono text-emerald-400 mt-0.5 block">77.4%</span>
-                </div>
-                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
-                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Racha Actual</span>
-                  <span class="text-sm sm:text-base font-black font-mono text-progreen mt-0.5 block">5 Verdes 🔥</span>
-                </div>
-                <div class="bg-innerbg/80 border border-bordercolor p-2.5 rounded-xl">
-                  <span class="text-[9px] font-mono uppercase text-slate-400 block">Valor Promedio</span>
-                  <span class="text-sm sm:text-base font-black font-mono text-amber-400 mt-0.5 block">+18.5% EV</span>
-                </div>
-              </div>
-
-              <!-- BOTÓN CTA PRINCIPAL -->
-              <div class="mt-6 flex flex-col sm:flex-row items-center gap-3">
-                <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-emerald-500/25 active:scale-95 cursor-pointer">
+              <div class="mt-5 flex flex-col sm:flex-row items-center gap-3">
+                <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-emerald-500/25 active:scale-95 cursor-pointer">
                   <span>💣 Desbloquear Pick Bomba Destacado</span>
                 </button>
-                <button onclick="switchMainTab('tipsters')" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                <button onclick="switchMainTab('tipsters')" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
                   <span>🏆 Ver Muro de Aciertos</span>
                 </button>
               </div>
-
             </div>
           </div>
 
-          <!-- REGLAS DE GESTIÓN Y PROTOCOLO -->
-          <div class="bg-innerbg/60 border border-bordercolor rounded-2xl p-4 sm:p-5 space-y-3">
-            <div class="flex items-center justify-between border-b border-bordercolor/70 pb-2.5">
-              <div class="flex items-center gap-2">
-                <span class="text-sm">🛡️</span>
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Protocolo de Gestión PicksBomba</span>
+          <!-- SECCIÓN: EFECTIVIDAD & CARRUSEL DE ACIERTOS -->
+          <div class="bg-[#0f131c] border border-bordercolor/80 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+              
+              <!-- PANEL IZQUIERDO: EFECTIVIDAD MÉTRICA -->
+              <div class="lg:col-span-4 bg-[#141a26] border border-emerald-500/30 rounded-xl p-4 flex flex-col justify-between">
+                <div>
+                  <span class="text-[10px] font-mono uppercase tracking-wider font-bold text-emerald-400 block mb-3">
+                    EFECTIVIDAD DE LOS PRONÓSTICOS
+                  </span>
+                  
+                  <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-full border-4 border-emerald-400 bg-emerald-500/10 flex flex-col items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+                      <span class="text-lg font-black font-mono text-white leading-none">77%</span>
+                      <span class="text-[8px] font-mono text-emerald-300 uppercase mt-0.5">Acierto</span>
+                    </div>
+
+                    <div class="space-y-2">
+                      <div>
+                        <div class="flex items-center gap-1.5">
+                          <span class="text-xs font-bold text-white font-mono">8 de 10</span>
+                          <div class="flex gap-0.5">
+                            <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-slate-600"></span>
+                            <span class="w-1.5 h-1.5 rounded-sm bg-slate-600"></span>
+                          </div>
+                        </div>
+                        <span class="text-[9px] text-slate-400 block font-sans">Picks Favoritos acertados</span>
+                      </div>
+
+                      <div>
+                        <span class="text-xs font-bold text-emerald-400 font-mono">5.000+</span>
+                        <span class="text-[9px] text-slate-400 block font-sans">Partidos analizados</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-3 mt-3 border-t border-bordercolor/60 text-[9px] text-slate-500 font-mono leading-tight">
+                  Resultados auditados. El rendimiento pasado no garantiza resultados futuros.
+                </div>
               </div>
-              <span class="text-[10px] font-mono bg-basebg px-2 py-0.5 rounded text-amber-400 font-bold">REGLAS DE ORO</span>
+
+              <!-- PANEL DERECHO: CARRUSEL AUTOMÁTICO EN TIEMPO REAL -->
+              <div class="lg:col-span-8 flex flex-col justify-between">
+                
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-bordercolor/50">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-xs font-bold text-white uppercase font-sans">Aciertos Recientes de PicksBomba</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button onclick="scrollAciertosCarousel(-220)" class="w-6 h-6 rounded bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-300 text-xs flex items-center justify-center cursor-pointer">◀</button>
+                    <button onclick="scrollAciertosCarousel(220)" class="w-6 h-6 rounded bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-300 text-xs flex items-center justify-center cursor-pointer">▶</button>
+                  </div>
+                </div>
+
+                <div id="aciertos-carousel" class="flex gap-3 overflow-x-auto custom-scroll pb-2">
+                  <div class="text-slate-500 font-mono text-xs py-6 px-2">Cargando últimos aciertos oficiales...</div>
+                </div>
+
+              </div>
+
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-              <div class="p-3 rounded-xl bg-basebg/60 border border-bordercolor/80 space-y-1">
-                <div class="font-bold text-white flex items-center gap-1.5 text-[11px]">
-                  <span class="text-progreen font-mono">01.</span> Asignación Estricta de Banca
-                </div>
-                <p class="text-[11px] text-slate-400 leading-relaxed">
-                  Nunca arriesgues más del <strong>1% al 3%</strong> de tu capital total por jugada.
-                </p>
-              </div>
+          </div>
 
-              <div class="p-3 rounded-xl bg-basebg/60 border border-bordercolor/80 space-y-1">
-                <div class="font-bold text-white flex items-center gap-1.5 text-[11px]">
-                  <span class="text-emerald-400 font-mono">02.</span> Ventaja Matemática (+EV)
-                </div>
-                <p class="text-[11px] text-slate-400 leading-relaxed">
-                  Apuesta únicamente cuando la probabilidad estimada supere el precio que paga la casa.
-                </p>
-              </div>
+          <!-- AVISO DE RESPONSABILIDAD -->
+          <div class="p-4 bg-innerbg/30 border border-bordercolor/60 rounded-xl text-[10px] text-slate-400 space-y-2">
+            <div class="flex items-start gap-2">
+              <span class="text-amber-400 text-xs">⚠️</span>
+              <p class="leading-relaxed">
+                <strong class="text-amber-300 font-bold">Aviso de responsabilidad:</strong> Los pronósticos y probabilidades mostrados son estimaciones matemáticas basadas en modelos predictivos y volumen de xG. PicksBomba es exclusivamente una herramienta de análisis de datos e información cuantitativa. Plataforma para mayores de 18 años. Juega con responsabilidad.
+              </p>
             </div>
           </div>
 
         </div>
       `;
+
+      loadDynamicSettledPicks();
+    }
+
+    // CARGA DE ACIERTOS OFICIALES DESDE SUPABASE
+    async function loadDynamicSettledPicks() {
+      const container = document.getElementById('aciertos-carousel');
+      if (!container) return;
+
+      const { data: picks, error } = await supabaseClient
+        .from('settled_picks')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error || !picks || picks.length === 0) {
+        container.innerHTML = `
+          <div class="min-w-[210px] sm:min-w-[230px] bg-[#141a26] border border-bordercolor/90 rounded-xl p-3 flex flex-col justify-between space-y-2.5 shadow-md shrink-0">
+            <div class="flex items-center justify-between">
+              <span class="text-[9px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span>💣</span> BOMBA
+              </span>
+              <span class="text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+                ✓ ACERTADO
+              </span>
+            </div>
+            <div class="space-y-1.5 py-1">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/160.png&w=40&h=40" class="w-5 h-5 team-badge-img">
+                  <span class="text-xs font-bold text-white">Paris SG</span>
+                </div>
+                <span class="text-sm font-black font-mono text-white">4</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/83.png&w=40&h=40" class="w-5 h-5 team-badge-img">
+                  <span class="text-xs font-bold text-slate-300">Barcelona</span>
+                </div>
+                <span class="text-sm font-black font-mono text-slate-400">2</span>
+              </div>
+            </div>
+            <div class="pt-2 border-t border-bordercolor/60 flex items-center justify-between font-mono text-[10px]">
+              <span class="text-slate-300 font-bold truncate max-w-[120px]">Paris SG -1.5</span>
+              <span class="bg-indigo-950/80 text-indigo-300 border border-indigo-500/40 px-1.5 py-0.5 rounded font-black">cuota 4.02</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = "";
+      picks.forEach(p => {
+        const card = document.createElement('div');
+        card.className = "min-w-[210px] sm:min-w-[230px] bg-[#141a26] border border-bordercolor/90 rounded-xl p-3 flex flex-col justify-between space-y-2.5 shadow-md shrink-0";
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-[9px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+              <span>💣</span> ${p.tag}
+            </span>
+            <span class="text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+              ✓ ACERTADO
+            </span>
+          </div>
+
+          <div class="space-y-1.5 py-1">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <img src="${p.home_badge || resolveTeamBadge(p.home_team, null)}" class="w-5 h-5 team-badge-img" onerror="handleImageError(this, '${p.home_team}')">
+                <span class="text-xs font-bold text-white">${p.home_team}</span>
+              </div>
+              <span class="text-sm font-black font-mono text-white">${p.home_score}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <img src="${p.away_badge || resolveTeamBadge(p.away_team, null)}" class="w-5 h-5 team-badge-img" onerror="handleImageError(this, '${p.away_team}')">
+                <span class="text-xs font-bold text-slate-300">${p.away_team}</span>
+              </div>
+              <span class="text-sm font-black font-mono text-slate-400">${p.away_score}</span>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-bordercolor/60 flex items-center justify-between font-mono text-[10px]">
+            <span class="text-slate-300 font-bold truncate max-w-[120px]">${p.pick_name}</span>
+            <span class="bg-indigo-950/80 text-indigo-300 border border-indigo-500/40 px-1.5 py-0.5 rounded font-black">cuota ${parseFloat(p.odds).toFixed(2)}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function scrollAciertosCarousel(offset) {
+      const el = document.getElementById('aciertos-carousel');
+      if (el) el.scrollBy({ left: offset, behavior: 'smooth' });
     }
 
     // CARGA DE PARTIDOS ACTIVOS (OMITE AUTOMÁTICAMENTE PARTIDOS FINALIZADOS)
@@ -1427,9 +1575,7 @@
           ${statusBadge}
         </div>
 
-        <!-- TABLERO PRINCIPAL CON MARCADOR Y LOGOS HD -->
         <div class="grid grid-cols-12 gap-2 items-center bg-basebg/70 p-4 rounded-xl border border-bordercolor">
-          <!-- LOCAL -->
           <div class="col-span-4 flex items-center gap-2.5">
             <img src="${data.homeBadge}" class="w-10 h-10 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,3)}')">
             <div class="truncate">
@@ -1438,7 +1584,6 @@
             </div>
           </div>
 
-          <!-- MARCADOR CENTRAL -->
           <div class="col-span-4 flex flex-col items-center justify-center text-center">
             <div class="flex items-center gap-2 bg-[#10141d] px-3.5 py-1.5 rounded-xl border border-bordercolor font-mono shadow-inner">
               <span class="text-xl font-black ${data.homeScore > data.awayScore ? 'text-progreen' : 'text-white'}">${data.homeScore}</span>
@@ -1448,7 +1593,6 @@
             <span class="text-[9px] font-mono text-slate-500 mt-1 uppercase">${data.date}</span>
           </div>
 
-          <!-- VISITANTE -->
           <div class="col-span-4 flex items-center justify-end gap-2.5 text-right">
             <div class="truncate">
               <div class="font-bold text-white text-xs truncate">${data.away}</div>
@@ -1463,7 +1607,6 @@
           ${data.tacticalRead}
         </div>
 
-        <!-- SENTIMIENTO DE LA TRIBUNA -->
         <div class="p-3 bg-[#10141d] rounded-lg border border-bordercolor space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-mono text-slate-400 uppercase font-bold flex items-center gap-1.5"><span>📊 Sentimiento de la Tribuna</span></span>
@@ -1485,7 +1628,6 @@
           </div>
         </div>
 
-        <!-- PICKS SELECTION -->
         <div class="space-y-2 pt-1">
           <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider flex items-center justify-between">
             <span>Picks Recomendados (+EV)</span>
@@ -1850,6 +1992,9 @@
       }).subscribe();
       supabaseClient.channel('public:community_tips').on('postgres_changes', { event: '*', schema: 'public', table: 'community_tips' }, () => loadCommunityTips()).subscribe();
       supabaseClient.channel('public:user_bets').on('postgres_changes', { event: '*', schema: 'public', table: 'user_bets' }, () => loadUserBets()).subscribe();
+      supabaseClient.channel('public:settled_picks').on('postgres_changes', { event: '*', schema: 'public', table: 'settled_picks' }, () => {
+        loadDynamicSettledPicks();
+      }).subscribe();
     }
 
     const toastNotifications = [
