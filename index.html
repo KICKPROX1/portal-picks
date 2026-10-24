@@ -196,7 +196,6 @@
 
         <!-- INPUT DEL CHAT CON REACCIONES RÁPIDAS -->
         <div id="chat-input-container" class="p-3 bg-[#10141d] border-t border-bordercolor shrink-0">
-          <!-- Reacciones de un solo clic -->
           <div class="flex items-center gap-2 mb-2 px-1">
             <span class="text-[10px] text-slate-500 font-mono font-bold uppercase">Reacción:</span>
             <div class="flex gap-2">
@@ -215,7 +214,7 @@
           </form>
         </div>
 
-        <!-- OVERLAY EXCLUSIVO VIP (SE MUESTRA SI NO TIENE ACCESO VIP) -->
+        <!-- OVERLAY EXCLUSIVO VIP -->
         <div id="chat-vip-lock-overlay" class="absolute inset-0 bg-[#0c0e12]/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30 hidden">
           <div class="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4 text-3xl text-amber-400 shadow-xl shadow-amber-500/10">
             🔒
@@ -711,7 +710,7 @@
     let currentMatchKey = 'astonvilla-mancity';
     const WHOP_CHECKOUT_URL = "https://portal-picks.whop.site/";
 
-    // CATÁLOGO DE LOGOS OFICIALES (ESPN CDN)
+    // CATÁLOGO EXPANDIDO DE LOGOS OFICIALES (ESPN CDN)
     const TEAM_BADGES_BACKUP = {
       "aston villa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/362.png&w=100&h=100",
       "manchester city": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=100&h=100",
@@ -749,6 +748,9 @@
       "toluca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/230.png&w=100&h=100",
       "monterrey": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/226.png&w=100&h=100",
       "chivas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/217.png&w=100&h=100",
+      "américa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/227.png&w=100&h=100",
+      "america": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/227.png&w=100&h=100",
+      "pachuca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=100&h=100",
       "columbus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18267.png&w=100&h=100",
       "toronto": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/7318.png&w=100&h=100",
       "red bulls": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/189.png&w=100&h=100",
@@ -767,6 +769,10 @@
       "austin": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20906.png&w=100&h=100",
       "portland": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10972.png&w=100&h=100",
       "charlotte": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/21300.png&w=100&h=100",
+      "la galaxy": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/187.png&w=100&h=100",
+      "galaxy": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/187.png&w=100&h=100",
+      "lafc": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18966.png&w=100&h=100",
+      "los angeles fc": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18966.png&w=100&h=100",
       "banfield": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3.png&w=100&h=100",
       "lanus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14.png&w=100&h=100",
       "talleres": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20.png&w=100&h=100",
@@ -779,7 +785,6 @@
       "cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/328.png&w=100&h=100",
       "alianza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14468.png&w=100&h=100",
       "inter bogota": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20340.png&w=100&h=100",
-      "america": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/326.png&w=100&h=100",
       "cucuta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/330.png&w=100&h=100"
     };
 
@@ -1088,6 +1093,7 @@
       renderMatchSidebar();
     }
 
+    // RENDERIZADO CORREGIDO DE CARTELERA (SIN ERRORES DE COMILLAS ONERROR)
     function renderMatchSidebar() {
       const list = document.getElementById('match-sidebar-list');
       list.innerHTML = "";
@@ -1174,7 +1180,7 @@
 
             <div class="grid grid-cols-12 gap-1 items-center">
               <div class="col-span-5 flex items-center gap-1.5 min-w-0">
-                <img src="${item.homeBadge}" class="w-5 h-5 team-badge-img shrink-0" onerror="handleImageError(this, '${item.home}')">
+                <img class="w-5 h-5 team-badge-img shrink-0 home-img">
                 <span class="font-bold text-white text-[11px] truncate">${item.home}</span>
               </div>
 
@@ -1186,10 +1192,20 @@
 
               <div class="col-span-5 flex items-center justify-end gap-1.5 min-w-0 text-right">
                 <span class="font-bold text-white text-[11px] truncate">${item.away}</span>
-                <img src="${item.awayBadge}" class="w-5 h-5 team-badge-img shrink-0" onerror="handleImageError(this, '${item.away}')">
+                <img class="w-5 h-5 team-badge-img shrink-0 away-img">
               </div>
             </div>
           `;
+
+          // Control seguro de imágenes sin atributos inline defectuosos
+          const homeImg = card.querySelector('.home-img');
+          homeImg.src = item.homeBadge;
+          homeImg.onerror = () => handleImageError(homeImg, item.home);
+
+          const awayImg = card.querySelector('.away-img');
+          awayImg.src = item.awayBadge;
+          awayImg.onerror = () => handleImageError(awayImg, item.away);
+
           matchContainer.appendChild(card);
         });
 
@@ -1963,7 +1979,6 @@
       checkUserSession();
     }
 
-    // CONTROL DE EXCLUSIVIDAD VIP EN EL CHAT
     function updateChatVipVisibility() {
       const lockOverlay = document.getElementById('chat-vip-lock-overlay');
       if (!lockOverlay) return;
@@ -1974,7 +1989,6 @@
       }
     }
 
-    // INSERTAR EMOJI RÁPIDO EN EL CHAT
     function insertChatEmoji(emoji) {
       const input = document.getElementById('chat-message-input');
       if (input) {
@@ -1983,7 +1997,6 @@
       }
     }
 
-    // CARGA DE MENSAJES DEL CHAT
     async function loadChatMessages() {
       const { data: messages } = await supabaseClient.from('community_chat').select('*').order('created_at', { ascending: true }).limit(50);
       const container = document.getElementById('chat-messages-container');
@@ -1996,7 +2009,6 @@
       container.scrollTop = container.scrollHeight;
     }
 
-    // RENDERIZADO MODERNO DE BURBUJA DE MENSAJE
     function appendChatMessage(msg) {
       const container = document.getElementById('chat-messages-container');
       const timeStr = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
