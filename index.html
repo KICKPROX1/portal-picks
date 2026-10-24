@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PRO STATS VIP | Análisis Táctico & Pronósticos de Fútbol</title>
+  <title>PicksBomba VIP | Terminal Algorítmica & Pronósticos de Fútbol</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SUPABASE JS CLIENT -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -40,34 +40,40 @@
     .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: #10141d; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #232938; border-radius: 9999px; }
-    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #10b981; }
     .team-badge-img { object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-    .cursor-blink::after { content: '|'; animation: blink 1s step-start infinite; color: #38bdf8; }
+    .cursor-blink::after { content: '|'; animation: blink 1s step-start infinite; color: #10b981; }
     @keyframes blink { 50% { opacity: 0; } }
     .vip-blur { filter: blur(5px); user-select: none; pointer-events: none; }
     @keyframes slideInUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .toast-anim { animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white relative pb-20 lg:pb-0">
+<body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative pb-20 lg:pb-0">
 
-  <!-- TOP HEADER -->
-  <header class="h-14 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-lg bg-problue flex items-center justify-center font-black text-white text-sm shadow-md shadow-blue-600/30">⚽</div>
+  <!-- TOP HEADER CON LOGO OFICIAL PICKSBOMBA -->
+  <header class="h-16 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="renderWelcomeScreen()">
+      <div class="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-emerald-500/20 border border-emerald-400/30">
+        <span>💣</span>
+        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+      </div>
       <div>
-        <span class="text-sm font-bold tracking-tight text-white uppercase">SofaTactics <span class="text-proaccent font-mono text-xs">PRO</span></span>
-        <span class="text-[10px] hidden sm:block font-mono text-slate-400">Inteligencia Deportiva & Datos de Valor</span>
+        <div class="text-base sm:text-lg font-black tracking-tight text-white uppercase leading-none flex items-center gap-1.5 font-sans">
+          Picks<span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent italic">BOMBA</span>
+          <span class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40 not-italic">PRO</span>
+        </div>
+        <span class="text-[9px] font-mono text-slate-400 block tracking-wider mt-1">Terminal Algorítmica & Valor +EV</span>
       </div>
     </div>
     
     <div class="flex items-center gap-2 sm:gap-3">
-      <button onclick="openAuditModal()" class="hidden md:flex items-center gap-2 bg-innerbg px-3 py-1 rounded-lg border border-bordercolor text-xs font-mono hover:border-proaccent transition-all cursor-pointer">
+      <button onclick="openAuditModal()" class="hidden md:flex items-center gap-2 bg-innerbg px-3 py-1.5 rounded-lg border border-bordercolor text-xs font-mono hover:border-emerald-500 transition-all cursor-pointer">
         <span class="w-2 h-2 rounded-full bg-progreen animate-pulse"></span>
         <span class="text-slate-300">Racha: <strong class="text-progreen">5 Verdes</strong></span>
         <span class="text-slate-500">|</span>
         <span class="text-slate-300">Win Rate: <strong class="text-white">77.4%</strong></span>
-        <span class="text-[10px] text-proaccent underline ml-1">Historial</span>
+        <span class="text-[10px] text-emerald-400 underline ml-1">Historial</span>
       </button>
 
       <!-- BOTON ADMIN ACCESO RAPIDO -->
@@ -75,7 +81,7 @@
         ⚙️ Admin
       </button>
 
-      <button onclick="openVipModal()" id="btn-header-vip" class="text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 flex items-center gap-1.5 shadow-md transition-all active:scale-95 shrink-0">
+      <button onclick="openVipModal()" id="btn-header-vip" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 flex items-center gap-1.5 shadow-md transition-all active:scale-95 shrink-0">
         <span>👑</span>
         <span class="hidden sm:inline">Pase VIP $10/mes</span>
         <span class="sm:hidden">VIP $10</span>
@@ -90,12 +96,12 @@
   </header>
 
   <!-- BANNER PROMO WHOP -->
-  <div class="bg-gradient-to-r from-blue-900/40 via-indigo-900/30 to-purple-900/40 border-b border-bordercolor py-1.5 px-3 text-center text-xs">
+  <div class="bg-gradient-to-r from-emerald-950/40 via-innerbg to-blue-950/40 border-b border-bordercolor py-1.5 px-3 text-center text-xs">
     <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 text-slate-300 flex-wrap">
-      <span class="bg-problue text-white text-[9px] font-mono font-bold px-1.5 py-0.2 rounded uppercase">Membresía</span>
-      <span class="text-[11px] sm:text-xs">Desbloquea los pronósticos VIP diarios:</span>
-      <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="text-proaccent font-bold hover:underline flex items-center gap-1 text-[11px] sm:text-xs">
-        <span>Unirme en Whop</span> →
+      <span class="bg-emerald-600 text-slate-950 text-[9px] font-mono font-black px-1.5 py-0.2 rounded uppercase">MEMBRESÍA EXCLUSIVA</span>
+      <span class="text-[11px] sm:text-xs">Acceso inmediato a los Picks Bomba diarios:</span>
+      <a href="https://whop.com/portal-picks/portal-picks-daily-winning-predictions" target="_blank" class="text-emerald-400 font-bold hover:underline flex items-center gap-1 text-[11px] sm:text-xs">
+        <span>Desbloquear en Whop</span> →
       </a>
     </div>
   </div>
@@ -103,19 +109,19 @@
   <!-- WORKSPACE A 3 COLUMNAS -->
   <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-    <!-- COLUMNA 1 (IZQUIERDA): FIXTURE & LIGAS EN ACORDEÓN ELEGANTE -->
+    <!-- COLUMNA 1 (IZQUIERDA): CARTELERA POR LIGAS (OMITE AUTOMÁTICAMENTE FINALIZADOS) -->
     <aside id="col-fixture" class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
       <div class="bg-cardbg border border-bordercolor rounded-xl p-3 flex flex-col max-h-[520px] lg:max-h-none lg:h-[750px] shadow-lg">
         <div class="flex items-center justify-between pb-2.5 px-1 border-b border-bordercolor">
           <div class="flex items-center gap-2">
             <span class="text-sm">🏆</span>
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Competiciones Activas</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Partidos Activos</span>
           </div>
-          <span class="text-[9px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-proaccent font-bold">FILTRADO PRO</span>
+          <span class="text-[9px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-emerald-400 font-bold">FILTRADO PRO</span>
         </div>
 
         <div id="match-sidebar-list" class="flex-1 overflow-y-auto custom-scroll space-y-2.5 mt-2.5 pr-1 text-xs">
-          <!-- Render dinámico filtrado sin partidos finalizados -->
+          <!-- Render dinámico con acordeones por liga y logos -->
         </div>
       </div>
     </aside>
@@ -126,7 +132,7 @@
       <!-- HEADER CON 4 PESTAÑAS -->
       <div class="flex items-center justify-between px-3 py-2 border-b border-bordercolor bg-[#10141d] overflow-x-auto">
         <div class="flex items-center gap-1.5 shrink-0">
-          <button id="tab-tactics-btn" onclick="switchMainTab('tactics')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-proaccent text-white flex items-center gap-1">
+          <button id="tab-tactics-btn" onclick="switchMainTab('tactics')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-emerald-500 text-white flex items-center gap-1">
             <span>⚡ Radar IA</span>
           </button>
           <button id="tab-community-btn" onclick="switchMainTab('community')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-transparent border border-transparent text-slate-400 hover:text-white flex items-center gap-1">
@@ -148,8 +154,8 @@
         <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4"></div>
         <div class="p-3 bg-[#10141d] border-t border-bordercolor">
           <form onsubmit="handleUserSearch(event)" class="relative flex items-center">
-            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Arsenal, Aston Villa, Toluca)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-proaccent transition-all font-sans">
-            <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-problue hover:bg-blue-500 text-white font-mono text-xs flex items-center justify-center transition-all">Enviar</button>
+            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Arsenal, Aston Villa, Toluca)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
+            <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center transition-all">Enviar</button>
           </form>
         </div>
       </div>
@@ -159,7 +165,7 @@
         <div id="chat-messages-container" class="flex-1 overflow-y-auto custom-scroll p-4 space-y-3"></div>
         <div class="p-3 bg-[#10141d] border-t border-bordercolor">
           <form onsubmit="handleSendChatMessage(event)" class="relative flex items-center">
-            <input type="text" id="chat-message-input" placeholder="Escribe tu análisis o pick para la comunidad..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-16 py-3 border border-bordercolor focus:outline-none focus:border-proaccent transition-all font-sans">
+            <input type="text" id="chat-message-input" placeholder="Escribe tu análisis o pick para la comunidad..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-16 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
             <button type="submit" class="absolute right-2 px-3 py-1.5 rounded-md bg-progreen hover:bg-emerald-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center transition-all">Enviar</button>
           </form>
         </div>
@@ -172,7 +178,7 @@
             <span class="text-xs font-bold text-white flex items-center gap-1.5">
               <span>🏅</span> Muro de Aciertos & Podio de Tipsters
             </span>
-            <span class="text-[10px] text-slate-400 block">Vitrina verificada de pronósticos ganados de la comunidad.</span>
+            <span class="text-[10px] text-slate-400 block">Vitrina verificada de pronósticos cobrados con éxito.</span>
           </div>
           <button onclick="openTipModal()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1 shadow-md transition-all">
             <span>+</span> Publicar
@@ -249,7 +255,7 @@
       <div class="bg-cardbg border border-bordercolor rounded-xl p-3.5 flex flex-col h-[750px] shadow-lg">
         <div class="bg-innerbg/70 border border-bordercolor rounded-xl p-3 mb-2 space-y-2">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-mono uppercase font-bold text-proaccent flex items-center gap-1.5">⚡ Armar Parlay IA</span>
+            <span class="text-[10px] font-mono uppercase font-bold text-emerald-400 flex items-center gap-1.5">⚡ Armar Parlay IA</span>
             <span class="text-[9px] font-mono text-slate-400">Algorítmico</span>
           </div>
           <div class="grid grid-cols-3 gap-1.5">
@@ -273,7 +279,7 @@
             <span class="text-sm">🧾</span>
             <span class="text-xs font-bold uppercase tracking-wider text-white">Boleto de Apuestas</span>
           </div>
-          <span id="slip-count" class="text-[10px] font-mono bg-problue text-white px-2 py-0.5 rounded-full font-bold">2</span>
+          <span id="slip-count" class="text-[10px] font-mono bg-emerald-600 text-slate-950 px-2 py-0.5 rounded-full font-black">2</span>
         </div>
 
         <div id="slip-items" class="flex-1 overflow-y-auto custom-scroll space-y-2 mt-2 pr-1 text-xs"></div>
@@ -297,7 +303,7 @@
             <span id="slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
           </div>
           
-          <button onclick="exportSlipToImage()" class="w-full py-2 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 border border-blue-500/40 text-white font-bold rounded-lg text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-md">
+          <button onclick="exportSlipToImage()" class="w-full py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 border border-emerald-400/40 text-slate-950 font-black rounded-lg text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-md">
             <span>📸</span>
             <span id="export-slip-label">Exportar Boleto a Imagen</span>
           </button>
@@ -320,7 +326,7 @@
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#10141d]/95 backdrop-blur-md border-t border-bordercolor z-40 px-3 flex items-center justify-around shadow-2xl">
     <button onclick="scrollToMobileSection('col-fixture')" class="flex flex-col items-center justify-center text-slate-400 hover:text-white transition-all py-1">
       <span class="text-lg leading-none">⚽</span>
-      <span class="text-[10px] font-mono mt-1">Jornada</span>
+      <span class="text-[10px] font-mono mt-1">Partidos</span>
     </button>
     <button onclick="switchMainTab('tactics'); scrollToMobileSection('col-center')" class="flex flex-col items-center justify-center text-slate-400 hover:text-white transition-all py-1">
       <span class="text-lg leading-none">⚡</span>
@@ -328,17 +334,17 @@
     </button>
     <button onclick="switchMainTab('community'); scrollToMobileSection('col-center')" class="flex flex-col items-center justify-center text-slate-400 hover:text-white transition-all py-1 relative">
       <span class="text-lg leading-none">💬</span>
-      <span class="text-[10px] font-mono mt-1">Comunidad</span>
+      <span class="text-[10px] font-mono mt-1">Chat</span>
       <span class="absolute top-1 right-2 w-2 h-2 rounded-full bg-emerald-400"></span>
     </button>
     <button onclick="switchMainTab('tracker'); scrollToMobileSection('col-center')" class="flex flex-col items-center justify-center text-slate-400 hover:text-white transition-all py-1">
       <span class="text-lg leading-none">📊</span>
       <span class="text-[10px] font-mono mt-1">Bitácora</span>
     </button>
-    <button onclick="openMobileSlipDrawer()" class="flex flex-col items-center justify-center text-proaccent hover:text-sky-300 transition-all py-1 relative">
+    <button onclick="openMobileSlipDrawer()" class="flex flex-col items-center justify-center text-emerald-400 hover:text-teal-300 transition-all py-1 relative">
       <div class="relative">
         <span class="text-lg leading-none">🧾</span>
-        <span id="mobile-bottom-slip-count" class="absolute -top-1 -right-2.5 bg-problue text-white text-[9px] font-mono font-bold px-1.5 rounded-full">2</span>
+        <span id="mobile-bottom-slip-count" class="absolute -top-1 -right-2.5 bg-emerald-500 text-slate-950 text-[9px] font-mono font-bold px-1.5 rounded-full">2</span>
       </div>
       <span class="text-[10px] font-mono mt-1 font-bold">Boleto</span>
     </button>
@@ -351,7 +357,7 @@
         <div class="flex items-center gap-2">
           <span class="text-lg">🧾</span>
           <span class="text-sm font-bold text-white uppercase tracking-wider">Boleto de Apuestas</span>
-          <span id="mobile-drawer-count" class="text-[10px] font-mono bg-problue text-white px-2 py-0.5 rounded-full font-bold">2</span>
+          <span id="mobile-drawer-count" class="text-[10px] font-mono bg-emerald-500 text-slate-950 px-2 py-0.5 rounded-full font-black">2</span>
         </div>
         <button onclick="closeMobileSlipDrawer()" class="text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
       </div>
@@ -410,16 +416,16 @@
 
   <!-- LIENZO OCULTO PARA EXPORTAR TARJETAS EN ALTA DEFINICIÓN -->
   <div id="export-container" style="position: absolute; left: -9999px; top: -9999px;">
-    <div id="social-card" class="w-[600px] bg-gradient-to-br from-[#0c0e14] via-[#121722] to-[#0c0e14] border-2 border-proaccent/40 rounded-3xl p-8 text-white font-sans flex flex-col justify-between shadow-2xl relative overflow-hidden">
-      <div class="absolute -right-16 -top-16 w-56 h-56 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div id="social-card" class="w-[600px] bg-gradient-to-br from-[#0c0e14] via-[#121722] to-[#0c0e14] border-2 border-emerald-500/40 rounded-3xl p-8 text-white font-sans flex flex-col justify-between shadow-2xl relative overflow-hidden">
+      <div class="absolute -right-16 -top-16 w-56 h-56 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div class="flex items-center justify-between border-b border-bordercolor/80 pb-5">
         <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-problue flex items-center justify-center font-black text-white text-2xl shadow-lg shadow-blue-500/30">⚽</div>
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-black text-white text-2xl shadow-lg shadow-emerald-500/30">💣</div>
           <div>
             <h1 class="text-xl font-black tracking-tight uppercase flex items-center gap-2">
-              SofaTactics <span class="text-proaccent font-mono text-sm px-2 py-0.5 rounded bg-blue-950/80 border border-blue-500/40">PRO</span>
+              Picks<span class="text-emerald-400 italic">BOMBA</span> <span class="text-amber-400 font-mono text-sm px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40">VIP</span>
             </h1>
             <span class="text-xs text-slate-400 font-mono">Pronósticos Cuantitativos & Valor Matemático</span>
           </div>
@@ -437,7 +443,7 @@
 
         <div class="p-5 bg-innerbg/80 border border-bordercolor rounded-2xl space-y-3 shadow-inner">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-mono uppercase text-proaccent font-bold">Pronóstico Seleccionado</span>
+            <span class="text-xs font-mono uppercase text-emerald-400 font-bold">Pronóstico Seleccionado</span>
             <span id="card-ev-label" class="text-xs font-mono font-black text-progreen bg-progreen/10 border border-progreen/30 px-2 py-0.5 rounded">+EV 14.2%</span>
           </div>
           <div id="card-pick-name" class="text-xl font-black text-white leading-tight">Stuttgart ML + Más de 1.5 Goles</div>
@@ -557,14 +563,14 @@
     <div class="bg-cardbg border border-bordercolor rounded-2xl max-w-sm w-full p-6 relative shadow-2xl">
       <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
       <div class="flex items-center gap-2 mb-4 border-b border-bordercolor pb-3">
-        <button id="tab-login-btn" onclick="switchAuthTab('login')" class="text-xs font-bold text-white border-b-2 border-proaccent pb-1">Iniciar Sesión</button>
+        <button id="tab-login-btn" onclick="switchAuthTab('login')" class="text-xs font-bold text-white border-b-2 border-emerald-500 pb-1">Iniciar Sesión</button>
         <button id="tab-signup-btn" onclick="switchAuthTab('signup')" class="text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors">Crear Cuenta</button>
       </div>
       <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
-        <div><label class="block text-slate-400 font-mono mb-1">Correo Electrónico</label><input type="email" id="auth-email" required placeholder="tu@email.com" class="w-full bg-innerbg border border-bordercolor rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-proaccent font-sans"></div>
-        <div><label class="block text-slate-400 font-mono mb-1">Contraseña</label><input type="password" id="auth-password" required minlength="6" placeholder="Mínimo 6 caracteres" class="w-full bg-innerbg border border-bordercolor rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-proaccent font-sans"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Correo Electrónico</label><input type="email" id="auth-email" required placeholder="tu@email.com" class="w-full bg-innerbg border border-bordercolor rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-sans"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Contraseña</label><input type="password" id="auth-password" required minlength="6" placeholder="Mínimo 6 caracteres" class="w-full bg-innerbg border border-bordercolor rounded-lg px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-sans"></div>
         <div id="auth-error-msg" class="text-[11px] text-rose-400 font-mono hidden"></div>
-        <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-problue hover:bg-blue-500 text-white font-bold rounded-lg transition-all text-xs">Iniciar Sesión</button>
+        <button type="submit" id="auth-submit-btn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition-all text-xs">Iniciar Sesión</button>
       </form>
     </div>
   </div>
@@ -575,7 +581,7 @@
       <button onclick="closeVipModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
       <div class="text-center space-y-2 mb-6">
         <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center text-2xl mx-auto shadow-lg shadow-amber-500/20">👑</div>
-        <h3 class="text-lg font-bold text-white tracking-tight">Acceso VIP Portal-Picks</h3>
+        <h3 class="text-lg font-bold text-white tracking-tight">Acceso VIP PicksBomba</h3>
         <p class="text-xs text-slate-400 leading-relaxed">Desbloquea los **Picks Bomba**, análisis de cuotas con valor esperado (+EV), parlay óptimo y alertas instantáneas.</p>
       </div>
       <div class="space-y-3 mb-6">
@@ -646,7 +652,7 @@
 
     function handleImageError(imgEl, initials) {
       imgEl.onerror = null;
-      imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%231a1f2c" stroke="%2338bdf8" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${(initials || 'FC').slice(0, 3)}</text></svg>`;
+      imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%231a1f2c" stroke="%2310b981" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2310b981" text-anchor="middle" dominant-baseline="middle">${(initials || 'PB').slice(0, 3)}</text></svg>`;
     }
 
     function scrollToMobileSection(sectionId) {
@@ -667,25 +673,25 @@
       const stream = document.getElementById('tactical-stream');
       stream.innerHTML = `
         <div class="space-y-4 animate-fade-in">
-          <div class="bg-gradient-to-r from-blue-950/40 via-innerbg to-cardbg border border-bordercolor rounded-2xl p-5 shadow-lg relative overflow-hidden">
+          <div class="bg-gradient-to-r from-emerald-950/40 via-innerbg to-cardbg border border-bordercolor rounded-2xl p-5 shadow-lg relative overflow-hidden">
             <div class="flex items-start justify-between relative z-10">
               <div>
                 <div class="flex items-center gap-2 mb-1.5">
                   <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span class="text-[11px] font-mono uppercase tracking-wider text-proaccent font-bold">Terminal Cuantitativa Activa</span>
+                  <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold">Terminal Cuantitativa Activa</span>
                 </div>
-                <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Jornada Multiliga en Vivo</h2>
+                <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Bienvenido a PicksBomba PRO</h2>
                 <p class="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
-                  Explora las competiciones activas en la barra lateral con sus logos oficiales, cuotas con valor matemático (+EV) y marcadores en directo.
+                  Sistema algorítmico diseñado para identificar <strong class="text-emerald-400">valor esperado positivo (+EV)</strong>, análisis métrico xG y liquidación automática de aciertos en tiempo real.
                 </p>
               </div>
-              <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-problue/20 text-proaccent border border-problue/30 items-center justify-center text-2xl shrink-0">
-                📊
+              <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 items-center justify-center text-2xl shrink-0 shadow-lg shadow-emerald-500/20">
+                💣
               </div>
             </div>
 
             <div class="mt-4 pt-3 border-t border-bordercolor/60 flex items-center gap-3">
-              <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="px-3.5 py-2 rounded-lg bg-problue hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
+              <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
                 <span>💣 Ver Pick Bomba: Villa vs City</span>
               </button>
               <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">O selecciona un partido de la cartelera activa.</span>
@@ -713,7 +719,7 @@
 
               <div class="p-3 rounded-xl bg-basebg/60 border border-bordercolor/80 space-y-1">
                 <div class="font-bold text-white flex items-center gap-1.5 text-[11px]">
-                  <span class="text-proaccent font-mono">02.</span> Búsqueda de Valor (+EV)
+                  <span class="text-emerald-400 font-mono">02.</span> Búsqueda de Valor (+EV)
                 </div>
                 <p class="text-[11px] text-slate-400 leading-relaxed">
                   Apuesta cuando la probabilidad calculada por el modelo supere la cuota del mercado.
@@ -845,7 +851,7 @@
             triggerTacticalPrompt(item.key);
             scrollToMobileSection('col-center');
           };
-          card.className = "p-2 rounded-lg bg-cardbg hover:bg-[#1a202c] border border-bordercolor/70 hover:border-proaccent cursor-pointer transition-all space-y-1.5 shadow-sm";
+          card.className = "p-2 rounded-lg bg-cardbg hover:bg-[#1a202c] border border-bordercolor/70 hover:border-emerald-500 cursor-pointer transition-all space-y-1.5 shadow-sm";
 
           card.innerHTML = `
             <div class="flex items-center justify-between">
@@ -910,7 +916,7 @@
             <div>
               <div class="text-[10px] text-slate-400 font-mono">${item.match}</div>
               <div class="text-[11px] font-bold text-white mt-0.5">${item.pick}</div>
-              <span class="text-[10px] text-proaccent font-mono font-bold">${item.odds.toFixed(2)}</span>
+              <span class="text-[10px] text-emerald-400 font-mono font-bold">${item.odds.toFixed(2)}</span>
             </div>
             <button onclick="removeSlipItem(${index})" class="text-slate-500 hover:text-rose-400 text-xs p-1">✕</button>
           </div>
@@ -985,7 +991,7 @@
       const totalOdds = document.getElementById('slip-total-odds').innerText;
       const payout = document.getElementById('slip-payout').innerText;
 
-      let text = `🔥 *JUGADA CONFIRMADA • SOFATACTICS VIP*\n\n`;
+      let text = `💣 *JUGADA OFICIAL • PICKSBOMBA VIP*\n\n`;
       activeSlip.forEach(item => {
         text += `⚽ ${item.match}\n🎯 ${item.pick} (Cuota: ${item.odds.toFixed(2)})\n\n`;
       });
@@ -1095,7 +1101,7 @@
               <span class="text-[10px] font-mono text-slate-400">${timeStr}</span>
             </div>
             <div class="text-right font-mono text-xs">
-              <span class="text-slate-400">Cuota: <strong class="text-proaccent">${parseFloat(b.total_odds).toFixed(2)}</strong></span>
+              <span class="text-slate-400">Cuota: <strong class="text-emerald-400">${parseFloat(b.total_odds).toFixed(2)}</strong></span>
             </div>
           </div>
 
@@ -1151,7 +1157,7 @@
       document.getElementById('card-analysis-box').innerText = `"${readText || 'Análisis cuantitativo validado por modelo matemático.'}"`;
 
       const cardElement = document.getElementById('social-card');
-      const filename = `SofaTactics_${matchName.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+      const filename = `PicksBomba_${matchName.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
 
       html2canvas(cardElement, { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
         const link = document.createElement('a');
@@ -1178,7 +1184,7 @@
         combinedPicks,
         totalOdds,
         "+EV ACUMULADO",
-        "Jugada combinada generada algorítmicamente por SofaTactics PRO con cuota total de alto retorno."
+        "Jugada combinada generada algorítmicamente por PicksBomba PRO con cuota total de alto retorno."
       );
 
       setTimeout(() => { if (label) label.innerText = "Exportar Boleto a Imagen"; }, 2000);
@@ -1206,7 +1212,7 @@
 
       if (tab === 'tactics') {
         viewTactics.classList.remove('hidden');
-        btnTactics.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-proaccent text-white flex items-center gap-1";
+        btnTactics.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-emerald-500 text-white flex items-center gap-1";
         if (indicator) indicator.innerText = "Terminal";
       } else if (tab === 'community') {
         viewCommunity.classList.remove('hidden');
@@ -1220,7 +1226,7 @@
         loadCommunityTips();
       } else if (tab === 'tracker') {
         viewTracker.classList.remove('hidden');
-        btnTracker.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-proaccent text-white flex items-center gap-1";
+        btnTracker.className = "text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-emerald-500 text-white flex items-center gap-1";
         if (indicator) indicator.innerText = "Personal";
         loadUserBets();
       }
@@ -1255,8 +1261,8 @@
 
           const loader = document.createElement('div');
           loader.id = "feed-loader";
-          loader.className = "text-[11px] font-mono text-proaccent flex items-center gap-2 p-2";
-          loader.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-proaccent animate-ping"></span> Conectando datos en directo...`;
+          loader.className = "text-[11px] font-mono text-emerald-400 flex items-center gap-2 p-2";
+          loader.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Conectando datos en directo...`;
           stream.appendChild(loader);
 
           setTimeout(() => {
@@ -1317,7 +1323,7 @@
         </div>
 
         <div class="text-slate-300 leading-relaxed bg-[#121620] p-3 rounded-lg border border-bordercolor">
-          <span class="font-mono text-proaccent text-[10px] uppercase font-bold block mb-1">Diagnóstico Táctico:</span>
+          <span class="font-mono text-emerald-400 text-[10px] uppercase font-bold block mb-1">Diagnóstico Táctico:</span>
           ${data.tacticalRead}
         </div>
 
@@ -1325,7 +1331,7 @@
         <div class="p-3 bg-[#10141d] rounded-lg border border-bordercolor space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-mono text-slate-400 uppercase font-bold flex items-center gap-1.5"><span>📊 Sentimiento de la Tribuna</span></span>
-            <span id="vote-total-label" class="text-[10px] font-mono text-proaccent">Cargando votos...</span>
+            <span id="vote-total-label" class="text-[10px] font-mono text-emerald-400">Cargando votos...</span>
           </div>
           <div class="grid grid-cols-3 gap-2">
             <button onclick="handleCastVote('${matchKey}', '1')" class="py-1.5 bg-innerbg hover:border-progreen border border-bordercolor rounded-lg text-center transition-all">
@@ -1356,13 +1362,13 @@
                 return `
                   <div class="p-2.5 rounded-lg bg-basebg border border-bordercolor flex items-center justify-between">
                     <div>
-                      <div class="text-[9px] font-mono text-proaccent font-bold">${p.tag} · EV: ${p.ev}</div>
+                      <div class="text-[9px] font-mono text-emerald-400 font-bold">${p.tag} · EV: ${p.ev}</div>
                       <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
                       <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${parseFloat(p.odds).toFixed(2)}</span></div>
                     </div>
                     <div class="flex items-center gap-1.5">
                       <button onclick="generateSocialCard('${data.league}', '${data.matchName}', '${p.name}', ${p.odds}, '${p.ev}', '${data.tacticalRead.replace(/'/g, "\\'")}')" title="Descargar Tarjeta" class="px-2 py-1 rounded bg-innerbg hover:bg-white/10 text-slate-300 border border-bordercolor text-[10px] font-bold transition-all">📸</button>
-                      <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-problue hover:bg-blue-500 text-white font-mono text-[10px] font-bold transition-all">+ Boleto</button>
+                      <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-mono text-[10px] font-black transition-all">+ Boleto</button>
                     </div>
                   </div>
                 `;
@@ -1467,7 +1473,7 @@
               <span class="text-[9px] font-mono border px-1.5 py-0.2 rounded font-bold bg-emerald-500/20 text-progreen border-emerald-500/40">ACERTADA ✅</span>
               <span class="text-[9px] font-mono text-slate-500 ml-1">${timeStr}</span>
             </div>
-            <div class="font-bold text-slate-200 text-xs mt-1">${tip.match_name}: <span class="text-proaccent">${tip.selection}</span></div>
+            <div class="font-bold text-slate-200 text-xs mt-1">${tip.match_name}: <span class="text-emerald-400">${tip.selection}</span></div>
             <div class="text-[10px] font-mono text-slate-400">Cuota Oficial: <strong class="text-white">${parseFloat(tip.odds).toFixed(2)}</strong> · Stake: ${tip.stake}u</div>
           </div>
           <div class="text-right">
@@ -1594,11 +1600,11 @@
       const tabSignup = document.getElementById('tab-signup-btn');
       const submitBtn = document.getElementById('auth-submit-btn');
       if (mode === 'login') {
-        tabLogin.className = "text-xs font-bold text-white border-b-2 border-proaccent pb-1";
+        tabLogin.className = "text-xs font-bold text-white border-b-2 border-emerald-500 pb-1";
         tabSignup.className = "text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors";
         submitBtn.innerText = "Iniciar Sesión";
       } else {
-        tabSignup.className = "text-xs font-bold text-white border-b-2 border-proaccent pb-1";
+        tabSignup.className = "text-xs font-bold text-white border-b-2 border-emerald-500 pb-1";
         tabLogin.className = "text-xs font-bold text-slate-400 pb-1 hover:text-white transition-colors";
         submitBtn.innerText = "Crear Cuenta Gratuita";
       }
@@ -1712,8 +1718,8 @@
 
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
-      { icon: "✅", title: "Pick Verificado Cobrado", desc: "Alavés 1-0: Menos de 2.5 Goles Ganada ✅", color: "text-progreen", bg: "bg-progreen/20" },
-      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Aston Villa +0.5 (Cuota 2.37) CONFIRMADO", color: "text-proaccent", bg: "bg-blue-500/20" },
+      { icon: "✅", title: "Pick Bomba Cobrado", desc: "Pronóstico Verificado en Verde ✅", color: "text-progreen", bg: "bg-progreen/20" },
+      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Aston Villa +0.5 (Cuota 2.37) CONFIRMADO", color: "text-emerald-400", bg: "bg-emerald-500/20" },
       { icon: "👑", title: "Nuevo Miembro Premium", desc: "Acceso VIP activado con éxito desde Whop", color: "text-amber-400", bg: "bg-amber-500/20" }
     ];
     let toastIndex = 0;
