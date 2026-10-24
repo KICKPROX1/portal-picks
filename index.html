@@ -353,7 +353,6 @@
         <button onclick="closeMobileSlipDrawer()" class="text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
       </div>
 
-      <!-- Quick Parlay en móvil -->
       <div class="grid grid-cols-3 gap-1.5 my-3">
         <button onclick="generateAutoParlay('safe')" class="py-1 px-1 bg-innerbg border border-bordercolor rounded text-center">
           <span class="text-[10px] font-bold text-progreen block">Segura</span>
@@ -477,13 +476,13 @@
     </div>
   </div>
 
-  <!-- MODAL ADMIN -->
+  <!-- MODAL ADMIN CON MARCADORES EN VIVO -->
   <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-cardbg border border-indigo-500/40 rounded-2xl max-w-xl w-full p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scroll">
       <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg font-bold">✕</button>
       <div class="mb-4 pb-3 border-b border-bordercolor">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">⚙️ Panel de Publicación de Pronósticos</h3>
-        <p class="text-xs text-slate-400">Agrega partidos diarios directamente a la base de datos.</p>
+        <h3 class="text-base font-bold text-white flex items-center gap-2">⚙️ Panel de Control & Marcador en Vivo</h3>
+        <p class="text-xs text-slate-400">Publica nuevos partidos o actualiza goles y minutos en tiempo real.</p>
       </div>
       <form onsubmit="handleCreateMatchSubmit(event)" class="space-y-3 text-xs">
         <div class="grid grid-cols-2 gap-3">
@@ -494,11 +493,32 @@
           <div><label class="block text-slate-400 font-mono mb-1">Equipo Local</label><input type="text" id="adm-home" required placeholder="Ej: Real Madrid" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
           <div><label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label><input type="text" id="adm-away" required placeholder="Ej: Barcelona" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         </div>
+
+        <!-- CONTROL DE MARCADOR EN VIVO -->
+        <div class="p-3 bg-indigo-950/20 border border-indigo-500/40 rounded-xl space-y-2">
+          <span class="text-[10px] font-mono text-indigo-300 font-bold uppercase block">Marcador en Directo (Live)</span>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[10px] text-slate-400 font-mono mb-0.5">Goles Local</label>
+              <input type="number" id="adm-home-score" min="0" value="0" class="w-full bg-basebg border border-bordercolor rounded p-1.5 text-center text-white font-mono font-bold">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 font-mono mb-0.5">Goles Visitante</label>
+              <input type="number" id="adm-away-score" min="0" value="0" class="w-full bg-basebg border border-bordercolor rounded p-1.5 text-center text-white font-mono font-bold">
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 font-mono mb-0.5">Minuto / Estado</label>
+              <input type="text" id="adm-current-minute" value="PROGRAMADO" class="w-full bg-basebg border border-bordercolor rounded p-1.5 text-center text-progreen font-mono font-bold text-xs" placeholder="Ej: 68' o FINAL">
+            </div>
+          </div>
+        </div>
+
         <div class="grid grid-cols-2 gap-3">
           <div><label class="block text-slate-400 font-mono mb-1">xG Local</label><input type="text" id="adm-xghome" value="1.85" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
           <div><label class="block text-slate-400 font-mono mb-1">xG Visitante</label><input type="text" id="adm-xgaway" value="1.15" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
         </div>
         <div><label class="block text-slate-400 font-mono mb-1">Diagnóstico Táctico</label><textarea id="adm-tactical" rows="2" required placeholder="Análisis breve..." class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></textarea></div>
+        
         <div class="p-3 bg-innerbg rounded-xl border border-bordercolor space-y-2">
           <span class="text-[10px] font-mono text-proaccent font-bold uppercase block">Picks del Partido</span>
           <div class="grid grid-cols-3 gap-2">
@@ -512,7 +532,7 @@
             <input type="text" id="adm-p2-ev" value="+22.0%" class="bg-basebg border border-bordercolor rounded px-2 py-1.5 text-amber-400 font-mono text-[11px]">
           </div>
         </div>
-        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition-all text-xs">Publicar Partido en Supabase</button>
+        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition-all text-xs">Guardar y Actualizar Partido</button>
       </form>
     </div>
   </div>
@@ -589,7 +609,7 @@
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC: SUPABASE AUTH + TRACKER + ADMIN + WELCOME + MOBILE DRAWER -->
+  <!-- SCRIPT LOGIC: SUPABASE AUTH + TRACKER + ADMIN + WELCOME + LIVE MATCH TRACKER -->
   <script>
     const SUPABASE_URL = "https://ukgvoeblxzspffngumpk.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVrZ3ZvZWJseHpzcGZmbmd1bXBrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3MzM4MzUsImV4cCI6MjEwODMwOTgzNX0._P82lM8TyzNdrQbCvqDt_0AZ1F0pzJ1s5Vx2jstPT7U";
@@ -608,13 +628,17 @@
         query: "¿Cuál es el desglose táctico y valor matemático para VfB Stuttgart vs Borussia Mönchengladbach?",
         matchName: "VfB Stuttgart vs Borussia Mönchengladbach",
         league: "Bundesliga • Jornada 7",
-        date: "Hoy • 13:30 CDT • Mercedes-Benz Arena",
+        date: "Finalizado • Mercedes-Benz Arena",
         home: "VfB Stuttgart",
         homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/134.png&w=80&h=80",
         away: "Borussia Mönchengladbach",
         awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/268.png&w=80&h=80",
+        homeScore: 2,
+        awayScore: 3,
+        statusText: "FINAL FT",
+        isLive: false,
         xgHome: "2.14", xgAway: "0.92", possessionHome: "64%", possessionAway: "36%",
-        tacticalRead: "Stuttgart sostiene una transición rápida hacia el tercio final con alta precisión en pases progresivos. El Gladbach cede promedio de 5.4 tiros a puerta en condición de visitante. Desbalance claro a favor del volumen ofensivo local.",
+        tacticalRead: "Stuttgart sostuvo una transición rápida pero cedió contragolpes letales. El partido concluyó 2-3 a favor de la visita.",
         modelProb: { home: "68.5%", draw: "18.2%", away: "13.3%" },
         picks: [
           { name: "Stuttgart ML + Over 1.5", odds: 1.61, tag: "GRATIS", ev: "+9.8%", isLocked: false },
@@ -626,13 +650,17 @@
         query: "Análisis para el partido Deportivo Alavés vs Málaga CF en Mendizorroza.",
         matchName: "Deportivo Alavés vs Málaga CF",
         league: "LaLiga • Jornada 10",
-        date: "Hoy • 14:00 CDT • Mendizorroza",
+        date: "Finalizado • Mendizorroza",
         home: "Deportivo Alavés",
         homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/96.png&w=80&h=80",
         away: "Málaga CF",
         awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/87.png&w=80&h=80",
+        homeScore: 1,
+        awayScore: 0,
+        statusText: "FINAL FT",
+        isLive: false,
         xgHome: "1.10", xgAway: "0.65", possessionHome: "48%", possessionAway: "52%",
-        tacticalRead: "Encuentro de alta fricción en la zona media con secuencias de posesión cortas. El Alavés concede menos de 0.8 tantos por partido en casa, orientando el duelo a una baja producción goleadora.",
+        tacticalRead: "Partido cerrado y de alta fricción defensiva. El Alavés se llevó los tres puntos por la mínima (1-0), confirmando el acierto en Menos de 2.5 y Portería a Cero.",
         modelProb: { home: "59.0%", draw: "26.5%", away: "14.5%" },
         picks: [
           { name: "Menos de 2.5 Goles Totales", odds: 1.80, tag: "GRATIS", ev: "+11.6%", isLocked: false },
@@ -648,6 +676,10 @@
         homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/374.png&w=80&h=80",
         away: "Nottingham Forest",
         awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/393.png&w=80&h=80",
+        homeScore: 0,
+        awayScore: 0,
+        statusText: "PROGRAMADO",
+        isLive: false,
         xgHome: "1.05", xgAway: "1.32", possessionHome: "51%", possessionAway: "49%",
         tacticalRead: "Nottingham Forest ejecuta repliegues ordenados y contraataques rápidos mediante extremos. Ipswich tiene dificultades estructurales para remontar marcadores adversos.",
         modelProb: { home: "31.0%", draw: "32.0%", away: "37.0%" },
@@ -665,6 +697,10 @@
         homeBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=80&h=80",
         away: "FC Juárez",
         awayBadge: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17743.png&w=80&h=80",
+        homeScore: 0,
+        awayScore: 0,
+        statusText: "PROGRAMADO",
+        isLive: false,
         xgHome: "1.65", xgAway: "1.15", possessionHome: "55%", possessionAway: "45%",
         tacticalRead: "Necaxa sostiene números sólidos como local frente a la zaga más vulnerada en condición de visita del torneo. Pronóstico favorable para el local sin descartar réplica en el marcador.",
         modelProb: { home: "56.0%", draw: "25.5%", away: "18.5%" },
@@ -677,7 +713,7 @@
 
     let tacticalDB = { ...defaultTacticalDB };
     let activeSlip = [
-      { id: "s1", match: "Stuttgart vs Gladbach", pick: "Stuttgart ML + Over 1.5", odds: 1.61 },
+      { id: "s1", match: "Alavés vs Málaga", pick: "Menos de 2.5 Goles", odds: 1.80 },
       { id: "s2", match: "Ipswich vs Forest", pick: "Nottingham Forest X2", odds: 1.71 }
     ];
 
@@ -686,12 +722,9 @@
       imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="%231a1f2c" stroke="%2338bdf8" stroke-width="2"/><text x="50%" y="55%" font-family="sans-serif" font-weight="bold" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${initials || 'FC'}</text></svg>`;
     }
 
-    // NAVEGACIÓN MÓVIL Y SCROLL
     function scrollToMobileSection(sectionId) {
       const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function openMobileSlipDrawer() {
@@ -703,7 +736,6 @@
       document.getElementById('mobile-slip-drawer').classList.add('hidden');
     }
 
-    // PANTALLA DE BIENVENIDA
     function renderWelcomeScreen() {
       const stream = document.getElementById('tactical-stream');
       stream.innerHTML = `
@@ -717,7 +749,7 @@
                 </div>
                 <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Bienvenido a SofaTactics PRO</h2>
                 <p class="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
-                  Plataforma de inteligencia deportiva orientada a la identificación de <strong class="text-proaccent">valor esperado positivo (+EV)</strong>, análisis métrico xG y gestión estructurada de capital.
+                  Plataforma de inteligencia deportiva orientada a la identificación de <strong class="text-proaccent">valor esperado positivo (+EV)</strong>, análisis métrico xG y marcadores en vivo.
                 </p>
               </div>
               <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-problue/20 text-proaccent border border-problue/30 items-center justify-center text-2xl shrink-0">
@@ -726,8 +758,8 @@
             </div>
 
             <div class="mt-4 pt-3 border-t border-bordercolor/60 flex items-center gap-3">
-              <button onclick="triggerTacticalPrompt('stuttgart-gladbach')" class="px-3.5 py-2 rounded-lg bg-problue hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
-                <span>⚡ Analizar Partido Destacado</span>
+              <button onclick="triggerTacticalPrompt('alaves-malaga')" class="px-3.5 py-2 rounded-lg bg-problue hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
+                <span>⚡ Ver Partido Alavés 1-0</span>
               </button>
               <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">O selecciona un partido en la columna de la jornada.</span>
             </div>
@@ -748,7 +780,7 @@
                   <span class="text-progreen font-mono">01.</span> Asignación Estricta de Banca
                 </div>
                 <p class="text-[11px] text-slate-400 leading-relaxed">
-                  Nunca arriesgues más del <strong>1% al 3%</strong> de tu capital total por jugada. La consistencia matemática supera cualquier corazonada.
+                  Nunca arriesgues más del <strong>1% al 3%</strong> de tu capital total por jugada.
                 </p>
               </div>
 
@@ -757,7 +789,7 @@
                   <span class="text-proaccent font-mono">02.</span> Búsqueda de Valor (+EV)
                 </div>
                 <p class="text-[11px] text-slate-400 leading-relaxed">
-                  No apuestes solo por intuición o favoritismo. Apuesta cuando la probabilidad calculada por el modelo supere la cuota de la casa.
+                  Apuesta cuando la probabilidad calculada por el modelo supere la cuota del mercado.
                 </p>
               </div>
 
@@ -766,7 +798,7 @@
                   <span class="text-amber-400 font-mono">03.</span> Cero Persecución de Pérdidas
                 </div>
                 <p class="text-[11px] text-slate-400 leading-relaxed">
-                  Las rachas negativas son parte de la varianza estadística. Jamás dobles tu importe tras un fallo para intentar recuperar capital rápido.
+                  Las malas rachas son varianza normal. Jamás dobles tu importe tras un fallo.
                 </p>
               </div>
 
@@ -775,7 +807,7 @@
                   <span class="text-rose-400 font-mono">04.</span> Control Emocional & Registro
                 </div>
                 <p class="text-[11px] text-slate-400 leading-relaxed">
-                  Utiliza la pestaña <strong>Mi Bitácora</strong> para auditar cada selección. Si sientes fatiga o frustración, tómate una pausa obligatoria.
+                  Utiliza la pestaña <strong>Mi Bitácora</strong> para auditar cada selección.
                 </p>
               </div>
             </div>
@@ -802,6 +834,10 @@
             homeBadge: m.home_badge || '',
             away: m.away_team,
             awayBadge: m.away_badge || '',
+            homeScore: m.home_score !== undefined ? m.home_score : 0,
+            awayScore: m.away_score !== undefined ? m.away_score : 0,
+            statusText: m.current_minute || m.match_status || 'PROGRAMADO',
+            isLive: (m.current_minute && m.current_minute.includes("'")) ? true : false,
             xgHome: m.xg_home,
             xgAway: m.xg_away,
             possessionHome: m.possession_home,
@@ -821,6 +857,11 @@
 
       Object.keys(tacticalDB).forEach(key => {
         const item = tacticalDB[key];
+        const isLive = item.isLive;
+        const statusBadge = isLive 
+          ? `<span class="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.2 rounded font-bold animate-pulse">🟢 ${item.statusText}</span>`
+          : `<span class="text-[9px] font-mono text-slate-400 bg-white/5 border border-white/10 px-1.5 py-0.2 rounded">${item.statusText}</span>`;
+
         const div = document.createElement('div');
         div.onclick = () => {
           switchMainTab('tactics');
@@ -831,16 +872,21 @@
         div.innerHTML = `
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-mono text-slate-400">${item.league}</span>
-            <span class="text-[9px] font-mono text-proaccent bg-proaccent/10 border border-proaccent/30 px-1.5 py-0.2 rounded font-bold">PICK EV</span>
+            ${statusBadge}
           </div>
-          <div class="font-bold text-white text-[11px] truncate">${item.home} vs ${item.away}</div>
+          <div class="flex items-center justify-between">
+            <div class="font-bold text-white text-[11px] truncate">${item.home} vs ${item.away}</div>
+            <span class="font-mono font-bold text-xs ${isLive || item.statusText.includes('FT') ? 'text-amber-400' : 'text-slate-400'}">
+              ${item.homeScore} - ${item.awayScore}
+            </span>
+          </div>
           <div class="text-[10px] font-mono text-slate-400">${item.date}</div>
         `;
         list.appendChild(div);
       });
     }
 
-    // BOLETO DE APUESTAS (SINCRONIZADO ESCRITORIO Y MÓVIL)
+    // BOLETO DE APUESTAS
     function renderSlip() {
       const containerDesktop = document.getElementById('slip-items');
       const containerMobile = document.getElementById('mobile-slip-items');
@@ -913,20 +959,18 @@
     function generateAutoParlay(type) {
       if (type === 'safe') {
         activeSlip = [
-          { id: "p1", match: "Stuttgart vs Gladbach", pick: "Stuttgart ML + Over 1.5", odds: 1.61 },
+          { id: "p1", match: "Alavés vs Málaga", pick: "Menos de 2.5 Goles", odds: 1.80 },
           { id: "p2", match: "Ipswich vs Forest", pick: "Nottingham Forest o Empate (X2)", odds: 1.71 }
         ];
       } else if (type === 'value') {
         activeSlip = [
-          { id: "p1", match: "Stuttgart vs Gladbach", pick: "Stuttgart AH (-1.0)", odds: 1.87 },
-          { id: "p2", match: "Alavés vs Málaga", pick: "Menos de 2.5 Goles", odds: 1.80 },
-          { id: "p3", match: "Necaxa vs Juárez", pick: "Necaxa DNB", odds: 1.65 }
+          { id: "p1", match: "Alavés vs Málaga", pick: "Menos de 2.5 Goles", odds: 1.80 },
+          { id: "p2", match: "Necaxa vs Juárez", pick: "Necaxa DNB", odds: 1.65 }
         ];
       } else if (type === 'bomba') {
         activeSlip = [
-          { id: "p1", match: "Stuttgart vs Gladbach", pick: "Stuttgart Gana & Ambos Marcan", odds: 2.85 },
-          { id: "p2", match: "Alavés vs Málaga", pick: "Alavés Gana a Cero", odds: 2.60 },
-          { id: "p3", match: "Necaxa vs Juárez", pick: "Ambos Marcan (Sí)", odds: 1.83 }
+          { id: "p1", match: "Alavés vs Málaga", pick: "Alavés Gana a Cero", odds: 2.60 },
+          { id: "p2", match: "Necaxa vs Juárez", pick: "Ambos Marcan (Sí)", odds: 1.83 }
         ];
       }
       renderSlip();
@@ -951,7 +995,6 @@
       });
     }
 
-    // REGISTRAR EN EL BET TRACKER
     async function confirmAndTrackBet() {
       if (!currentUser) {
         openAuthModal('login');
@@ -993,7 +1036,7 @@
     async function loadUserBets() {
       if (!currentUser) return;
 
-      const { data: bets, error } = await supabaseClient
+      const { data: bets } = await supabaseClient
         .from('user_bets')
         .select('*')
         .eq('user_id', currentUser.id)
@@ -1140,7 +1183,6 @@
       setTimeout(() => { if (label) label.innerText = "Exportar Boleto a Imagen"; }, 2000);
     }
 
-    // SELECTOR DE PESTAÑAS
     function switchMainTab(tab) {
       const viewTactics = document.getElementById('view-tactics');
       const viewCommunity = document.getElementById('view-community');
@@ -1213,7 +1255,7 @@
           const loader = document.createElement('div');
           loader.id = "feed-loader";
           loader.className = "text-[11px] font-mono text-proaccent flex items-center gap-2 p-2";
-          loader.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-proaccent animate-ping"></span> Procesando datos SofaTactics...`;
+          loader.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-proaccent animate-ping"></span> Conectando datos en directo...`;
           stream.appendChild(loader);
 
           setTimeout(() => {
@@ -1226,25 +1268,51 @@
       }, 12);
     }
 
+    // RENDERIZADO DEL REPORTE CON MARCADOR EN VIVO
     function renderTacticalReport(data, matchKey) {
       const stream = document.getElementById('tactical-stream');
       const card = document.createElement('div');
       card.className = "bg-innerbg border border-bordercolor rounded-xl p-4 space-y-4 text-xs";
 
+      const isLive = data.isLive;
+      const statusBadge = isLive 
+        ? `<span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-bold animate-pulse">🟢 EN VIVO ${data.statusText}</span>`
+        : `<span class="text-[10px] font-mono text-slate-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded">${data.statusText}</span>`;
+
       card.innerHTML = `
         <div class="flex items-center justify-between border-b border-bordercolor pb-3">
           <div><span class="text-[10px] font-mono text-slate-400 block">${data.league}</span><h2 class="text-sm font-bold text-white mt-0.5">${data.matchName}</h2></div>
-          <span class="text-[10px] font-mono text-slate-400">${data.date}</span>
+          ${statusBadge}
         </div>
 
-        <div class="grid grid-cols-2 gap-3 bg-basebg/60 p-3 rounded-lg border border-bordercolor">
-          <div class="flex items-center gap-2.5">
-            <img src="${data.homeBadge}" class="w-7 h-7 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
-            <div><div class="font-bold text-white text-[11px] truncate">${data.home}</div><div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-progreen">${data.xgHome}</strong> · Pos: ${data.possessionHome}</div></div>
+        <!-- TABLERO PRINCIPAL CON MARCADOR -->
+        <div class="grid grid-cols-12 gap-2 items-center bg-basebg/70 p-4 rounded-xl border border-bordercolor">
+          <!-- LOCAL -->
+          <div class="col-span-4 flex items-center gap-2.5">
+            <img src="${data.homeBadge}" class="w-8 h-8 team-badge-img" onerror="handleImageError(this, '${data.home.slice(0,2)}')">
+            <div class="truncate">
+              <div class="font-bold text-white text-xs truncate">${data.home}</div>
+              <div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-progreen">${data.xgHome}</strong></div>
+            </div>
           </div>
-          <div class="flex items-center justify-end gap-2.5 text-right">
-            <div><div class="font-bold text-white text-[11px] truncate">${data.away}</div><div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-slate-300">${data.xgAway}</strong> · Pos: ${data.possessionAway}</div></div>
-            <img src="${data.awayBadge}" class="w-7 h-7 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
+
+          <!-- MARCADOR CENTRAL -->
+          <div class="col-span-4 flex flex-col items-center justify-center text-center">
+            <div class="flex items-center gap-2 bg-[#10141d] px-3.5 py-1.5 rounded-xl border border-bordercolor font-mono shadow-inner">
+              <span class="text-lg font-black ${data.homeScore > data.awayScore ? 'text-progreen' : 'text-white'}">${data.homeScore}</span>
+              <span class="text-slate-500 text-xs">-</span>
+              <span class="text-lg font-black ${data.awayScore > data.homeScore ? 'text-progreen' : 'text-white'}">${data.awayScore}</span>
+            </div>
+            <span class="text-[9px] font-mono text-slate-500 mt-1 uppercase">${data.date}</span>
+          </div>
+
+          <!-- VISITANTE -->
+          <div class="col-span-4 flex items-center justify-end gap-2.5 text-right">
+            <div class="truncate">
+              <div class="font-bold text-white text-xs truncate">${data.away}</div>
+              <div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-slate-300">${data.xgAway}</strong></div>
+            </div>
+            <img src="${data.awayBadge}" class="w-8 h-8 team-badge-img" onerror="handleImageError(this, '${data.away.slice(0,2)}')">
           </div>
         </div>
 
@@ -1293,7 +1361,7 @@
                       <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${parseFloat(p.odds).toFixed(2)}</span></div>
                     </div>
                     <div class="flex items-center gap-1.5">
-                      <button onclick="generateSocialCard('${data.league}', '${data.matchName}', '${p.name}', ${p.odds}, '${p.ev}', '${data.tacticalRead.replace(/'/g, "\\'")}')" title="Descargar Tarjeta Gráfica" class="px-2 py-1 rounded bg-innerbg hover:bg-white/10 text-slate-300 border border-bordercolor text-[10px] font-bold transition-all">📸</button>
+                      <button onclick="generateSocialCard('${data.league}', '${data.matchName}', '${p.name}', ${p.odds}, '${p.ev}', '${data.tacticalRead.replace(/'/g, "\\'")}')" title="Descargar Tarjeta" class="px-2 py-1 rounded bg-innerbg hover:bg-white/10 text-slate-300 border border-bordercolor text-[10px] font-bold transition-all">📸</button>
                       <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-problue hover:bg-blue-500 text-white font-mono text-[10px] font-bold transition-all">+ Boleto</button>
                     </div>
                   </div>
@@ -1461,7 +1529,7 @@
       document.getElementById('tip-modal').classList.add('hidden');
     }
 
-    // ADMINISTRACIÓN
+    // ADMINISTRACIÓN & ACTUALIZACIÓN DE MARCADOR EN VIVO
     async function handleCreateMatchSubmit(e) {
       e.preventDefault();
       if (!currentUser || currentUser.email !== ADMIN_EMAIL) return;
@@ -1479,6 +1547,10 @@
         away_team: away,
         home_badge: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default.png&w=80&h=80`,
         away_badge: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/default.png&w=80&h=80`,
+        home_score: parseInt(document.getElementById('adm-home-score').value) || 0,
+        away_score: parseInt(document.getElementById('adm-away-score').value) || 0,
+        current_minute: document.getElementById('adm-current-minute').value.trim() || 'PROGRAMADO',
+        match_status: document.getElementById('adm-current-minute').value.trim() || 'PROGRAMADO',
         xg_home: document.getElementById('adm-xghome').value.trim(),
         xg_away: document.getElementById('adm-xgaway').value.trim(),
         possession_home: "55%", possession_away: "45%",
@@ -1492,7 +1564,7 @@
 
       const { error } = await supabaseClient.from('matches').upsert(newMatch, { onConflict: 'match_key' });
       if (!error) {
-        alert("¡Partido publicado en Supabase!");
+        alert("¡Partido y Marcador actualizados con éxito en Supabase!");
         closeAdminModal();
         await fetchMatchesFromSupabase();
         triggerTacticalPrompt(matchKey);
@@ -1510,7 +1582,7 @@
         return item.home.toLowerCase().includes(val) || item.away.toLowerCase().includes(val) || item.league.toLowerCase().includes(val);
       });
       if (foundKey) triggerTacticalPrompt(foundKey);
-      else triggerTacticalPrompt('stuttgart-gladbach', document.getElementById('tactical-input').value.trim());
+      else triggerTacticalPrompt('alaves-malaga', document.getElementById('tactical-input').value.trim());
       document.getElementById('tactical-input').value = "";
     }
 
@@ -1645,8 +1717,8 @@
     // NOTIFICADOR
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
-      { icon: "✅", title: "Pick Verificado", desc: "Stuttgart ML + Over 1.5 validado por modelo matemático", color: "text-progreen", bg: "bg-progreen/20" },
-      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Alavés vs Málaga detecta +EV del 11.6% en Menos 2.5", color: "text-proaccent", bg: "bg-blue-500/20" },
+      { icon: "✅", title: "Pick Verificado", desc: "Alavés vs Málaga: Menos de 2.5 goles COBRADO ✅", color: "text-progreen", bg: "bg-progreen/20" },
+      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Alavés Gana a Cero (Cuota 2.60) CONFIRMADO", color: "text-proaccent", bg: "bg-blue-500/20" },
       { icon: "👑", title: "Nuevo Miembro Premium", desc: "Acceso VIP activado con éxito desde Whop", color: "text-amber-400", bg: "bg-amber-500/20" }
     ];
     let toastIndex = 0;
