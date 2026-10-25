@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>PicksBomba VIP | Terminal Algorítmica & Pronósticos Deportivos</title>
+
+  <!-- Google tag (gtag.js) - Analytics PicksBomba -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMHNB892T9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-ZMHNB892T9');
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -63,7 +74,7 @@
 </head>
 <body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative pb-20 lg:pb-0">
 
-  <!-- INTRO SPLASH SCREEN VIDEO (PANTALLA DE BIENVENIDA CON REPRODUCCIÓN INTELIGENTE) -->
+  <!-- INTRO SPLASH SCREEN VIDEO -->
   <div id="intro-splash" class="fixed inset-0 z-50 bg-[#0c0e12] flex items-center justify-center transition-opacity duration-700">
     <video 
       id="intro-video" 
@@ -80,7 +91,7 @@
     </button>
   </div>
 
-  <!-- TOP HEADER CON LOGO OFICIAL PICKSBOMBA -->
+  <!-- TOP HEADER -->
   <header class="h-16 border-b border-bordercolor bg-[#10141d] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40">
     <div class="flex items-center gap-3 cursor-pointer" onclick="renderWelcomeScreen()">
       <div class="relative w-11 h-11 rounded-xl bg-gradient-to-br from-[#121622] to-[#181f2f] flex items-center justify-center p-1.5 border border-emerald-500/40 shadow-lg shadow-emerald-500/20">
@@ -147,7 +158,7 @@
   <!-- WORKSPACE A 3 COLUMNAS -->
   <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-    <!-- COLUMNA 1 (IZQUIERDA): CARTELERA POR LIGAS CON BUSCADOR RÁPIDO -->
+    <!-- COLUMNA 1 (IZQUIERDA): CARTELERA CON BUSCADOR RÁPIDO -->
     <aside id="col-fixture" class="lg:col-span-3 xl:col-span-3 flex flex-col gap-3">
       <div class="bg-cardbg border border-bordercolor rounded-xl p-3 flex flex-col max-h-[520px] lg:max-h-none lg:h-[750px] shadow-lg">
         <div class="flex items-center justify-between pb-2 px-1 border-b border-bordercolor">
@@ -158,7 +169,6 @@
           <span class="text-[9px] font-mono bg-innerbg border border-bordercolor px-2 py-0.5 rounded text-emerald-400 font-bold">FILTRADO PRO</span>
         </div>
 
-        <!-- FILTRO RÁPIDO DE PARTIDOS / LIGAS -->
         <div class="mt-2.5 mb-1 px-0.5">
           <input 
             type="text" 
@@ -175,7 +185,6 @@
     <!-- COLUMNA 2 (CENTRAL): PESTAÑAS (RADAR IA / CHAT VIP / RANKING ACIERTOS / TRACKER) -->
     <section id="col-center" class="lg:col-span-6 xl:col-span-6 flex flex-col bg-cardbg border border-bordercolor rounded-xl overflow-hidden min-h-[560px] lg:h-[750px] shadow-lg">
       
-      <!-- HEADER CON 4 PESTAÑAS -->
       <div class="flex items-center justify-between px-3 py-2 border-b border-bordercolor bg-[#10141d] overflow-x-auto">
         <div class="flex items-center gap-1.5 shrink-0">
           <button id="tab-tactics-btn" onclick="switchMainTab('tactics')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-innerbg border border-emerald-500 text-white flex items-center gap-1">
@@ -1218,7 +1227,6 @@
       renderMatchSidebar();
     }
 
-    // 3. RENDERIZADO CORREGIDO DE CARTELERA CON FILTRADO EN TIEMPO REAL
     function renderMatchSidebar() {
       const list = document.getElementById('match-sidebar-list');
       list.innerHTML = "";
@@ -1233,7 +1241,6 @@
       matchKeys.forEach(key => {
         const item = tacticalDB[key];
         
-        // Filtro si el usuario busca algo en la barra izquierda
         if (sidebarFilterQuery) {
           const matchString = `${item.league} ${item.home} ${item.away}`.toLowerCase();
           if (!matchString.includes(sidebarFilterQuery)) return;
@@ -2221,7 +2228,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', async () => {
-      // CONTROL DE INTRO: Si el usuario ya la vio en esta sesión, no vuelve a sonar ni bloquear
       const hasSeenIntro = sessionStorage.getItem('picksbomba_intro_seen');
       const splash = document.getElementById('intro-splash');
       const video = document.getElementById('intro-video');
@@ -2230,7 +2236,7 @@
         splash.remove();
       } else if (video) {
         video.addEventListener('ended', dismissIntro);
-        setTimeout(dismissIntro, 5000); // 5 seg de margen por si el autoplay se traba
+        setTimeout(dismissIntro, 5000);
       }
 
       renderSlip();
