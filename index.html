@@ -181,8 +181,6 @@
 
       <!-- VISTA 2: CHAT VIP MODERNO & EXCLUSIVO -->
       <div id="view-community" class="flex-1 flex flex-col overflow-hidden hidden relative">
-        
-        <!-- BARRA DE PICK FIJADO -->
         <div class="bg-gradient-to-r from-amber-500/15 via-[#10141d] to-amber-500/15 border-b border-amber-500/25 px-4 py-2 flex items-center justify-between text-xs shrink-0">
           <div class="flex items-center gap-2 overflow-hidden truncate">
             <span class="text-amber-400 font-bold font-mono shrink-0">📌 FIJADO:</span>
@@ -191,10 +189,8 @@
           <span class="text-[9px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded uppercase tracking-wider shrink-0">EN VIVO</span>
         </div>
 
-        <!-- CONTENEDOR DE MENSAJES -->
         <div id="chat-messages-container" class="flex-1 overflow-y-auto custom-scroll p-4 space-y-3"></div>
 
-        <!-- INPUT DEL CHAT CON REACCIONES RÁPIDAS -->
         <div id="chat-input-container" class="p-3 bg-[#10141d] border-t border-bordercolor shrink-0">
           <div class="flex items-center gap-2 mb-2 px-1">
             <span class="text-[10px] text-slate-500 font-mono font-bold uppercase">Reacción:</span>
@@ -214,7 +210,6 @@
           </form>
         </div>
 
-        <!-- OVERLAY EXCLUSIVO VIP -->
         <div id="chat-vip-lock-overlay" class="absolute inset-0 bg-[#0c0e12]/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-30 hidden">
           <div class="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4 text-3xl text-amber-400 shadow-xl shadow-amber-500/10">
             🔒
@@ -227,7 +222,6 @@
             Desbloquear Chat con Pase VIP ($9.99)
           </a>
         </div>
-
       </div>
 
       <!-- VISTA 3: RANKING DE ACIERTOS -->
@@ -710,118 +704,36 @@
     let currentMatchKey = 'astonvilla-mancity';
     const WHOP_CHECKOUT_URL = "https://portal-picks.whop.site/";
 
-    // 1. CONFIGURACIÓN GLOBAL DE LAS MÁS DE 90 LIGAS Y COPAS CON SUS LOGOS OFICIALES (CDN)
+    // 1. DICCIONARIO DE LIGAS CON LOGOS DIRECTOS DE ALTA CALIDAD
     const GLOBAL_LEAGUES_CONFIG = {
-      // Top Europa
-      "inglaterra": { id: 39, name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png" },
-      "england league cup": { id: 48, name: "EFL Cup", logo: "https://media.api-sports.io/football/leagues/48.png" },
-      "espana": { id: 140, name: "LaLiga", logo: "https://media.api-sports.io/football/leagues/140.png" },
-      "italia": { id: 135, name: "Serie A", logo: "https://media.api-sports.io/football/leagues/135.png" },
-      "alemania": { id: 78, name: "Bundesliga", logo: "https://media.api-sports.io/football/leagues/78.png" },
-      "francia": { id: 61, name: "Ligue 1", logo: "https://media.api-sports.io/football/leagues/61.png" },
-      "portugal": { id: 94, name: "Primeira Liga", logo: "https://media.api-sports.io/football/leagues/94.png" },
-      "paises bajos": { id: 88, name: "Eredivisie", logo: "https://media.api-sports.io/football/leagues/88.png" },
-      "belgica": { id: 144, name: "Jupiler Pro League", logo: "https://media.api-sports.io/football/leagues/144.png" },
-      "escocia": { id: 179, name: "Premiership", logo: "https://media.api-sports.io/football/leagues/179.png" },
-      "turquia": { id: 203, name: "Süper Lig", logo: "https://media.api-sports.io/football/leagues/203.png" },
-      "suiza": { id: 207, name: "Super League", logo: "https://media.api-sports.io/football/leagues/207.png" },
-      "dinamarca": { id: 119, name: "Superliga", logo: "https://media.api-sports.io/football/leagues/119.png" },
-      "suecia": { id: 113, name: "Allsvenskan", logo: "https://media.api-sports.io/football/leagues/113.png" },
-      "noruega": { id: 103, name: "Eliteserien", logo: "https://media.api-sports.io/football/leagues/103.png" },
-      "austria": { id: 218, name: "Bundesliga Austria", logo: "https://media.api-sports.io/football/leagues/218.png" },
-      "grecia": { id: 197, name: "Super League Grecia", logo: "https://media.api-sports.io/football/leagues/197.png" },
-      "polonia": { id: 106, name: "Ekstraklasa", logo: "https://media.api-sports.io/football/leagues/106.png" },
-      "rusia": { id: 235, name: "Premier League Rusia", logo: "https://media.api-sports.io/football/leagues/235.png" },
-      "ucrania": { id: 333, name: "Premier League Ucrania", logo: "https://media.api-sports.io/football/leagues/333.png" },
-      "croacia": { id: 210, name: "HNL Croacia", logo: "https://media.api-sports.io/football/leagues/210.png" },
-      "serbia": { id: 286, name: "SuperLiga Serbia", logo: "https://media.api-sports.io/football/leagues/286.png" },
-      "rumania": { id: 283, name: "Liga I Rumania", logo: "https://media.api-sports.io/football/leagues/283.png" },
-      "czech republic": { id: 345, name: "1. Liga Checa", logo: "https://media.api-sports.io/football/leagues/345.png" },
-      "hungria": { id: 271, name: "NB I Hungría", logo: "https://media.api-sports.io/football/leagues/271.png" },
-      "eslovaquia": { id: 332, name: "Super Liga Eslovaquia", logo: "https://media.api-sports.io/football/leagues/332.png" },
-      "eslovenia": { id: 373, name: "PrvaLiga Eslovenia", logo: "https://media.api-sports.io/football/leagues/373.png" },
-      "finlandia": { id: 244, name: "Veikkausliiga", logo: "https://media.api-sports.io/football/leagues/244.png" },
-      "irlanda": { id: 357, name: "Premier Division Irlanda", logo: "https://media.api-sports.io/football/leagues/357.png" },
-      "bielorrusia": { id: 328, name: "Premier League Bielorrusia", logo: "https://media.api-sports.io/football/leagues/328.png" },
-      "bulgaria": { id: 172, name: "First League Bulgaria", logo: "https://media.api-sports.io/football/leagues/172.png" },
-      "chipre": { id: 318, name: "1. División Chipre", logo: "https://media.api-sports.io/football/leagues/318.png" },
-      "bosnia": { id: 315, name: "Premijer Liga Bosnia", logo: "https://media.api-sports.io/football/leagues/315.png" },
-      "albania": { id: 310, name: "Superliga Albania", logo: "https://media.api-sports.io/football/leagues/310.png" },
-      "macedonia": { id: 364, name: "First League Macedonia", logo: "https://media.api-sports.io/football/leagues/364.png" },
-      "kazajistan": { id: 370, name: "Premier League Kazajistán", logo: "https://media.api-sports.io/football/leagues/370.png" },
-      "azerbaiyan": { id: 352, name: "Premyer Liqa Azerbaiyán", logo: "https://media.api-sports.io/football/leagues/352.png" },
-      "armenia": { id: 342, name: "Premier League Armenia", logo: "https://media.api-sports.io/football/leagues/342.png" },
-      "georgia": { id: 329, name: "Erovnuli Liga Georgia", logo: "https://media.api-sports.io/football/leagues/329.png" },
-      "letonia": { id: 367, name: "Virsliga Letonia", logo: "https://media.api-sports.io/football/leagues/367.png" },
-      "lituania": { id: 362, name: "A Lyga Lituania", logo: "https://media.api-sports.io/football/leagues/362.png" },
-      "estonia": { id: 327, name: "Meistriliiga Estonia", logo: "https://media.api-sports.io/football/leagues/327.png" },
-      "malta": { id: 387, name: "Premier League Malta", logo: "https://media.api-sports.io/football/leagues/387.png" },
-      "luxembourg": { id: 261, name: "National Division Luxemburgo", logo: "https://media.api-sports.io/football/leagues/261.png" },
-      "andorra": { id: 396, name: "Primera Divisió Andorra", logo: "https://media.api-sports.io/football/leagues/396.png" },
-      "gibraltar": { id: 407, name: "National League Gibraltar", logo: "https://media.api-sports.io/football/leagues/407.png" },
-      "faroe islands": { id: 381, name: "Premier League Islas Feroe", logo: "https://media.api-sports.io/football/leagues/381.png" },
-      "kosovo": { id: 394, name: "Superliga Kosovo", logo: "https://media.api-sports.io/football/leagues/394.png" },
-
-      // Américas
-      "mexico": { id: 262, name: "Liga MX", logo: "https://media.api-sports.io/football/leagues/262.png" },
-      "estados unidos": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
-      "argentina": { id: 128, name: "Liga Profesional Argentina", logo: "https://media.api-sports.io/football/leagues/128.png" },
-      "argentina nacional": { id: 131, name: "Primera Nacional", logo: "https://media.api-sports.io/football/leagues/131.png" },
-      "argentina b": { id: 129, name: "Primera B Metropolitana", logo: "https://media.api-sports.io/football/leagues/129.png" },
-      "argentina federal": { id: 479, name: "Torneo Federal A", logo: "https://media.api-sports.io/football/leagues/479.png" },
-      "argentina c": { id: 130, name: "Primera C", logo: "https://media.api-sports.io/football/leagues/130.png" },
-      "copa argentina": { id: 130, name: "Copa Argentina", logo: "https://media.api-sports.io/football/leagues/130.png" },
-      "brasil": { id: 71, name: "Brasileirão Série A", logo: "https://media.api-sports.io/football/leagues/71.png" },
-      "colombia": { id: 239, name: "Liga BetPlay Colombia", logo: "https://media.api-sports.io/football/leagues/239.png" },
-      "chile": { id: 265, name: "Primera División Chile", logo: "https://media.api-sports.io/football/leagues/265.png" },
-      "chile b": { id: 266, name: "Primera B Chile", logo: "https://media.api-sports.io/football/leagues/266.png" },
-      "peru": { id: 281, name: "Liga 1 Perú", logo: "https://media.api-sports.io/football/leagues/281.png" },
-      "uruguay": { id: 268, name: "Primera División Uruguay", logo: "https://media.api-sports.io/football/leagues/268.png" },
-      "uruguay b": { id: 269, name: "Segunda División Uruguay", logo: "https://media.api-sports.io/football/leagues/269.png" },
-      "paraguay": { id: 250, name: "División de Honor Paraguay", logo: "https://media.api-sports.io/football/leagues/250.png" },
-      "paraguay b": { id: 251, name: "División Intermedia", logo: "https://media.api-sports.io/football/leagues/251.png" },
-      "ecuador": { id: 242, name: "LigaPro Ecuador", logo: "https://media.api-sports.io/football/leagues/242.png" },
-      "venezuela": { id: 299, name: "Liga FUTVE Venezuela", logo: "https://media.api-sports.io/football/leagues/299.png" },
-      "bolivia": { id: 344, name: "División Profesional Bolivia", logo: "https://media.api-sports.io/football/leagues/344.png" },
-      "costa rica": { id: 162, name: "Primera División Costa Rica", logo: "https://media.api-sports.io/football/leagues/162.png" },
-      "honduras": { id: 248, name: "Liga Nacional Honduras", logo: "https://media.api-sports.io/football/leagues/248.png" },
-      "guatemala": { id: 246, name: "Liga Nacional Guatemala", logo: "https://media.api-sports.io/football/leagues/246.png" },
-      "el salvador": { id: 240, name: "Primera División El Salvador", logo: "https://media.api-sports.io/football/leagues/240.png" },
-      "panama": { id: 279, name: "LPF Panamá", logo: "https://media.api-sports.io/football/leagues/279.png" },
-      "nicaragua": { id: 277, name: "Liga Primera Nicaragua", logo: "https://media.api-sports.io/football/leagues/277.png" },
-      "canada": { id: 479, name: "Canadian Premier League", logo: "https://media.api-sports.io/football/leagues/479.png" },
-      "jamaica": { id: 249, name: "Premier League Jamaica", logo: "https://media.api-sports.io/football/leagues/249.png" },
-
-      // Asia, Oceanía & Medio Oriente
-      "saudi arabia": { id: 307, name: "Saudi Pro League", logo: "https://media.api-sports.io/football/leagues/307.png" },
-      "japon": { id: 98, name: "J1 League Japón", logo: "https://media.api-sports.io/football/leagues/98.png" },
-      "australia": { id: 188, name: "A-League Australia", logo: "https://media.api-sports.io/football/leagues/188.png" },
-      "united arab emirates": { id: 301, name: "UAE Pro League", logo: "https://media.api-sports.io/football/leagues/301.png" },
-      "iran": { id: 290, name: "Persian Gulf Pro League", logo: "https://media.api-sports.io/football/leagues/290.png" },
-      "israel": { id: 383, name: "Ligat Ha'Al Israel", logo: "https://media.api-sports.io/football/leagues/383.png" },
-      "indonesia": { id: 274, name: "Liga 1 Indonesia", logo: "https://media.api-sports.io/football/leagues/274.png" },
-      "india": { id: 323, name: "Indian Super League", logo: "https://media.api-sports.io/football/leagues/323.png" },
-      "thailand": { id: 295, name: "Thai League 1", logo: "https://media.api-sports.io/football/leagues/295.png" },
-      "uzbekistan": { id: 360, name: "Super League Uzbekistán", logo: "https://media.api-sports.io/football/leagues/360.png" },
-      "chinese taipei": { id: 401, name: "Premier League Taipei", logo: "https://media.api-sports.io/football/leagues/401.png" },
-      "philippines": { id: 384, name: "PFL Filipinas", logo: "https://media.api-sports.io/football/leagues/384.png" },
-      "myanmar": { id: 379, name: "National League Myanmar", logo: "https://media.api-sports.io/football/leagues/379.png" },
-      "cambodia": { id: 405, name: "Premier League Camboya", logo: "https://media.api-sports.io/football/leagues/405.png" },
-
-      // África
-      "egypt": { id: 233, name: "Premier League Egipto", logo: "https://media.api-sports.io/football/leagues/233.png" },
-      "cameroon": { id: 390, name: "Elite One Camerún", logo: "https://media.api-sports.io/football/leagues/390.png" },
-      "kenya": { id: 288, name: "Premier League Kenia", logo: "https://media.api-sports.io/football/leagues/288.png" },
-      "zambia": { id: 421, name: "Super League Zambia", logo: "https://media.api-sports.io/football/leagues/421.png" },
-      "malawi": { id: 418, name: "Super League Malawi", logo: "https://media.api-sports.io/football/leagues/418.png" },
-      "rwanda": { id: 419, name: "Premier League Ruanda", logo: "https://media.api-sports.io/football/leagues/419.png" }
+      "premier league": { name: "Premier League", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/23.png&w=80&h=80" },
+      "inglaterra": { name: "Premier League", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/23.png&w=80&h=80" },
+      "laliga": { name: "LaLiga EA Sports", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/15.png&w=80&h=80" },
+      "espana": { name: "LaLiga EA Sports", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/15.png&w=80&h=80" },
+      "futbol espanol": { name: "LaLiga", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/15.png&w=80&h=80" },
+      "serie a": { name: "Serie A", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/12.png&w=80&h=80" },
+      "italia": { name: "Serie A", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/12.png&w=80&h=80" },
+      "bundesliga": { name: "Bundesliga", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/10.png&w=80&h=80" },
+      "alemania": { name: "Bundesliga", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/10.png&w=80&h=80" },
+      "ligue 1": { name: "Ligue 1", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/9.png&w=80&h=80" },
+      "francia": { name: "Ligue 1", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/9.png&w=80&h=80" },
+      "liga mx": { name: "Liga MX", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/22.png&w=80&h=80" },
+      "mexico": { name: "Liga MX", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/22.png&w=80&h=80" },
+      "mls": { name: "Major League Soccer", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/19.png&w=80&h=80" },
+      "estados unidos": { name: "MLS", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/19.png&w=80&h=80" },
+      "liga argentina": { name: "Liga Profesional", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/1.png&w=80&h=80" },
+      "argentina": { name: "Liga Profesional", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/1.png&w=80&h=80" },
+      "liga betplay": { name: "Liga BetPlay", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/203.png&w=80&h=80" },
+      "colombia": { name: "Liga BetPlay", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/203.png&w=80&h=80" },
+      "futbol colombiano": { name: "Fútbol Colombiano", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/203.png&w=80&h=80" },
+      "brasil": { name: "Brasileirão", logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/85.png&w=80&h=80" }
     };
 
     function resolveLeagueDetails(rawLeague) {
       const clean = (rawLeague || "")
         .toLowerCase()
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/\b(liga|copa|de|division|futbol)\b/gi, "")
+        .replace(/[^a-z0-9 ]/g, "")
         .trim();
 
       for (const key in GLOBAL_LEAGUES_CONFIG) {
@@ -830,99 +742,77 @@
         }
       }
 
-      const fallbackLetters = (rawLeague || "PB").replace(/liga/i, "").trim().slice(0, 2).toUpperCase();
       return {
-        id: 0,
         name: rawLeague,
-        logo: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="%231a1f2c" stroke="%2338bdf8" stroke-width="2.5"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${encodeURIComponent(fallbackLetters)}</text></svg>`
+        logo: "https://a.espncdn.com/combiner/i?img=/i/leaguelogos/soccer/500/23.png&w=80&h=80"
       };
     }
 
-    // 2. CATÁLOGO OPTIMIZADO DE ESCUDOS DE CLUBES (ESPN CDN)
+    // 2. CATÁLOGO ULTRA ROBUSTO DE ESCUDOS
     const TEAM_BADGES_BACKUP = {
       // Inglaterra
+      "liverpool": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/364.png&w=100&h=100",
+      "brighton": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/331.png&w=100&h=100",
       "aston villa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/362.png&w=100&h=100",
       "manchester city": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=100&h=100",
       "city": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=100&h=100",
       "arsenal": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/359.png&w=100&h=100",
       "everton": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/368.png&w=100&h=100",
-      "liverpool": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/364.png&w=100&h=100",
-      "brighton": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/331.png&w=100&h=100",
-      "chelsea": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/363.png&w=100&h=100",
-      "tottenham": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/367.png&w=100&h=100",
 
       // España
       "barcelona": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/83.png&w=100&h=100",
+      "fc barcelona": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/83.png&w=100&h=100",
       "real madrid": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/86.png&w=100&h=100",
       "madrid": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/86.png&w=100&h=100",
       "sevilla": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/243.png&w=100&h=100",
       "osasuna": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/97.png&w=100&h=100",
 
-      // Italia
-      "inter": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=100&h=100",
-      "fiorentina": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/109.png&w=100&h=100",
-
-      // Francia
-      "paris": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/160.png&w=100&h=100",
-      "psg": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/160.png&w=100&h=100",
-      "lyon": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/167.png&w=100&h=100",
-
       // México
       "america": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/227.png&w=100&h=100",
+      "club america": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/227.png&w=100&h=100",
       "pachuca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=100&h=100",
-      "chivas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/217.png&w=100&h=100",
-      "monterrey": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/226.png&w=100&h=100",
       "leon": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/225.png&w=100&h=100",
+      "club leon": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/225.png&w=100&h=100",
       "toluca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/230.png&w=100&h=100",
-
-      // Argentina
-      "rosario central": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17.png&w=100&h=100",
-      "rosario": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17.png&w=100&h=100",
-      "huracan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/11.png&w=100&h=100",
-      "banfield": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3.png&w=100&h=100",
-      "lanus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14.png&w=100&h=100",
-      "san lorenzo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18.png&w=100&h=100",
-      "newell": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/16.png&w=100&h=100",
-      "talleres": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20.png&w=100&h=100",
-      "defensa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10041.png&w=100&h=100",
-
-      // Colombia
-      "fortaleza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14467.png&w=100&h=100",
-      "cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/328.png&w=100&h=100",
-      "alianza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14468.png&w=100&h=100",
-      "inter bogota": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20340.png&w=100&h=100",
-      "inter palmira": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20340.png&w=100&h=100",
-      "america de cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/326.png&w=100&h=100",
-      "cucuta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/330.png&w=100&h=100",
-      "patriotas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/10045.png&w=100&h=100",
-      "envigado": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/331.png&w=100&h=100",
-      "popayan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14468.png&w=100&h=100",
+      "deportivo toluca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/230.png&w=100&h=100",
+      "monterrey": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/226.png&w=100&h=100",
+      "cf monterrey": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/226.png&w=100&h=100",
+      "chivas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/217.png&w=100&h=100",
+      "guadalajara": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/217.png&w=100&h=100",
 
       // MLS
       "lafc": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18966.png&w=100&h=100",
       "los angeles fc": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18966.png&w=100&h=100",
       "galaxy": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/187.png&w=100&h=100",
-      "la galaxy": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/187.png&w=100&h=100"
-    };
+      "la galaxy": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/187.png&w=100&h=100",
 
-    function normalizeName(str) {
-      return (str || '')
-        .toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/\b(ca|club|deportivo|fc|cf|atletico|real)\b/gi, "")
-        .replace(/[^a-z0-9]/g, "")
-        .trim();
-    }
+      // Argentina & Colombia
+      "rosario central": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17.png&w=100&h=100",
+      "huracan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/11.png&w=100&h=100",
+      "banfield": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3.png&w=100&h=100",
+      "lanus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14.png&w=100&h=100",
+      "san lorenzo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18.png&w=100&h=100",
+      "newell": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/16.png&w=100&h=100",
+      "fortaleza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14467.png&w=100&h=100",
+      "cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/328.png&w=100&h=100",
+      "america de cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/326.png&w=100&h=100",
+      "cucuta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/330.png&w=100&h=100"
+    };
 
     function resolveTeamBadge(teamName, currentUrl) {
       if (currentUrl && currentUrl.startsWith('http') && !currentUrl.includes('default.png') && !currentUrl.includes('undefined')) {
         return currentUrl;
       }
       
-      const cleanTeam = normalizeName(teamName);
+      const clean = (teamName || "")
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/\b(ca|club|deportivo|fc|cf|atletico|real)\b/gi, "")
+        .replace(/[^a-z0-9 ]/g, "")
+        .trim();
+
       for (const key in TEAM_BADGES_BACKUP) {
-        const cleanKey = normalizeName(key);
-        if (cleanTeam.includes(cleanKey) || cleanKey.includes(cleanTeam)) {
+        if (clean.includes(key) || key.includes(clean)) {
           return TEAM_BADGES_BACKUP[key];
         }
       }
@@ -1068,15 +958,6 @@
               </div>
             </div>
           </div>
-
-          <div class="p-4 bg-innerbg/30 border border-bordercolor/60 rounded-xl text-[10px] text-slate-400 space-y-2">
-            <div class="flex items-start gap-2">
-              <span class="text-amber-400 text-xs">⚠️</span>
-              <p class="leading-relaxed">
-                <strong class="text-amber-300 font-bold">Aviso de responsabilidad:</strong> Los pronósticos y probabilidades mostrados son estimaciones matemáticas basadas en modelos predictivos y volumen de xG. PicksBomba es exclusivamente una herramienta de análisis de datos e información cuantitativa. Plataforma para mayores de 18 años. Juega con responsabilidad.
-              </p>
-            </div>
-          </div>
         </div>
       `;
 
@@ -1093,41 +974,7 @@
         .order('created_at', { ascending: false })
         .limit(10);
 
-      if (error || !picks || picks.length === 0) {
-        container.innerHTML = `
-          <div class="min-w-[210px] sm:min-w-[230px] bg-[#141a26] border border-bordercolor/90 rounded-xl p-3 flex flex-col justify-between space-y-2.5 shadow-md shrink-0">
-            <div class="flex items-center justify-between">
-              <span class="text-[9px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span>💣</span> BOMBA
-              </span>
-              <span class="text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
-                ✓ ACERTADO
-              </span>
-            </div>
-            <div class="space-y-1.5 py-1">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/160.png&w=40&h=40" class="w-5 h-5 team-badge-img">
-                  <span class="text-xs font-bold text-white">Paris SG</span>
-                </div>
-                <span class="text-sm font-black font-mono text-white">4</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/83.png&w=40&h=40" class="w-5 h-5 team-badge-img">
-                  <span class="text-xs font-bold text-slate-300">Barcelona</span>
-                </div>
-                <span class="text-sm font-black font-mono text-slate-400">2</span>
-              </div>
-            </div>
-            <div class="pt-2 border-t border-bordercolor/60 flex items-center justify-between font-mono text-[10px]">
-              <span class="text-slate-300 font-bold truncate max-w-[120px]">Paris SG -1.5</span>
-              <span class="bg-indigo-950/80 text-indigo-300 border border-indigo-500/40 px-1.5 py-0.5 rounded font-black">cuota 4.02</span>
-            </div>
-          </div>
-        `;
-        return;
-      }
+      if (error || !picks || picks.length === 0) return;
 
       container.innerHTML = "";
       picks.forEach(p => {
@@ -1224,7 +1071,7 @@
       renderMatchSidebar();
     }
 
-    // 3. RENDERIZADO GLOBAL DE CARTELERA CON LOGOS OFICIALES DE LIGAS (SIN ERRORES ONERROR)
+    // 3. RENDERIZADO CORREGIDO DE CARTELERA CON LOGOS DE LIGA Y ESCUDOS DE EQUIPO
     function renderMatchSidebar() {
       const list = document.getElementById('match-sidebar-list');
       list.innerHTML = "";
@@ -1258,7 +1105,7 @@
           <button onclick="toggleLeagueAccordion('${sectionId}', this)" class="w-full px-3 py-2 bg-[#121622] hover:bg-[#181e2e] flex items-center justify-between text-left transition-colors cursor-pointer border-b border-bordercolor/50">
             <div class="flex items-center gap-2.5 truncate">
               <div class="w-6 h-6 rounded-md bg-white/5 p-0.5 flex items-center justify-center shrink-0 border border-white/10">
-                <img src="${leagueInfo.logo}" alt="${leagueInfo.name}" class="w-full h-full object-contain filter drop-shadow" onerror="this.src='https://media.api-sports.io/football/leagues/39.png'">
+                <img src="${leagueInfo.logo}" alt="${leagueInfo.name}" class="w-full h-full object-contain filter drop-shadow">
               </div>
               <span class="text-[11px] font-bold text-white tracking-wide uppercase font-sans truncate">${leagueInfo.name || leagueName}</span>
               <span class="text-[9px] font-mono bg-basebg text-emerald-400 px-1.5 py-0.2 rounded border border-bordercolor shrink-0">${matches.length}</span>
@@ -1314,11 +1161,11 @@
           `;
 
           const homeImg = card.querySelector('.home-img');
-          homeImg.src = item.homeBadge;
+          homeImg.src = resolveTeamBadge(item.home, item.homeBadge);
           homeImg.onerror = () => handleImageError(homeImg, item.home);
 
           const awayImg = card.querySelector('.away-img');
-          awayImg.src = item.awayBadge;
+          awayImg.src = resolveTeamBadge(item.away, item.awayBadge);
           awayImg.onerror = () => handleImageError(awayImg, item.away);
 
           matchContainer.appendChild(card);
@@ -1449,14 +1296,8 @@
     }
 
     async function confirmAndTrackBet() {
-      if (!currentUser) {
-        openAuthModal('login');
-        return;
-      }
-      if (activeSlip.length === 0) {
-        alert("El cupón de apuestas está vacío.");
-        return;
-      }
+      if (!currentUser) { openAuthModal('login'); return; }
+      if (activeSlip.length === 0) { alert("El cupón de apuestas está vacío."); return; }
 
       const totalOdds = parseFloat(document.getElementById('slip-total-odds').innerText);
       const stake = parseFloat(document.getElementById('slip-stake-input').value);
@@ -1464,17 +1305,15 @@
 
       const { data, error } = await supabaseClient
         .from('user_bets')
-        .insert([
-          {
-            user_id: currentUser.id,
-            picks: activeSlip,
-            total_odds: totalOdds,
-            stake: stake,
-            potential_payout: potentialPayout,
-            status: 'PENDIENTE',
-            profit: 0.0
-          }
-        ]);
+        .insert([{
+          user_id: currentUser.id,
+          picks: activeSlip,
+          total_odds: totalOdds,
+          stake: stake,
+          potential_payout: potentialPayout,
+          status: 'PENDIENTE',
+          profit: 0.0
+        }]);
 
       if (!error) {
         alert("¡Boleto registrado exitosamente en tu bitácora personal!");
@@ -1832,11 +1671,11 @@
       `;
 
       const homeImgRep = card.querySelector('.home-badge-rep');
-      homeImgRep.src = data.homeBadge;
+      homeImgRep.src = resolveTeamBadge(data.home, data.homeBadge);
       homeImgRep.onerror = () => handleImageError(homeImgRep, data.home);
 
       const awayImgRep = card.querySelector('.away-badge-rep');
-      awayImgRep.src = data.awayBadge;
+      awayImgRep.src = resolveTeamBadge(data.away, data.awayBadge);
       awayImgRep.onerror = () => handleImageError(awayImgRep, data.away);
 
       stream.appendChild(card);
