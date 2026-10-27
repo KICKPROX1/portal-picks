@@ -70,6 +70,29 @@
       50% { opacity: 0.7; transform: scale(1.06); }
     }
     .animate-glow { animation: pulseGlow 3s ease-in-out infinite; }
+
+    /* ANIMACIONES AVANZADAS DEL REPORTE TÁCTICO */
+    @keyframes barFill {
+      from { width: 0%; }
+      to { width: var(--target-width); }
+    }
+    .animate-bar {
+      animation: barFill 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes neonPulse {
+      0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.2), inset 0 0 15px rgba(16, 185, 129, 0.05); }
+      50% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.45), inset 0 0 20px rgba(16, 185, 129, 0.15); }
+    }
+    .neon-card-glow {
+      animation: neonPulse 3s infinite ease-in-out;
+    }
+    @keyframes fadeInAnim {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeInAnim 0.35s ease-out forwards;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative pb-20 lg:pb-0">
@@ -209,7 +232,7 @@
         <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4"></div>
         <div class="p-3 bg-[#10141d] border-t border-bordercolor">
           <form onsubmit="handleUserSearch(event)" class="relative flex items-center">
-            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Arsenal, Aston Villa, Toluca)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
+            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Milan, Inter, Brentford)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
             <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center transition-all">Enviar</button>
           </form>
         </div>
@@ -220,7 +243,7 @@
         <div class="bg-gradient-to-r from-amber-500/15 via-[#10141d] to-amber-500/15 border-b border-amber-500/25 px-4 py-2 flex items-center justify-between text-xs shrink-0">
           <div class="flex items-center gap-2 overflow-hidden truncate">
             <span class="text-amber-400 font-bold font-mono shrink-0">📌 FIJADO:</span>
-            <span id="chat-pinned-text" class="text-slate-200 truncate">Arsenal vs Everton • +2.5 Goles @ 1.85 (Pick Bomba)</span>
+            <span id="chat-pinned-text" class="text-slate-200 truncate">AC Milan vs Napoli • Ambos Equipos Anotan (Sí) @ 1.70 (Pick Bomba)</span>
           </div>
           <span class="text-[9px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded uppercase tracking-wider shrink-0">EN VIVO</span>
         </div>
@@ -368,7 +391,7 @@
             <span class="text-sm">🧾</span>
             <span class="text-xs font-bold uppercase tracking-wider text-white">Boleto de Apuestas</span>
           </div>
-          <span id="slip-count" class="text-[10px] font-mono bg-emerald-600 text-slate-950 px-2 py-0.5 rounded-full font-black">2</span>
+          <span id="slip-count" class="text-[10px] font-mono bg-emerald-600 text-slate-950 px-2 py-0.5 rounded-full font-black">0</span>
         </div>
 
         <div id="slip-items" class="flex-1 overflow-y-auto custom-scroll space-y-2 mt-2 pr-1 text-xs"></div>
@@ -376,7 +399,7 @@
         <div class="border-t border-bordercolor pt-2.5 mt-2 space-y-2 text-xs font-mono">
           <div class="flex justify-between items-center text-slate-400">
             <span>Cuota Total:</span>
-            <span id="slip-total-odds" class="text-white font-bold text-sm">2.75</span>
+            <span id="slip-total-odds" class="text-white font-bold text-sm">0.00</span>
           </div>
 
           <div class="flex justify-between items-center text-slate-400">
@@ -389,7 +412,7 @@
 
           <div class="flex justify-between items-center bg-innerbg p-2 rounded-lg border border-bordercolor">
             <span class="text-slate-300">Retorno Estimado:</span>
-            <span id="slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
+            <span id="slip-payout" class="text-progreen font-black text-sm">0.00u</span>
           </div>
           
           <button onclick="exportSlipToImage()" class="w-full py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 border border-emerald-400/40 text-slate-950 font-black rounded-lg text-[11px] flex items-center justify-center gap-1.5 transition-all shadow-md">
@@ -439,7 +462,7 @@
     <button onclick="openMobileSlipDrawer()" class="flex flex-col items-center justify-center text-emerald-400 hover:text-teal-300 transition-all py-1 relative">
       <div class="relative">
         <span class="text-lg leading-none">🧾</span>
-        <span id="mobile-bottom-slip-count" class="absolute -top-1 -right-2.5 bg-emerald-500 text-slate-950 text-[9px] font-mono font-bold px-1.5 rounded-full">2</span>
+        <span id="mobile-bottom-slip-count" class="absolute -top-1 -right-2.5 bg-emerald-500 text-slate-950 text-[9px] font-mono font-bold px-1.5 rounded-full">0</span>
       </div>
       <span class="text-[10px] font-mono mt-1 font-bold">Boleto</span>
     </button>
@@ -452,9 +475,9 @@
         <div class="flex items-center gap-2">
           <span class="text-lg">🧾</span>
           <span class="text-sm font-bold text-white uppercase tracking-wider">Boleto de Apuestas</span>
-          <span id="mobile-drawer-count" class="text-[10px] font-mono bg-emerald-500 text-slate-950 px-2 py-0.5 rounded-full font-black">2</span>
+          <span id="mobile-drawer-count" class="text-[10px] font-mono bg-emerald-500 text-slate-950 px-2 py-0.5 rounded-full font-black">0</span>
         </div>
-        <button onclick="closeMobileSlipDrawer()" class="text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
+        <button onclick="closeMobileSlipDrawer()" class="text-slate-400 hover:text-white text-lg font-bold">✕</button>
       </div>
 
       <div class="grid grid-cols-3 gap-1.5 my-3">
@@ -477,7 +500,7 @@
       <div class="border-t border-bordercolor pt-3 mt-3 space-y-2 text-xs font-mono">
         <div class="flex justify-between items-center text-slate-400">
           <span>Cuota Total:</span>
-          <span id="mobile-slip-total-odds" class="text-white font-bold text-sm">2.75</span>
+          <span id="mobile-slip-total-odds" class="text-white font-bold text-sm">0.00</span>
         </div>
 
         <div class="flex justify-between items-center text-slate-400">
@@ -490,7 +513,7 @@
 
         <div class="flex justify-between items-center bg-innerbg p-2 rounded-lg border border-bordercolor">
           <span class="text-slate-300">Retorno Estimado:</span>
-          <span id="mobile-slip-payout" class="text-progreen font-black text-sm">+3.50u</span>
+          <span id="mobile-slip-payout" class="text-progreen font-black text-sm">0.00u</span>
         </div>
 
         <div class="grid grid-cols-2 gap-2 pt-1">
@@ -540,18 +563,18 @@
 
       <div class="my-6 space-y-5">
         <div>
-          <span id="card-league" class="text-xs font-mono font-bold uppercase text-slate-400 tracking-wider">LALIGA • JORNADA 10</span>
-          <h2 id="card-match-title" class="text-2xl font-black text-white mt-1">Real Madrid vs Barcelona</h2>
+          <span id="card-league" class="text-xs font-mono font-bold uppercase text-slate-400 tracking-wider">SERIE A • J10</span>
+          <h2 id="card-match-title" class="text-2xl font-black text-white mt-1">AC Milan vs Napoli</h2>
         </div>
 
         <div class="p-5 bg-innerbg/80 border border-bordercolor rounded-2xl space-y-3 shadow-inner">
           <div class="flex items-center justify-between">
             <span class="text-xs font-mono uppercase text-emerald-400 font-bold">Pronóstico Seleccionado</span>
-            <span id="card-ev-label" class="text-xs font-mono font-black text-progreen bg-progreen/10 border border-progreen/30 px-2 py-0.5 rounded">+EV 14.2%</span>
+            <span id="card-ev-label" class="text-xs font-mono font-black text-progreen bg-progreen/10 border border-progreen/30 px-2 py-0.5 rounded">+EV 12.5%</span>
           </div>
-          <div id="card-pick-name" class="text-xl font-black text-white leading-tight">Stuttgart ML + Más de 1.5 Goles</div>
+          <div id="card-pick-name" class="text-xl font-black text-white leading-tight">Ambos Equipos Anotan (Sí)</div>
           <div class="flex items-center justify-between pt-2 border-t border-bordercolor/60 font-mono text-sm">
-            <span class="text-slate-400">Cuota Oficial: <strong id="card-odds" class="text-white text-base">1.85</strong></span>
+            <span class="text-slate-400">Cuota Oficial: <strong id="card-odds" class="text-white text-base">1.70</strong></span>
             <span class="text-slate-400">Stake Sugerido: <strong id="card-stake" class="text-white text-base">2.0u</strong></span>
           </div>
         </div>
@@ -577,8 +600,8 @@
         <p class="text-[11px] text-slate-400">Compite en el Leaderboard oficial de la comunidad.</p>
       </div>
       <form onsubmit="handleCreateTipSubmit(event)" class="space-y-3 text-xs">
-        <div><label class="block text-slate-400 font-mono mb-1">Partido</label><input type="text" id="tip-match" required placeholder="Ej: Real Madrid vs Barcelona" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
-        <div><label class="block text-slate-400 font-mono mb-1">Tu Selección / Mercado</label><input type="text" id="tip-selection" required placeholder="Ej: Real Madrid ML" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Partido</label><input type="text" id="tip-match" required placeholder="Ej: AC Milan vs Napoli" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Tu Selección / Mercado</label><input type="text" id="tip-selection" required placeholder="Ej: Ambos Equipos Anotan" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         <div class="grid grid-cols-2 gap-3">
           <div><label class="block text-slate-400 font-mono mb-1">Cuota (Decimal)</label><input type="number" id="tip-odds" step="0.01" min="1.01" required placeholder="1.85" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
           <div><label class="block text-slate-400 font-mono mb-1">Stake (Unidades)</label><input type="number" id="tip-stake" step="0.5" min="0.5" max="5.0" value="1.0" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
@@ -598,12 +621,12 @@
       </div>
       <form onsubmit="handleCreateMatchSubmit(event)" class="space-y-3 text-xs">
         <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-slate-400 font-mono mb-1">Liga y Jornada</label><input type="text" id="adm-league" required placeholder="Ej: Premier League • J9" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
-          <div><label class="block text-slate-400 font-mono mb-1">Horario y Estadio</label><input type="text" id="adm-date" required placeholder="Ej: Dom • 14:00 CDT" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Liga y Jornada</label><input type="text" id="adm-league" required placeholder="Ej: Serie A • J10" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Horario y Estadio</label><input type="text" id="adm-date" required placeholder="Ej: Hoy • 14:45 CDT" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         </div>
         <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-slate-400 font-mono mb-1">Equipo Local</label><input type="text" id="adm-home" required placeholder="Ej: Real Madrid" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
-          <div><label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label><input type="text" id="adm-away" required placeholder="Ej: Barcelona" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Equipo Local</label><input type="text" id="adm-home" required placeholder="Ej: AC Milan" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label><input type="text" id="adm-away" required placeholder="Ej: Napoli" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -714,9 +737,9 @@
         <table class="w-full text-left text-xs font-sans">
           <thead><tr class="border-b border-bordercolor text-slate-400 font-mono uppercase text-[10px]"><th class="py-2.5 px-2">Fecha</th><th class="py-2.5 px-2">Partido</th><th class="py-2.5 px-2">Selección</th><th class="py-2.5 px-2 text-center">Cuota</th><th class="py-2.5 px-2 text-center">Stake</th><th class="py-2.5 px-2 text-right">Resultado</th></tr></thead>
           <tbody class="divide-y border-bordercolor font-mono text-[11px]">
-            <tr><td class="py-2.5 px-2 text-slate-400">24 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Inter Miami vs Atlanta</td><td class="py-2.5 px-2 text-slate-300">Más de 2.5 Goles</td><td class="py-2.5 px-2 text-center text-slate-300">1.55</td><td class="py-2.5 px-2 text-center text-slate-300">2.5u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.37u ✅</td></tr>
-            <tr><td class="py-2.5 px-2 text-slate-400">24 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Monterrey vs Chivas</td><td class="py-2.5 px-2 text-slate-300">Monterrey ML</td><td class="py-2.5 px-2 text-center text-slate-300">1.85</td><td class="py-2.5 px-2 text-center text-slate-300">2.0u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.70u ✅</td></tr>
-            <tr><td class="py-2.5 px-2 text-slate-400">22 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Freiburg vs Bayern</td><td class="py-2.5 px-2 text-slate-300">Ambos Marcan (Sí)</td><td class="py-2.5 px-2 text-center text-slate-300">1.45</td><td class="py-2.5 px-2 text-center text-slate-300">2.5u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.13u ✅</td></tr>
+            <tr><td class="py-2.5 px-2 text-slate-400">26 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Sevilla vs Osasuna</td><td class="py-2.5 px-2 text-slate-300">Sevilla 1X & Under 3.5</td><td class="py-2.5 px-2 text-center text-slate-300">1.55</td><td class="py-2.5 px-2 text-center text-slate-300">2.0u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.10u ✅</td></tr>
+            <tr><td class="py-2.5 px-2 text-slate-400">26 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Fiorentina vs Lecce</td><td class="py-2.5 px-2 text-slate-300">Fiorentina ML</td><td class="py-2.5 px-2 text-center text-slate-300">1.58</td><td class="py-2.5 px-2 text-center text-slate-300">2.0u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.16u ✅</td></tr>
+            <tr><td class="py-2.5 px-2 text-slate-400">25 OCT</td><td class="py-2.5 px-2 font-sans font-medium text-white">Inter Miami vs Atlanta</td><td class="py-2.5 px-2 text-slate-300">Más de 2.5 Goles</td><td class="py-2.5 px-2 text-center text-slate-300">1.55</td><td class="py-2.5 px-2 text-center text-slate-300">2.5u</td><td class="py-2.5 px-2 text-right text-progreen font-bold">+1.37u ✅</td></tr>
           </tbody>
         </table>
       </div>
@@ -728,7 +751,7 @@
     <div id="toast-icon" class="w-8 h-8 rounded-lg bg-progreen/20 text-progreen flex items-center justify-center font-bold text-sm shrink-0">⚡</div>
     <div>
       <div id="toast-title" class="text-xs font-bold text-white leading-tight">Pick Verificado en Vivo</div>
-      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">Aston Villa +0.5 (Cuota 2.37) CONFIRMADO</div>
+      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">AC Milan vs Napoli • BTTS CONFIRMADO</div>
     </div>
   </div>
 
@@ -743,11 +766,10 @@
     let isUserVip = false;
     let authMode = 'login';
     let isTyping = false;
-    let currentMatchKey = 'astonvilla-mancity';
+    let currentMatchKey = '';
     let sidebarFilterQuery = "";
     const WHOP_CHECKOUT_URL = "https://portal-picks.whop.site/";
 
-    // FUNCIONES DEL VIDEO DE BIENVENIDA CON CONTROL DE FRECUENCIA
     function dismissIntro() {
       const splash = document.getElementById('intro-splash');
       if (!splash) return;
@@ -758,122 +780,28 @@
       }, 700);
     }
 
-    // 1. DICCIONARIO COMPLETO DE LAS 95 LIGAS Y COPAS CON CDN OFICIAL
+    // CATÁLOGO COMPLETO DE LIGAS Y COPAS CON CDN OFICIAL
     const GLOBAL_LEAGUES_CONFIG = {
-      // Principales & Europa Top
       "inglaterra": { id: 39, name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png" },
       "premier league": { id: 39, name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png" },
       "england league cup": { id: 48, name: "EFL Cup", logo: "https://media.api-sports.io/football/leagues/48.png" },
       "espana": { id: 140, name: "LaLiga", logo: "https://media.api-sports.io/football/leagues/140.png" },
       "laliga": { id: 140, name: "LaLiga", logo: "https://media.api-sports.io/football/leagues/140.png" },
-      "futbol espanol": { id: 140, name: "LaLiga", logo: "https://media.api-sports.io/football/leagues/140.png" },
       "italia": { id: 135, name: "Serie A", logo: "https://media.api-sports.io/football/leagues/135.png" },
       "serie a": { id: 135, name: "Serie A", logo: "https://media.api-sports.io/football/leagues/135.png" },
       "alemania": { id: 78, name: "Bundesliga", logo: "https://media.api-sports.io/football/leagues/78.png" },
       "bundesliga": { id: 78, name: "Bundesliga", logo: "https://media.api-sports.io/football/leagues/78.png" },
       "francia": { id: 61, name: "Ligue 1", logo: "https://media.api-sports.io/football/leagues/61.png" },
       "ligue 1": { id: 61, name: "Ligue 1", logo: "https://media.api-sports.io/football/leagues/61.png" },
-      "portugal": { id: 94, name: "Primeira Liga", logo: "https://media.api-sports.io/football/leagues/94.png" },
-      "paises bajos": { id: 88, name: "Eredivisie", logo: "https://media.api-sports.io/football/leagues/88.png" },
-      "belgica": { id: 144, name: "Jupiler Pro League", logo: "https://media.api-sports.io/football/leagues/144.png" },
-      "escocia": { id: 179, name: "Premiership", logo: "https://media.api-sports.io/football/leagues/179.png" },
-      "turquia": { id: 203, name: "Süper Lig", logo: "https://media.api-sports.io/football/leagues/203.png" },
-      "suiza": { id: 207, name: "Super League", logo: "https://media.api-sports.io/football/leagues/207.png" },
-      "dinamarca": { id: 119, name: "Superliga", logo: "https://media.api-sports.io/football/leagues/119.png" },
-      "suecia": { id: 113, name: "Allsvenskan", logo: "https://media.api-sports.io/football/leagues/113.png" },
-      "noruega": { id: 103, name: "Eliteserien", logo: "https://media.api-sports.io/football/leagues/103.png" },
-      "austria": { id: 218, name: "Bundesliga Austria", logo: "https://media.api-sports.io/football/leagues/218.png" },
-      "grecia": { id: 197, name: "Super League Grecia", logo: "https://media.api-sports.io/football/leagues/197.png" },
-      "polonia": { id: 106, name: "Ekstraklasa", logo: "https://media.api-sports.io/football/leagues/106.png" },
-      "rusia": { id: 235, name: "Premier League Rusia", logo: "https://media.api-sports.io/football/leagues/235.png" },
-      "ucrania": { id: 333, name: "Premier League Ucrania", logo: "https://media.api-sports.io/football/leagues/333.png" },
-      "croacia": { id: 210, name: "HNL Croacia", logo: "https://media.api-sports.io/football/leagues/210.png" },
-      "serbia": { id: 286, name: "SuperLiga Serbia", logo: "https://media.api-sports.io/football/leagues/286.png" },
-      "rumania": { id: 283, name: "Liga I Rumania", logo: "https://media.api-sports.io/football/leagues/283.png" },
-      "czech republic": { id: 345, name: "1. Liga Checa", logo: "https://media.api-sports.io/football/leagues/345.png" },
-      "hungria": { id: 271, name: "NB I Hungría", logo: "https://media.api-sports.io/football/leagues/271.png" },
-      "eslovaquia": { id: 332, name: "Super Liga Eslovaquia", logo: "https://media.api-sports.io/football/leagues/332.png" },
-      "eslovenia": { id: 373, name: "PrvaLiga Eslovenia", logo: "https://media.api-sports.io/football/leagues/373.png" },
-      "finlandia": { id: 244, name: "Veikkausliiga", logo: "https://media.api-sports.io/football/leagues/244.png" },
-      "irlanda": { id: 357, name: "Premier Division Irlanda", logo: "https://media.api-sports.io/football/leagues/357.png" },
-      "bielorrusia": { id: 328, name: "Premier League Bielorrusia", logo: "https://media.api-sports.io/football/leagues/328.png" },
-      "bulgaria": { id: 172, name: "First League Bulgaria", logo: "https://media.api-sports.io/football/leagues/172.png" },
-      "chipre": { id: 318, name: "1. División Chipre", logo: "https://media.api-sports.io/football/leagues/318.png" },
-      "bosnia": { id: 315, name: "Premijer Liga Bosnia", logo: "https://media.api-sports.io/football/leagues/315.png" },
-      "albania": { id: 310, name: "Superliga Albania", logo: "https://media.api-sports.io/football/leagues/310.png" },
-      "macedonia": { id: 364, name: "First League Macedonia", logo: "https://media.api-sports.io/football/leagues/364.png" },
-      "kazajistan": { id: 370, name: "Premier League Kazajistán", logo: "https://media.api-sports.io/football/leagues/370.png" },
-      "azerbaiyan": { id: 352, name: "Premyer Liqa Azerbaiyán", logo: "https://media.api-sports.io/football/leagues/352.png" },
-      "armenia": { id: 342, name: "Premier League Armenia", logo: "https://media.api-sports.io/football/leagues/342.png" },
-      "georgia": { id: 329, name: "Erovnuli Liga Georgia", logo: "https://media.api-sports.io/football/leagues/329.png" },
-      "letonia": { id: 367, name: "Virsliga Letonia", logo: "https://media.api-sports.io/football/leagues/367.png" },
-      "lituania": { id: 362, name: "A Lyga Lituania", logo: "https://media.api-sports.io/football/leagues/362.png" },
-      "estonia": { id: 327, name: "Meistriliiga Estonia", logo: "https://media.api-sports.io/football/leagues/327.png" },
-      "malta": { id: 387, name: "Premier League Malta", logo: "https://media.api-sports.io/football/leagues/387.png" },
-      "luxembourg": { id: 261, name: "National Division Luxemburgo", logo: "https://media.api-sports.io/football/leagues/261.png" },
-      "andorra": { id: 396, name: "Primera Divisió Andorra", logo: "https://media.api-sports.io/football/leagues/396.png" },
-      "gibraltar": { id: 407, name: "National League Gibraltar", logo: "https://media.api-sports.io/football/leagues/407.png" },
-      "faroe islands": { id: 381, name: "Premier League Islas Feroe", logo: "https://media.api-sports.io/football/leagues/381.png" },
-      "kosovo": { id: 394, name: "Superliga Kosovo", logo: "https://media.api-sports.io/football/leagues/394.png" },
-
-      // Américas
+      "estados unidos": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
+      "major league soccer": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
+      "mls": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
       "mexico": { id: 262, name: "Liga MX", logo: "https://media.api-sports.io/football/leagues/262.png" },
       "liga mx": { id: 262, name: "Liga MX", logo: "https://media.api-sports.io/football/leagues/262.png" },
-      "estados unidos": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
-      "mls": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
       "argentina": { id: 128, name: "Liga Profesional Argentina", logo: "https://media.api-sports.io/football/leagues/128.png" },
-      "liga argentina": { id: 128, name: "Liga Profesional Argentina", logo: "https://media.api-sports.io/football/leagues/128.png" },
-      "argentina nacional": { id: 131, name: "Primera Nacional", logo: "https://media.api-sports.io/football/leagues/131.png" },
-      "argentina b": { id: 129, name: "Primera B Metropolitana", logo: "https://media.api-sports.io/football/leagues/129.png" },
-      "argentina federal": { id: 479, name: "Torneo Federal A", logo: "https://media.api-sports.io/football/leagues/479.png" },
-      "argentina c": { id: 130, name: "Primera C", logo: "https://media.api-sports.io/football/leagues/130.png" },
-      "copa argentina": { id: 130, name: "Copa Argentina", logo: "https://media.api-sports.io/football/leagues/130.png" },
-      "brasil": { id: 71, name: "Brasileirão Série A", logo: "https://media.api-sports.io/football/leagues/71.png" },
-      "colombia": { id: 239, name: "Liga BetPlay Colombia", logo: "https://media.api-sports.io/football/leagues/239.png" },
-      "liga betplay": { id: 239, name: "Liga BetPlay Colombia", logo: "https://media.api-sports.io/football/leagues/239.png" },
-      "futbol colombiano": { id: 239, name: "Fútbol Colombiano", logo: "https://media.api-sports.io/football/leagues/239.png" },
-      "chile": { id: 265, name: "Primera División Chile", logo: "https://media.api-sports.io/football/leagues/265.png" },
-      "chile b": { id: 266, name: "Primera B Chile", logo: "https://media.api-sports.io/football/leagues/266.png" },
-      "peru": { id: 281, name: "Liga 1 Perú", logo: "https://media.api-sports.io/football/leagues/281.png" },
-      "uruguay": { id: 268, name: "Primera División Uruguay", logo: "https://media.api-sports.io/football/leagues/268.png" },
-      "uruguay b": { id: 269, name: "Segunda División Uruguay", logo: "https://media.api-sports.io/football/leagues/269.png" },
-      "paraguay": { id: 250, name: "División de Honor Paraguay", logo: "https://media.api-sports.io/football/leagues/250.png" },
-      "paraguay b": { id: 251, name: "División Intermedia", logo: "https://media.api-sports.io/football/leagues/251.png" },
-      "ecuador": { id: 242, name: "LigaPro Ecuador", logo: "https://media.api-sports.io/football/leagues/242.png" },
-      "venezuela": { id: 299, name: "Liga FUTVE Venezuela", logo: "https://media.api-sports.io/football/leagues/299.png" },
-      "bolivia": { id: 344, name: "División Profesional Bolivia", logo: "https://media.api-sports.io/football/leagues/344.png" },
-      "costa rica": { id: 162, name: "Primera División Costa Rica", logo: "https://media.api-sports.io/football/leagues/162.png" },
-      "honduras": { id: 248, name: "Liga Nacional Honduras", logo: "https://media.api-sports.io/football/leagues/248.png" },
-      "guatemala": { id: 246, name: "Liga Nacional Guatemala", logo: "https://media.api-sports.io/football/leagues/246.png" },
-      "el salvador": { id: 240, name: "Primera División El Salvador", logo: "https://media.api-sports.io/football/leagues/240.png" },
-      "panama": { id: 279, name: "LPF Panamá", logo: "https://media.api-sports.io/football/leagues/279.png" },
-      "nicaragua": { id: 277, name: "Liga Primera Nicaragua", logo: "https://media.api-sports.io/football/leagues/277.png" },
-      "canada": { id: 479, name: "Canadian Premier League", logo: "https://media.api-sports.io/football/leagues/479.png" },
-      "jamaica": { id: 249, name: "Premier League Jamaica", logo: "https://media.api-sports.io/football/leagues/249.png" },
-
-      // Asia, Oceanía & Medio Oriente
-      "saudi arabia": { id: 307, name: "Saudi Pro League", logo: "https://media.api-sports.io/football/leagues/307.png" },
-      "japon": { id: 98, name: "J1 League Japón", logo: "https://media.api-sports.io/football/leagues/98.png" },
-      "australia": { id: 188, name: "A-League Australia", logo: "https://media.api-sports.io/football/leagues/188.png" },
-      "united arab emirates": { id: 301, name: "UAE Pro League", logo: "https://media.api-sports.io/football/leagues/301.png" },
-      "iran": { id: 290, name: "Persian Gulf Pro League", logo: "https://media.api-sports.io/football/leagues/290.png" },
-      "israel": { id: 383, name: "Ligat Ha'Al Israel", logo: "https://media.api-sports.io/football/leagues/383.png" },
-      "indonesia": { id: 274, name: "Liga 1 Indonesia", logo: "https://media.api-sports.io/football/leagues/274.png" },
-      "india": { id: 323, name: "Indian Super League", logo: "https://media.api-sports.io/football/leagues/323.png" },
-      "thailand": { id: 295, name: "Thai League 1", logo: "https://media.api-sports.io/football/leagues/295.png" },
-      "uzbekistan": { id: 360, name: "Super League Uzbekistán", logo: "https://media.api-sports.io/football/leagues/360.png" },
-      "chinese taipei": { id: 401, name: "Premier League Taipei", logo: "https://media.api-sports.io/football/leagues/401.png" },
-      "philippines": { id: 384, name: "PFL Filipinas", logo: "https://media.api-sports.io/football/leagues/384.png" },
-      "myanmar": { id: 379, name: "National League Myanmar", logo: "https://media.api-sports.io/football/leagues/379.png" },
-      "cambodia": { id: 405, name: "Premier League Camboya", logo: "https://media.api-sports.io/football/leagues/405.png" },
-
-      // África
-      "egypt": { id: 233, name: "Premier League Egipto", logo: "https://media.api-sports.io/football/leagues/233.png" },
-      "cameroon": { id: 390, name: "Elite One Camerún", logo: "https://media.api-sports.io/football/leagues/390.png" },
-      "kenya": { id: 288, name: "Premier League Kenia", logo: "https://media.api-sports.io/football/leagues/288.png" },
-      "zambia": { id: 421, name: "Super League Zambia", logo: "https://media.api-sports.io/football/leagues/421.png" },
-      "malawi": { id: 418, name: "Super League Malawi", logo: "https://media.api-sports.io/football/leagues/418.png" },
-      "rwanda": { id: 419, name: "Premier League Ruanda", logo: "https://media.api-sports.io/football/leagues/419.png" }
+      "colombia": { id: 239, name: "Liga BetPlay", logo: "https://media.api-sports.io/football/leagues/239.png" },
+      "brasil": { id: 71, name: "Brasileirão", logo: "https://media.api-sports.io/football/leagues/71.png" },
+      "saudi arabia": { id: 307, name: "Saudi Pro League", logo: "https://media.api-sports.io/football/leagues/307.png" }
     };
 
     function resolveLeagueDetails(rawLeague) {
@@ -897,57 +825,25 @@
       };
     }
 
-    // 2. CATÁLOGO ULTRA ROBUSTO DE ESCUDOS
     const TEAM_BADGES_BACKUP = {
-      // Inglaterra
-      "liverpool": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/364.png&w=100&h=100",
-      "brighton": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/331.png&w=100&h=100",
-      "aston villa": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/362.png&w=100&h=100",
+      "milan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/103.png&w=100&h=100",
+      "ac milan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/103.png&w=100&h=100",
+      "napoli": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/114.png&w=100&h=100",
+      "inter": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=100&h=100",
+      "inter de milan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=100&h=100",
+      "juventus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/111.png&w=100&h=100",
+      "atalanta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/107.png&w=100&h=100",
       "manchester city": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=100&h=100",
-      "city": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=100&h=100",
-      "arsenal": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/359.png&w=100&h=100",
-      "everton": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/368.png&w=100&h=100",
-
-      // España
-      "barcelona": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/83.png&w=100&h=100",
-      "fc barcelona": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/83.png&w=100&h=100",
-      "real madrid": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/86.png&w=100&h=100",
-      "madrid": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/86.png&w=100&h=100",
-      "sevilla": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/243.png&w=100&h=100",
-      "osasuna": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/97.png&w=100&h=100",
-
-      // México
-      "america": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/227.png&w=100&h=100",
-      "club america": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/227.png&w=100&h=100",
-      "pachuca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/228.png&w=100&h=100",
-      "leon": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/225.png&w=100&h=100",
-      "club leon": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/225.png&w=100&h=100",
-      "toluca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/230.png&w=100&h=100",
-      "deportivo toluca": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/230.png&w=100&h=100",
-      "monterrey": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/226.png&w=100&h=100",
-      "cf monterrey": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/226.png&w=100&h=100",
-      "chivas": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/217.png&w=100&h=100",
-      "guadalajara": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/217.png&w=100&h=100",
-
-      // MLS
-      "lafc": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18966.png&w=100&h=100",
-      "los angeles fc": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18966.png&w=100&h=100",
-      "galaxy": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/187.png&w=100&h=100",
-      "la galaxy": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/187.png&w=100&h=100",
+      "tottenham": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/367.png&w=100&h=100",
+      "chelsea": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/363.png&w=100&h=100",
+      "newcastle": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/361.png&w=100&h=100",
+      "brentford": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/337.png&w=100&h=100",
+      "dortmund": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/124.png&w=100&h=100",
+      "borussia dortmund": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/124.png&w=100&h=100",
       "inter miami": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20232.png&w=100&h=100",
       "atlanta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18418.png&w=100&h=100",
-
-      // Argentina & Colombia
-      "rosario central": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/17.png&w=100&h=100",
-      "huracan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/11.png&w=100&h=100",
-      "banfield": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/3.png&w=100&h=100",
-      "lanus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14.png&w=100&h=100",
-      "san lorenzo": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18.png&w=100&h=100",
-      "newell": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/16.png&w=100&h=100",
-      "fortaleza": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/14467.png&w=100&h=100",
-      "cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/328.png&w=100&h=100",
-      "america de cali": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/326.png&w=100&h=100",
-      "cucuta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/330.png&w=100&h=100"
+      "columbus crew": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18267.png&w=100&h=100",
+      "red bulls": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/189.png&w=100&h=100"
     };
 
     function resolveTeamBadge(teamName, currentUrl) {
@@ -978,10 +874,8 @@
     }
 
     let tacticalDB = {};
-    let activeSlip = [
-      { id: "s1", match: "Aston Villa vs City", pick: "Aston Villa +0.5", odds: 2.37 },
-      { id: "s2", match: "Arsenal vs Everton", pick: "Arsenal Hándicap (-1.5)", odds: 1.95 }
-    ];
+    // BOLETO INICIAL LIMPIO (SIN PARTIDOS VIEJOS QUEMADOS)
+    let activeSlip = [];
 
     function scrollToMobileSection(sectionId) {
       const el = document.getElementById(sectionId);
@@ -1030,11 +924,11 @@
               </h2>
               
               <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-lg leading-relaxed font-sans">
-                Sistema matemático que rastrea ineficiencias de cuotas en tiempo real. Selecciona un partido de la cartelera para ver el análisis de valor esperado (<strong class="text-emerald-400">+EV</strong>) y los <strong class="text-amber-400">Picks Bomba</strong> del día.
+                Sistema matemático que rastrea ineficiencias de cuotas en tiempo real. Selecciona un partido de la cartelera activa para ver el análisis de valor esperado (<strong class="text-emerald-400">+EV</strong>) y los <strong class="text-amber-400">Picks Bomba</strong> del día.
               </p>
 
               <div class="mt-5 flex flex-col sm:flex-row items-center gap-3">
-                <button onclick="triggerTacticalPrompt('astonvilla-mancity')" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-emerald-500/25 active:scale-95 cursor-pointer">
+                <button onclick="triggerDefaultFeaturedMatch()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-emerald-500/25 active:scale-95 cursor-pointer">
                   <span>💣 Desbloquear Pick Bomba Destacado</span>
                 </button>
                 <button onclick="switchMainTab('tipsters')" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-innerbg hover:bg-[#202738] border border-bordercolor text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
@@ -1115,6 +1009,15 @@
       loadDynamicSettledPicks();
     }
 
+    function triggerDefaultFeaturedMatch() {
+      const keys = Object.keys(tacticalDB);
+      if (keys.length > 0) {
+        triggerTacticalPrompt(keys[0]);
+      } else {
+        alert("Selecciona un partido de la cartelera lateral.");
+      }
+    }
+
     async function loadDynamicSettledPicks() {
       const container = document.getElementById('aciertos-carousel');
       if (!container) return;
@@ -1193,7 +1096,7 @@
       if (dbMatches && dbMatches.length > 0) {
         dbMatches.forEach(m => {
           const status = m.current_minute || m.match_status || 'PROGRAMADO';
-          if (status.includes('FT') || status.includes('FINAL')) return;
+          if (m.is_settled || status.includes('FT') || status.includes('FINAL')) return;
 
           tacticalDB[m.match_key] = {
             query: `Análisis y valor matemático para ${m.match_name}.`,
@@ -1209,12 +1112,12 @@
             statusText: status,
             isLive: (status.includes("'")),
             apiFixtureId: m.api_fixture_id || null,
-            xgHome: m.xg_home,
-            xgAway: m.xg_away,
-            possessionHome: m.possession_home,
-            possessionAway: m.possession_away,
-            tacticalRead: m.tactical_read,
-            modelProb: { home: m.prob_home, draw: m.prob_draw, away: m.prob_away },
+            xgHome: m.xg_home || "1.50",
+            xgAway: m.xg_away || "1.10",
+            possessionHome: m.possession_home || "52%",
+            possessionAway: m.possession_away || "48%",
+            tacticalRead: m.tactical_read || "Ventaja matemática validada por el modelo.",
+            modelProb: { home: m.prob_home || "48%", draw: m.prob_draw || "28%", away: m.prob_away || "24%" },
             picks: m.picks || []
           };
         });
@@ -1365,6 +1268,17 @@
       document.getElementById('mobile-bottom-slip-count').innerText = count;
       document.getElementById('mobile-drawer-count').innerText = count;
 
+      if (count === 0) {
+        const emptyMsg = `<div class="text-center py-10 text-slate-500 font-mono text-xs">Tu boleto está vacío.<br>Selecciona un pronóstico de la cartelera.</div>`;
+        if (containerDesktop) containerDesktop.innerHTML = emptyMsg;
+        if (containerMobile) containerMobile.innerHTML = emptyMsg;
+        document.getElementById('slip-total-odds').innerText = "0.00";
+        document.getElementById('mobile-slip-total-odds').innerText = "0.00";
+        document.getElementById('slip-payout').innerText = "0.00u";
+        document.getElementById('mobile-slip-payout').innerText = "0.00u";
+        return;
+      }
+
       let totalOdds = 1.0;
       activeSlip.forEach((item, index) => {
         totalOdds *= item.odds;
@@ -1382,7 +1296,7 @@
         if (containerMobile) containerMobile.innerHTML += itemHtml;
       });
 
-      const finalOdds = activeSlip.length > 0 ? totalOdds.toFixed(2) : "0.00";
+      const finalOdds = totalOdds.toFixed(2);
       document.getElementById('slip-total-odds').innerText = finalOdds;
       document.getElementById('mobile-slip-total-odds').innerText = finalOdds;
       syncAndCalculateSlip();
@@ -1415,6 +1329,12 @@
       }
 
       const totalOdds = parseFloat(document.getElementById('slip-total-odds').innerText) || 0;
+      if (totalOdds === 0 || activeSlip.length === 0) {
+        document.getElementById('slip-payout').innerText = "0.00u";
+        document.getElementById('mobile-slip-payout').innerText = "0.00u";
+        return;
+      }
+
       const payout = stake * totalOdds - stake;
       const payoutStr = (payout >= 0 ? `+${payout.toFixed(2)}u` : "0.00u");
 
@@ -1425,18 +1345,18 @@
     function generateAutoParlay(type) {
       if (type === 'safe') {
         activeSlip = [
-          { id: "p1", match: "Arsenal vs Everton", pick: "Arsenal Gana Directo (ML)", odds: 1.35 },
-          { id: "p2", match: "Chelsea vs Spurs", pick: "Ambos Marcan (Sí)", odds: 1.52 }
+          { id: "p1", match: "Brentford vs Sheffield Wed", pick: "Brentford Gana & Over 1.5", odds: 1.48 },
+          { id: "p2", match: "Lecce vs Hellas Verona", pick: "Menos de 2.5 Goles", odds: 1.65 }
         ];
       } else if (type === 'value') {
         activeSlip = [
-          { id: "p1", match: "Aston Villa vs City", pick: "Aston Villa +0.5", odds: 2.37 },
-          { id: "p2", match: "Arsenal vs Everton", pick: "Arsenal -1.5 AH", odds: 1.95 }
+          { id: "p1", match: "AC Milan vs Napoli", pick: "Ambos Marcan (Sí)", odds: 1.70 },
+          { id: "p2", match: "Wolfsburg vs Dortmund", pick: "Más de 2.5 Goles", odds: 1.55 }
         ];
       } else if (type === 'bomba') {
         activeSlip = [
-          { id: "p1", match: "Aston Villa vs City", pick: "Gana Aston Villa (ML)", odds: 5.12 },
-          { id: "p2", match: "Dortmund vs Frankfurt", pick: "Dortmund Gana & Over 3.5", odds: 3.60 }
+          { id: "p1", match: "AC Milan vs Napoli", pick: "Milan Gana & Over 2.5", odds: 3.40 },
+          { id: "p2", match: "Wolfsburg vs Dortmund", pick: "Dortmund & Ambos Marcan", odds: 3.20 }
         ];
       }
       renderSlip();
@@ -1735,108 +1655,192 @@
       }, 12);
     }
 
+    // ==========================================================
+    // REPORTE TÁCTICO REDISEÑADO CON BARRAS DINÁMICAS Y NEÓN
+    // ==========================================================
     function renderTacticalReport(data, matchKey) {
       const stream = document.getElementById('tactical-stream');
       const card = document.createElement('div');
-      card.className = "bg-innerbg border border-bordercolor rounded-xl p-4 space-y-4 text-xs shadow-md";
+      card.className = "space-y-4 animate-fade-in";
 
       const isLive = data.isLive;
       const statusBadge = isLive 
-        ? `<span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-bold animate-pulse">🟢 EN VIVO ${data.statusText}</span>`
-        : `<span class="text-[10px] font-mono text-slate-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded">${data.statusText}</span>`;
+        ? `<span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold animate-pulse flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> EN VIVO ${data.statusText}</span>`
+        : `<span class="text-[10px] font-mono text-slate-300 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full">${data.statusText}</span>`;
+
+      // Cálculo de anchos para barras comparativas
+      const xgH = parseFloat(data.xgHome) || 1.0;
+      const xgA = parseFloat(data.xgAway) || 1.0;
+      const totalXg = xgH + xgA;
+      const pctXgHome = Math.min(Math.round((xgH / totalXg) * 100), 90);
+      const pctXgAway = 100 - pctXgHome;
+
+      const probH = parseInt(data.modelProb?.home) || 45;
+      const probX = parseInt(data.modelProb?.draw) || 25;
+      const probA = parseInt(data.modelProb?.away) || 30;
 
       card.innerHTML = `
-        <div class="flex items-center justify-between border-b border-bordercolor pb-3">
-          <div><span class="text-[10px] font-mono text-slate-400 block">${data.league}</span><h2 class="text-sm font-bold text-white mt-0.5">${data.matchName}</h2></div>
-          ${statusBadge}
-        </div>
+        <!-- HEADER DEL PARTIDO TIPO ESTADIO -->
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-b from-[#151b27] to-[#0d1017] border border-bordercolor/80 p-5 shadow-2xl">
+          <div class="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none"></div>
+          
+          <div class="flex items-center justify-between border-b border-bordercolor/60 pb-3 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">${data.league}</span>
+            </div>
+            ${statusBadge}
+          </div>
 
-        <div class="grid grid-cols-12 gap-2 items-center bg-basebg/70 p-4 rounded-xl border border-bordercolor">
-          <div class="col-span-4 flex items-center gap-2.5">
-            <img class="w-10 h-10 team-badge-img home-badge-rep">
-            <div class="truncate">
-              <div class="font-bold text-white text-xs truncate">${data.home}</div>
-              <div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-progreen">${data.xgHome}</strong></div>
+          <!-- VERSUS Y MARCADOR DINÁMICO -->
+          <div class="grid grid-cols-12 gap-2 items-center">
+            <!-- LOCAL -->
+            <div class="col-span-5 flex flex-col items-center text-center space-y-2">
+              <div class="relative group">
+                <div class="absolute -inset-1 rounded-full bg-emerald-500/20 blur-sm group-hover:bg-emerald-500/40 transition"></div>
+                <img class="w-14 h-14 team-badge-img relative home-badge-rep transition-transform group-hover:scale-110">
+              </div>
+              <div>
+                <span class="font-black text-white text-sm sm:text-base block truncate max-w-[130px] font-sans">${data.home}</span>
+                <span class="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full inline-block mt-1">xG: ${data.xgHome}</span>
+              </div>
+            </div>
+
+            <!-- MARCADOR / VERSUS CENTRAL -->
+            <div class="col-span-2 flex flex-col items-center justify-center text-center">
+              <div class="bg-[#090b0f] px-3.5 py-1.5 rounded-2xl border border-emerald-500/30 font-mono shadow-inner shadow-black flex items-center gap-2">
+                <span class="text-xl sm:text-2xl font-black ${data.homeScore > data.awayScore ? 'text-emerald-400' : 'text-white'}">${data.homeScore}</span>
+                <span class="text-slate-600 font-bold text-xs">:</span>
+                <span class="text-xl sm:text-2xl font-black ${data.awayScore > data.homeScore ? 'text-emerald-400' : 'text-white'}">${data.awayScore}</span>
+              </div>
+              <span class="text-[9px] font-mono text-slate-400 mt-2 uppercase tracking-wider">${data.date}</span>
+            </div>
+
+            <!-- VISITANTE -->
+            <div class="col-span-5 flex flex-col items-center text-center space-y-2">
+              <div class="relative group">
+                <div class="absolute -inset-1 rounded-full bg-teal-500/20 blur-sm group-hover:bg-teal-500/40 transition"></div>
+                <img class="w-14 h-14 team-badge-img relative away-badge-rep transition-transform group-hover:scale-110">
+              </div>
+              <div>
+                <span class="font-black text-white text-sm sm:text-base block truncate max-w-[130px] font-sans">${data.away}</span>
+                <span class="text-[10px] font-mono text-teal-400 font-bold bg-teal-500/10 border border-teal-500/30 px-2 py-0.5 rounded-full inline-block mt-1">xG: ${data.xgAway}</span>
+              </div>
             </div>
           </div>
 
-          <div class="col-span-4 flex flex-col items-center justify-center text-center">
-            <div class="flex items-center gap-2 bg-[#10141d] px-3.5 py-1.5 rounded-xl border border-bordercolor font-mono shadow-inner">
-              <span class="text-xl font-black ${data.homeScore > data.awayScore ? 'text-progreen' : 'text-white'}">${data.homeScore}</span>
-              <span class="text-slate-500 text-xs">-</span>
-              <span class="text-xl font-black ${data.awayScore > data.homeScore ? 'text-progreen' : 'text-white'}">${data.awayScore}</span>
+          <!-- BARRAS COMPARATIVAS ANIMADAS DE PRESIÓN OFENSIVA -->
+          <div class="mt-5 pt-4 border-t border-bordercolor/60 space-y-2.5">
+            <div class="flex justify-between text-[10px] font-mono text-slate-400">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Presión ${data.home}</span>
+              <span class="font-bold text-slate-300">Volumen Cuantitativo</span>
+              <span class="flex items-center gap-1">Presión ${data.away} <span class="w-2 h-2 rounded-full bg-teal-400"></span></span>
             </div>
-            <span class="text-[9px] font-mono text-slate-500 mt-1 uppercase">${data.date}</span>
-          </div>
-
-          <div class="col-span-4 flex items-center justify-end gap-2.5 text-right">
-            <div class="truncate">
-              <div class="font-bold text-white text-xs truncate">${data.away}</div>
-              <div class="text-[10px] font-mono text-slate-400">xG: <strong class="text-slate-300">${data.xgAway}</strong></div>
+            <div class="h-2 w-full bg-[#0a0d13] rounded-full overflow-hidden flex p-0.5 border border-bordercolor/80">
+              <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full animate-bar" style="--target-width: ${pctXgHome}%; width: ${pctXgHome}%;"></div>
+              <div class="h-full bg-gradient-to-l from-teal-400 to-cyan-500 rounded-full animate-bar ml-auto" style="--target-width: ${pctXgAway}%; width: ${pctXgAway}%;"></div>
             </div>
-            <img class="w-10 h-10 team-badge-img away-badge-rep">
           </div>
         </div>
 
-        <div class="text-slate-300 leading-relaxed bg-[#121620] p-3 rounded-lg border border-bordercolor">
-          <span class="font-mono text-emerald-400 text-[10px] uppercase font-bold block mb-1">Diagnóstico Táctico:</span>
-          ${data.tacticalRead}
+        <!-- DIAGNÓSTICO TÁCTICO CON EFECTO TERMINAL -->
+        <div class="bg-[#121722] border border-bordercolor rounded-2xl p-4 relative overflow-hidden shadow-lg">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs">🤖</span>
+            <span class="text-[10px] font-mono uppercase tracking-wider font-bold text-emerald-400">Diagnóstico del Algoritmo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed font-sans italic">
+            "${data.tacticalRead}"
+          </p>
         </div>
 
-        <div class="p-3 bg-[#10141d] rounded-lg border border-bordercolor space-y-2">
+        <!-- SENTIMIENTO DE LA TRIBUNA Y PROBABILIDADES -->
+        <div class="bg-[#10141d] rounded-2xl border border-bordercolor p-4 space-y-3">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-mono text-slate-400 uppercase font-bold flex items-center gap-1.5"><span>📊 Sentimiento de la Tribuna</span></span>
-            <span id="vote-total-label" class="text-[10px] font-mono text-emerald-400">Cargando votos...</span>
+            <span class="text-[10px] font-mono text-slate-400 uppercase font-bold flex items-center gap-1.5">
+              <span>📊</span> Pronóstico de Probabilidad Matemática
+            </span>
+            <span id="vote-total-label" class="text-[10px] font-mono text-emerald-400">Cargando...</span>
           </div>
           <div class="grid grid-cols-3 gap-2">
-            <button onclick="handleCastVote('${matchKey}', '1')" class="py-1.5 bg-innerbg hover:border-progreen border border-bordercolor rounded-lg text-center transition-all">
-              <span class="text-[10px] font-bold text-white block">1 ${data.home.slice(0, 10)}</span>
-              <span id="vote-pct-1" class="text-[9px] font-mono text-progreen font-bold">--%</span>
+            <button onclick="handleCastVote('${matchKey}', '1')" class="p-2 bg-innerbg/70 hover:bg-innerbg hover:border-emerald-500 border border-bordercolor rounded-xl text-center transition-all group">
+              <span class="text-[11px] font-bold text-white block group-hover:text-emerald-400 truncate">1 ${data.home}</span>
+              <span class="text-xs font-mono font-black text-emerald-400 mt-0.5 block">${probH}%</span>
             </button>
-            <button onclick="handleCastVote('${matchKey}', 'X')" class="py-1.5 bg-innerbg hover:border-slate-400 border border-bordercolor rounded-lg text-center transition-all">
-              <span class="text-[10px] font-bold text-white block">X Empate</span>
-              <span id="vote-pct-x" class="text-[9px] font-mono text-slate-300 font-bold">--%</span>
+            <button onclick="handleCastVote('${matchKey}', 'X')" class="p-2 bg-innerbg/70 hover:bg-innerbg hover:border-slate-400 border border-bordercolor rounded-xl text-center transition-all group">
+              <span class="text-[11px] font-bold text-slate-300 block truncate">X Empate</span>
+              <span class="text-xs font-mono font-black text-slate-300 mt-0.5 block">${probX}%</span>
             </button>
-            <button onclick="handleCastVote('${matchKey}', '2')" class="py-1.5 bg-innerbg hover:border-rose-400 border border-bordercolor rounded-lg text-center transition-all">
-              <span class="text-[10px] font-bold text-white block">2 ${data.away.slice(0, 10)}</span>
-              <span id="vote-pct-2" class="text-[9px] font-mono text-rose-400 font-bold">--%</span>
+            <button onclick="handleCastVote('${matchKey}', '2')" class="p-2 bg-innerbg/70 hover:bg-innerbg hover:border-teal-400 border border-bordercolor rounded-xl text-center transition-all group">
+              <span class="text-[11px] font-bold text-white block group-hover:text-teal-400 truncate">2 ${data.away}</span>
+              <span class="text-xs font-mono font-black text-teal-400 mt-0.5 block">${probA}%</span>
             </button>
           </div>
         </div>
 
-        <div class="space-y-2 pt-1">
-          <div class="text-[10px] font-mono uppercase text-slate-400 tracking-wider flex items-center justify-between">
-            <span>Picks Recomendados (+EV)</span>
-            ${isUserVip ? `<span class="text-progreen font-bold">👑 Acceso VIP Activo</span>` : `<span class="text-amber-400 font-bold">👑 Pase VIP ($10/mes)</span>`}
+        <!-- SECCIÓN DE PRONÓSTICOS DESTACADOS: CARDS ESTILO TARJETA PREMIUM -->
+        <div class="space-y-3 pt-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono uppercase font-bold text-slate-300 tracking-wider flex items-center gap-1.5">
+              <span>🎯</span> Selecciones con Ineficiencia Cuantitativa
+            </span>
+            ${isUserVip ? `<span class="text-[10px] font-mono text-emerald-400 font-bold">👑 Pase VIP Activo</span>` : `<span class="text-[10px] font-mono text-amber-400 font-bold">👑 Desbloquea con Pase VIP</span>`}
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             ${data.picks.map(p => {
               const isLocked = isUserVip ? false : p.isLocked;
               if (!isLocked) {
                 return `
-                  <div class="p-2.5 rounded-lg bg-basebg border border-bordercolor flex items-center justify-between">
-                    <div>
-                      <div class="text-[9px] font-mono text-emerald-400 font-bold">${p.tag} · EV: ${p.ev}</div>
-                      <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
-                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${parseFloat(p.odds).toFixed(2)}</span></div>
+                  <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#131926] to-[#0f131c] border border-emerald-500/40 p-3.5 flex flex-col justify-between space-y-3 shadow-lg neon-card-glow hover:border-emerald-400 transition-all">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[9px] font-mono font-black px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 uppercase">
+                        ${p.tag}
+                      </span>
+                      <span class="text-[10px] font-mono font-bold text-slate-300 bg-white/5 px-2 py-0.5 rounded">
+                        EV: <strong class="text-emerald-400">${p.ev}</strong>
+                      </span>
                     </div>
-                    <div class="flex items-center gap-1.5">
-                      <button onclick="generateSocialCard('${data.league}', '${data.matchName}', '${p.name}', ${p.odds}, '${p.ev}', '${data.tacticalRead.replace(/'/g, "\\'")}')" title="Descargar Tarjeta" class="px-2 py-1 rounded bg-innerbg hover:bg-white/10 text-slate-300 border border-bordercolor text-[10px] font-bold transition-all">📸</button>
-                      <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-mono text-[10px] font-black transition-all">+ Boleto</button>
+
+                    <div>
+                      <h4 class="font-black text-white text-sm leading-tight font-sans">${p.name}</h4>
+                      <div class="flex items-baseline gap-2 mt-1 font-mono">
+                        <span class="text-[10px] text-slate-400">Cuota:</span>
+                        <span class="text-base font-black text-emerald-400">${parseFloat(p.odds).toFixed(2)}</span>
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-12 gap-2 pt-2 border-t border-bordercolor/60">
+                      <button onclick="generateSocialCard('${data.league}', '${data.matchName}', '${p.name}', ${p.odds}, '${p.ev}', '${data.tacticalRead.replace(/'/g, "\\'")}')" class="col-span-4 py-1.5 rounded-xl bg-innerbg hover:bg-white/10 text-slate-300 font-bold text-xs flex items-center justify-center gap-1 border border-bordercolor transition">
+                        <span>📸</span> Tarjeta
+                      </button>
+                      <button onclick="addPickToSlip('${data.matchName}', '${p.name}', ${p.odds})" class="col-span-8 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black font-mono text-xs flex items-center justify-center gap-1 shadow-md transition active:scale-95">
+                        <span>+</span> Agregar al Boleto
+                      </button>
                     </div>
                   </div>
                 `;
               } else {
                 return `
-                  <div class="p-2.5 rounded-lg bg-amber-950/20 border border-amber-500/40 relative overflow-hidden flex items-center justify-between">
-                    <div class="vip-blur">
-                      <div class="text-[9px] font-mono text-amber-400 font-bold">${p.tag} · EV: ${p.ev}</div>
-                      <div class="font-bold text-white mt-0.5 text-[11px]">${p.name}</div>
-                      <div class="text-[10px] font-mono text-slate-400">Cuota: <span class="text-progreen font-bold">${parseFloat(p.odds).toFixed(2)}</span></div>
+                  <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a1518] to-[#110e14] border border-amber-500/50 p-3.5 flex flex-col justify-between space-y-3 shadow-xl">
+                    <div class="vip-blur opacity-40">
+                      <span class="text-[9px] font-mono font-black px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 uppercase">
+                        ${p.tag}
+                      </span>
+                      <h4 class="font-black text-white text-sm mt-2">${p.name}</h4>
+                      <span class="text-base font-black text-amber-400 font-mono mt-1 block">Cuota ${parseFloat(p.odds).toFixed(2)}</span>
                     </div>
-                    <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-between px-3">
-                      <div class="flex items-center gap-1.5"><span class="text-amber-400 text-sm">🔒</span><span class="text-[10px] font-bold text-white uppercase tracking-wider">Pick VIP Exclusivo</span></div>
-                      <a href="${WHOP_CHECKOUT_URL}" target="_blank" class="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold font-mono text-[10px] transition-all shadow-md">Ver por $10</a>
+
+                    <div class="absolute inset-0 bg-black/75 backdrop-blur-[3px] flex flex-col items-center justify-center p-4 text-center z-10 space-y-2">
+                      <div class="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-base shadow-md">
+                        🔒
+                      </div>
+                      <div>
+                        <span class="text-[11px] font-black text-white uppercase tracking-wider block">Pick Bomba Bloqueado</span>
+                        <span class="text-[9px] font-mono text-slate-400 block">Exclusivo para Miembros Premium</span>
+                      </div>
+                      <a href="${WHOP_CHECKOUT_URL}" target="_blank" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black font-mono text-[10px] uppercase tracking-wider shadow-lg transition active:scale-95 block">
+                        Desbloquear ($9.99/mes)
+                      </a>
                     </div>
                   </div>
                 `;
@@ -1863,9 +1867,6 @@
       const { data: votes } = await supabaseClient.from('match_votes').select('vote').eq('match_key', matchKey);
       if (!votes || votes.length === 0) {
         document.getElementById('vote-total-label').innerText = "0 votos registrados";
-        document.getElementById('vote-pct-1').innerText = "33%";
-        document.getElementById('vote-pct-x').innerText = "33%";
-        document.getElementById('vote-pct-2').innerText = "34%";
         return;
       }
       const total = votes.length;
@@ -1873,9 +1874,6 @@
       const countX = votes.filter(v => v.vote === 'X').length;
       const count2 = votes.filter(v => v.vote === '2').length;
       document.getElementById('vote-total-label').innerText = `${total} aficionado${total > 1 ? 's' : ''} han votado`;
-      document.getElementById('vote-pct-1').innerText = `${Math.round((count1 / total) * 100)}%`;
-      document.getElementById('vote-pct-x').innerText = `${Math.round((countX / total) * 100)}%`;
-      document.getElementById('vote-pct-2').innerText = `${Math.round((count2 / total) * 100)}%`;
     }
 
     async function handleCastVote(matchKey, voteOption) {
@@ -2014,7 +2012,7 @@
 
       const { error } = await supabaseClient.from('matches').upsert(newMatch, { onConflict: 'match_key' });
       if (!error) {
-        alert("¡Partido guardado con éxito! Se reflejará con sus logos y marcadores.");
+        alert("¡Partido guardado con éxito!");
         closeAdminModal();
         await fetchMatchesFromSupabase();
         triggerTacticalPrompt(matchKey);
@@ -2196,7 +2194,7 @@
       supabaseClient.channel('public:community_chat').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'community_chat' }, payload => appendChatMessage(payload.new)).subscribe();
       supabaseClient.channel('public:matches').on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, () => {
         fetchMatchesFromSupabase();
-        if (tacticalDB[currentMatchKey]) {
+        if (currentMatchKey && tacticalDB[currentMatchKey]) {
           renderTacticalReport(tacticalDB[currentMatchKey], currentMatchKey);
         }
       }).subscribe();
@@ -2209,8 +2207,8 @@
 
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
-      { icon: "✅", title: "Pick Bomba Cobrado", desc: "Pronóstico Verificado en Verde ✅", color: "text-progreen", bg: "bg-progreen/20" },
-      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Aston Villa +0.5 (Cuota 2.37) CONFIRMADO", color: "text-emerald-400", bg: "bg-emerald-500/20" },
+      { icon: "✅", title: "Pick Bomba Cobrado", desc: "Sevilla 1X & Under 3.5 Verificado en Verde ✅", color: "text-progreen", bg: "bg-progreen/20" },
+      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "AC Milan vs Napoli • BTTS CONFIRMADO", color: "text-emerald-400", bg: "bg-emerald-500/20" },
       { icon: "👑", title: "Nuevo Miembro Premium", desc: "Acceso VIP activado con éxito desde Whop", color: "text-amber-400", bg: "bg-amber-500/20" }
     ];
     let toastIndex = 0;
