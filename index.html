@@ -71,7 +71,7 @@
     }
     .animate-glow { animation: pulseGlow 3s ease-in-out infinite; }
 
-    /* ANIMACIONES AVANZADAS DEL REPORTE TÁCTICO */
+    /* ANIMACIONES DEL REPORTE TÁCTICO */
     @keyframes barFill {
       from { width: 0%; }
       to { width: var(--target-width); }
@@ -1655,7 +1655,7 @@
     }
 
     // ==========================================================
-    // REPORTE TÁCTICO CON GOLEADORES FAVORITOS, BARRAS Y NEÓN
+    // REPORTE TÁCTICO CON GOLEADORES Y FALLBACK DE IMAGEN
     // ==========================================================
     function renderTacticalReport(data, matchKey) {
       const stream = document.getElementById('tactical-stream');
@@ -1754,8 +1754,12 @@
               <!-- GOLEADOR LOCAL -->
               <div class="p-3 rounded-xl bg-innerbg/80 border border-emerald-500/40 flex items-center gap-3 relative overflow-hidden group hover:border-emerald-400 transition">
                 <div class="relative shrink-0">
-                  <div class="w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-emerald-500 to-teal-400 shadow-md">
-                    <img src="${data.keyPlayers[0].photo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'" class="w-full h-full object-cover rounded-full bg-slate-900">
+                  <div class="w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-emerald-500 to-teal-400 shadow-md overflow-hidden bg-slate-900 flex items-center justify-center">
+                    <img 
+                      src="${data.keyPlayers[0].photo}" 
+                      alt="${data.keyPlayers[0].name}"
+                      onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(data.keyPlayers[0].name)}&background=10b981&color=0c0e12&bold=true';" 
+                      class="w-full h-full object-cover rounded-full">
                   </div>
                   <span class="absolute -bottom-1 -right-1 text-[9px] font-mono font-black bg-emerald-500 text-slate-950 px-1.5 py-0.2 rounded-full">#${data.keyPlayers[0].number}</span>
                 </div>
@@ -1775,8 +1779,12 @@
               <!-- GOLEADOR VISITANTE -->
               <div class="p-3 rounded-xl bg-innerbg/80 border border-teal-500/40 flex items-center gap-3 relative overflow-hidden group hover:border-teal-400 transition">
                 <div class="relative shrink-0">
-                  <div class="w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-teal-400 to-cyan-500 shadow-md">
-                    <img src="${data.keyPlayers[1].photo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png'" class="w-full h-full object-cover rounded-full bg-slate-900">
+                  <div class="w-14 h-14 rounded-full p-0.5 bg-gradient-to-tr from-teal-400 to-cyan-500 shadow-md overflow-hidden bg-slate-900 flex items-center justify-center">
+                    <img 
+                      src="${data.keyPlayers[1].photo}" 
+                      alt="${data.keyPlayers[1].name}"
+                      onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(data.keyPlayers[1].name)}&background=38bdf8&color=0c0e12&bold=true';" 
+                      class="w-full h-full object-cover rounded-full">
                   </div>
                   <span class="absolute -bottom-1 -right-1 text-[9px] font-mono font-black bg-teal-400 text-slate-950 px-1.5 py-0.2 rounded-full">#${data.keyPlayers[1].number}</span>
                 </div>
