@@ -232,7 +232,7 @@
         <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4"></div>
         <div class="p-3 bg-[#10141d] border-t border-bordercolor">
           <form onsubmit="handleUserSearch(event)" class="relative flex items-center">
-            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Milan, Inter, Brentford)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
+            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Milan, Chelsea, Barcelona)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
             <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center transition-all">Enviar</button>
           </form>
         </div>
@@ -243,7 +243,7 @@
         <div class="bg-gradient-to-r from-amber-500/15 via-[#10141d] to-amber-500/15 border-b border-amber-500/25 px-4 py-2 flex items-center justify-between text-xs shrink-0">
           <div class="flex items-center gap-2 overflow-hidden truncate">
             <span class="text-amber-400 font-bold font-mono shrink-0">📌 FIJADO:</span>
-            <span id="chat-pinned-text" class="text-slate-200 truncate">AC Milan vs Napoli • Ambos Equipos Anotan (Sí) @ 1.70 (Pick Bomba)</span>
+            <span id="chat-pinned-text" class="text-slate-200 truncate">Manchester United vs Chelsea • BTTS & Over 2.5 @ 1.65 (Pick Bomba)</span>
           </div>
           <span class="text-[9px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded uppercase tracking-wider shrink-0">EN VIVO</span>
         </div>
@@ -563,18 +563,18 @@
 
       <div class="my-6 space-y-5">
         <div>
-          <span id="card-league" class="text-xs font-mono font-bold uppercase text-slate-400 tracking-wider">SERIE A • J10</span>
-          <h2 id="card-match-title" class="text-2xl font-black text-white mt-1">AC Milan vs Napoli</h2>
+          <span id="card-league" class="text-xs font-mono font-bold uppercase text-slate-400 tracking-wider">PREMIER LEAGUE • J10</span>
+          <h2 id="card-match-title" class="text-2xl font-black text-white mt-1">Manchester United vs Chelsea</h2>
         </div>
 
         <div class="p-5 bg-innerbg/80 border border-bordercolor rounded-2xl space-y-3 shadow-inner">
           <div class="flex items-center justify-between">
             <span class="text-xs font-mono uppercase text-emerald-400 font-bold">Pronóstico Seleccionado</span>
-            <span id="card-ev-label" class="text-xs font-mono font-black text-progreen bg-progreen/10 border border-progreen/30 px-2 py-0.5 rounded">+EV 12.5%</span>
+            <span id="card-ev-label" class="text-xs font-mono font-black text-progreen bg-progreen/10 border border-progreen/30 px-2 py-0.5 rounded">+EV 13.2%</span>
           </div>
-          <div id="card-pick-name" class="text-xl font-black text-white leading-tight">Ambos Equipos Anotan (Sí)</div>
+          <div id="card-pick-name" class="text-xl font-black text-white leading-tight">Ambos Equipos Anotan & Over 2.5</div>
           <div class="flex items-center justify-between pt-2 border-t border-bordercolor/60 font-mono text-sm">
-            <span class="text-slate-400">Cuota Oficial: <strong id="card-odds" class="text-white text-base">1.70</strong></span>
+            <span class="text-slate-400">Cuota Oficial: <strong id="card-odds" class="text-white text-base">1.65</strong></span>
             <span class="text-slate-400">Stake Sugerido: <strong id="card-stake" class="text-white text-base">2.0u</strong></span>
           </div>
         </div>
@@ -600,7 +600,7 @@
         <p class="text-[11px] text-slate-400">Compite en el Leaderboard oficial de la comunidad.</p>
       </div>
       <form onsubmit="handleCreateTipSubmit(event)" class="space-y-3 text-xs">
-        <div><label class="block text-slate-400 font-mono mb-1">Partido</label><input type="text" id="tip-match" required placeholder="Ej: AC Milan vs Napoli" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Partido</label><input type="text" id="tip-match" required placeholder="Ej: Manchester United vs Chelsea" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         <div><label class="block text-slate-400 font-mono mb-1">Tu Selección / Mercado</label><input type="text" id="tip-selection" required placeholder="Ej: Ambos Equipos Anotan" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         <div class="grid grid-cols-2 gap-3">
           <div><label class="block text-slate-400 font-mono mb-1">Cuota (Decimal)</label><input type="number" id="tip-odds" step="0.01" min="1.01" required placeholder="1.85" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
@@ -621,12 +621,12 @@
       </div>
       <form onsubmit="handleCreateMatchSubmit(event)" class="space-y-3 text-xs">
         <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-slate-400 font-mono mb-1">Liga y Jornada</label><input type="text" id="adm-league" required placeholder="Ej: Serie A • J10" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
-          <div><label class="block text-slate-400 font-mono mb-1">Horario y Estadio</label><input type="text" id="adm-date" required placeholder="Ej: Hoy • 14:45 CDT" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Liga y Jornada</label><input type="text" id="adm-league" required placeholder="Ej: Premier League • J10" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Horario y Estadio</label><input type="text" id="adm-date" required placeholder="Ej: Hoy • 10:30 CST" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         </div>
         <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-slate-400 font-mono mb-1">Equipo Local</label><input type="text" id="adm-home" required placeholder="Ej: AC Milan" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
-          <div><label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label><input type="text" id="adm-away" required placeholder="Ej: Napoli" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Equipo Local</label><input type="text" id="adm-home" required placeholder="Ej: Manchester United" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label><input type="text" id="adm-away" required placeholder="Ej: Chelsea" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -751,7 +751,7 @@
     <div id="toast-icon" class="w-8 h-8 rounded-lg bg-progreen/20 text-progreen flex items-center justify-center font-bold text-sm shrink-0">⚡</div>
     <div>
       <div id="toast-title" class="text-xs font-bold text-white leading-tight">Pick Verificado en Vivo</div>
-      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">AC Milan vs Napoli • BTTS CONFIRMADO</div>
+      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">Manchester United vs Chelsea • BTTS CONFIRMADO</div>
     </div>
   </div>
 
@@ -1344,18 +1344,18 @@
     function generateAutoParlay(type) {
       if (type === 'safe') {
         activeSlip = [
-          { id: "p1", match: "Brentford vs Sheffield Wed", pick: "Brentford Gana & Over 1.5", odds: 1.48 },
-          { id: "p2", match: "Lecce vs Hellas Verona", pick: "Menos de 2.5 Goles", odds: 1.65 }
+          { id: "p1", match: "FC Barcelona vs Espanyol", pick: "Barcelona Hándicap (-1.5)", odds: 1.45 },
+          { id: "p2", match: "Inter de Milán vs Venezia", pick: "Inter ML & Over 1.5", odds: 1.38 }
         ];
       } else if (type === 'value') {
         activeSlip = [
-          { id: "p1", match: "AC Milan vs Napoli", pick: "Ambos Marcan (Sí)", odds: 1.70 },
-          { id: "p2", match: "Wolfsburg vs Dortmund", pick: "Más de 2.5 Goles", odds: 1.55 }
+          { id: "p1", match: "Manchester United vs Chelsea", pick: "Ambos Marcan & Over 2.5", odds: 1.65 },
+          { id: "p2", match: "Tottenham vs Aston Villa", pick: "Más de 2.5 Goles", odds: 1.50 }
         ];
       } else if (type === 'bomba') {
         activeSlip = [
-          { id: "p1", match: "AC Milan vs Napoli", pick: "Milan Gana & Over 2.5", odds: 3.40 },
-          { id: "p2", match: "Wolfsburg vs Dortmund", pick: "Dortmund & Ambos Marcan", odds: 3.20 }
+          { id: "p1", match: "Manchester United vs Chelsea", pick: "Chelsea Gana & Ambos Marcan", odds: 3.60 },
+          { id: "p2", match: "Athletic Club vs Real Betis", pick: "Athletic Gana & Ambos Marcan", odds: 3.80 }
         ];
       }
       renderSlip();
@@ -1758,6 +1758,8 @@
                     <img 
                       src="${data.keyPlayers[0].photo}" 
                       alt="${data.keyPlayers[0].name}"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
                       onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(data.keyPlayers[0].name)}&background=10b981&color=0c0e12&bold=true';" 
                       class="w-full h-full object-cover rounded-full">
                   </div>
@@ -1783,6 +1785,8 @@
                     <img 
                       src="${data.keyPlayers[1].photo}" 
                       alt="${data.keyPlayers[1].name}"
+                      loading="lazy"
+                      referrerpolicy="no-referrer"
                       onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(data.keyPlayers[1].name)}&background=38bdf8&color=0c0e12&bold=true';" 
                       class="w-full h-full object-cover rounded-full">
                   </div>
@@ -2267,7 +2271,7 @@
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
       { icon: "✅", title: "Pick Bomba Cobrado", desc: "Sevilla 1X & Under 3.5 Verificado en Verde ✅", color: "text-progreen", bg: "bg-progreen/20" },
-      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "AC Milan vs Napoli • BTTS CONFIRMADO", color: "text-emerald-400", bg: "bg-emerald-500/20" },
+      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Manchester United vs Chelsea • BTTS CONFIRMADO", color: "text-emerald-400", bg: "bg-emerald-500/20" },
       { icon: "👑", title: "Nuevo Miembro Premium", desc: "Acceso VIP activado con éxito desde Whop", color: "text-amber-400", bg: "bg-amber-500/20" }
     ];
     let toastIndex = 0;
