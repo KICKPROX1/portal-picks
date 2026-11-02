@@ -71,6 +71,7 @@
     }
     .animate-glow { animation: pulseGlow 3s ease-in-out infinite; }
 
+    /* ANIMACIONES DEL REPORTE TÁCTICO */
     @keyframes barFill {
       from { width: 0%; }
       to { width: var(--target-width); }
@@ -231,7 +232,7 @@
         <div id="tactical-stream" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 space-y-4"></div>
         <div class="p-3 bg-[#10141d] border-t border-bordercolor">
           <form onsubmit="handleUserSearch(event)" class="relative flex items-center">
-            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Milan, Chelsea, Barcelona)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
+            <input type="text" id="tactical-input" placeholder="Buscar equipo o partido (Ej: Madrid, Milan, City, Liverpool)..." class="w-full bg-innerbg text-slate-200 placeholder-slate-500 text-xs sm:text-sm rounded-lg pl-3 pr-10 py-3 border border-bordercolor focus:outline-none focus:border-emerald-500 transition-all font-sans">
             <button type="submit" class="absolute right-2 px-2.5 py-1.5 rounded-md bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold font-mono text-xs flex items-center justify-center transition-all">Enviar</button>
           </form>
         </div>
@@ -242,7 +243,7 @@
         <div class="bg-gradient-to-r from-amber-500/15 via-[#10141d] to-amber-500/15 border-b border-amber-500/25 px-4 py-2 flex items-center justify-between text-xs shrink-0">
           <div class="flex items-center gap-2 overflow-hidden truncate">
             <span class="text-amber-400 font-bold font-mono shrink-0">📌 FIJADO:</span>
-            <span id="chat-pinned-text" class="text-slate-200 truncate">Manchester United vs Chelsea • BTTS & Over 2.5 @ 1.65 (Pick Bomba)</span>
+            <span id="chat-pinned-text" class="text-slate-200 truncate">Real Madrid vs AC Milan • Real Madrid Gana & Over 1.5 @ 1.65 (Pick Bomba)</span>
           </div>
           <span class="text-[9px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded uppercase tracking-wider shrink-0">EN VIVO</span>
         </div>
@@ -562,16 +563,16 @@
 
       <div class="my-6 space-y-5">
         <div>
-          <span id="card-league" class="text-xs font-mono font-bold uppercase text-slate-400 tracking-wider">PREMIER LEAGUE • J10</span>
-          <h2 id="card-match-title" class="text-2xl font-black text-white mt-1">Manchester United vs Chelsea</h2>
+          <span id="card-league" class="text-xs font-mono font-bold uppercase text-slate-400 tracking-wider">CHAMPIONS LEAGUE</span>
+          <h2 id="card-match-title" class="text-2xl font-black text-white mt-1">Real Madrid vs AC Milan</h2>
         </div>
 
         <div class="p-5 bg-innerbg/80 border border-bordercolor rounded-2xl space-y-3 shadow-inner">
           <div class="flex items-center justify-between">
             <span class="text-xs font-mono uppercase text-emerald-400 font-bold">Pronóstico Seleccionado</span>
-            <span id="card-ev-label" class="text-xs font-mono font-black text-progreen bg-progreen/10 border border-progreen/30 px-2 py-0.5 rounded">+EV 13.2%</span>
+            <span id="card-ev-label" class="text-xs font-mono font-black text-progreen bg-progreen/10 border border-progreen/30 px-2 py-0.5 rounded">+EV 12.8%</span>
           </div>
-          <div id="card-pick-name" class="text-xl font-black text-white leading-tight">Ambos Equipos Anotan & Over 2.5</div>
+          <div id="card-pick-name" class="text-xl font-black text-white leading-tight">Real Madrid ML & Over 1.5 Goles</div>
           <div class="flex items-center justify-between pt-2 border-t border-bordercolor/60 font-mono text-sm">
             <span class="text-slate-400">Cuota Oficial: <strong id="card-odds" class="text-white text-base">1.65</strong></span>
             <span class="text-slate-400">Stake Sugerido: <strong id="card-stake" class="text-white text-base">2.0u</strong></span>
@@ -599,8 +600,8 @@
         <p class="text-[11px] text-slate-400">Compite en el Leaderboard oficial de la comunidad.</p>
       </div>
       <form onsubmit="handleCreateTipSubmit(event)" class="space-y-3 text-xs">
-        <div><label class="block text-slate-400 font-mono mb-1">Partido</label><input type="text" id="tip-match" required placeholder="Ej: Manchester United vs Chelsea" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
-        <div><label class="block text-slate-400 font-mono mb-1">Tu Selección / Mercado</label><input type="text" id="tip-selection" required placeholder="Ej: Ambos Equipos Anotan" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Partido</label><input type="text" id="tip-match" required placeholder="Ej: Real Madrid vs AC Milan" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+        <div><label class="block text-slate-400 font-mono mb-1">Tu Selección / Mercado</label><input type="text" id="tip-selection" required placeholder="Ej: Real Madrid ML" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         <div class="grid grid-cols-2 gap-3">
           <div><label class="block text-slate-400 font-mono mb-1">Cuota (Decimal)</label><input type="number" id="tip-odds" step="0.01" min="1.01" required placeholder="1.85" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
           <div><label class="block text-slate-400 font-mono mb-1">Stake (Unidades)</label><input type="number" id="tip-stake" step="0.5" min="0.5" max="5.0" value="1.0" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white font-mono"></div>
@@ -620,12 +621,12 @@
       </div>
       <form onsubmit="handleCreateMatchSubmit(event)" class="space-y-3 text-xs">
         <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-slate-400 font-mono mb-1">Liga y Jornada</label><input type="text" id="adm-league" required placeholder="Ej: Premier League • J10" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
-          <div><label class="block text-slate-400 font-mono mb-1">Horario y Estadio</label><input type="text" id="adm-date" required placeholder="Ej: Hoy • 10:30 CST" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Liga y Jornada</label><input type="text" id="adm-league" required placeholder="Ej: Champions League" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Horario y Estadio</label><input type="text" id="adm-date" required placeholder="Ej: Martes • 14:00 CST" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         </div>
         <div class="grid grid-cols-2 gap-3">
-          <div><label class="block text-slate-400 font-mono mb-1">Equipo Local</label><input type="text" id="adm-home" required placeholder="Ej: Manchester United" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
-          <div><label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label><input type="text" id="adm-away" required placeholder="Ej: Chelsea" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Equipo Local</label><input type="text" id="adm-home" required placeholder="Ej: Real Madrid" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
+          <div><label class="block text-slate-400 font-mono mb-1">Equipo Visitante</label><input type="text" id="adm-away" required placeholder="Ej: AC Milan" class="w-full bg-innerbg border border-bordercolor rounded px-3 py-2 text-white"></div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -750,7 +751,7 @@
     <div id="toast-icon" class="w-8 h-8 rounded-lg bg-progreen/20 text-progreen flex items-center justify-center font-bold text-sm shrink-0">⚡</div>
     <div>
       <div id="toast-title" class="text-xs font-bold text-white leading-tight">Pick Verificado en Vivo</div>
-      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">Manchester United vs Chelsea • BTTS CONFIRMADO</div>
+      <div id="toast-desc" class="text-[10px] text-slate-400 font-mono mt-0.5">Real Madrid vs AC Milan • BTTS CONFIRMADO</div>
     </div>
   </div>
 
@@ -780,33 +781,31 @@
     }
 
     const GLOBAL_LEAGUES_CONFIG = {
-      "inglaterra": { id: 39, name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png" },
+      "champions league": { id: 2, name: "Champions League", logo: "https://media.api-sports.io/football/leagues/2.png" },
+      "europa league": { id: 3, name: "Europa League", logo: "https://media.api-sports.io/football/leagues/3.png" },
+      "conference league": { id: 848, name: "Conference League", logo: "https://media.api-sports.io/football/leagues/848.png" },
       "premier league": { id: 39, name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png" },
-      "england league cup": { id: 48, name: "EFL Cup", logo: "https://media.api-sports.io/football/leagues/48.png" },
-      "espana": { id: 140, name: "LaLiga", logo: "https://media.api-sports.io/football/leagues/140.png" },
+      "inglaterra": { id: 39, name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png" },
       "laliga": { id: 140, name: "LaLiga", logo: "https://media.api-sports.io/football/leagues/140.png" },
-      "italia": { id: 135, name: "Serie A", logo: "https://media.api-sports.io/football/leagues/135.png" },
+      "espana": { id: 140, name: "LaLiga", logo: "https://media.api-sports.io/football/leagues/140.png" },
       "serie a": { id: 135, name: "Serie A", logo: "https://media.api-sports.io/football/leagues/135.png" },
-      "alemania": { id: 78, name: "Bundesliga", logo: "https://media.api-sports.io/football/leagues/78.png" },
+      "italia": { id: 135, name: "Serie A", logo: "https://media.api-sports.io/football/leagues/135.png" },
       "bundesliga": { id: 78, name: "Bundesliga", logo: "https://media.api-sports.io/football/leagues/78.png" },
-      "francia": { id: 61, name: "Ligue 1", logo: "https://media.api-sports.io/football/leagues/61.png" },
+      "alemania": { id: 78, name: "Bundesliga", logo: "https://media.api-sports.io/football/leagues/78.png" },
       "ligue 1": { id: 61, name: "Ligue 1", logo: "https://media.api-sports.io/football/leagues/61.png" },
-      "estados unidos": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
-      "major league soccer": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
+      "francia": { id: 61, name: "Ligue 1", logo: "https://media.api-sports.io/football/leagues/61.png" },
+      "liga portugal": { id: 94, name: "Liga Portugal", logo: "https://media.api-sports.io/football/leagues/94.png" },
+      "portugal": { id: 94, name: "Liga Portugal", logo: "https://media.api-sports.io/football/leagues/94.png" },
       "mls": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
-      "mexico": { id: 262, name: "Liga MX", logo: "https://media.api-sports.io/football/leagues/262.png" },
-      "liga mx": { id: 262, name: "Liga MX", logo: "https://media.api-sports.io/football/leagues/262.png" },
-      "argentina": { id: 128, name: "Liga Profesional Argentina", logo: "https://media.api-sports.io/football/leagues/128.png" },
-      "colombia": { id: 239, name: "Liga BetPlay", logo: "https://media.api-sports.io/football/leagues/239.png" },
-      "brasil": { id: 71, name: "Brasileirão", logo: "https://media.api-sports.io/football/leagues/71.png" },
-      "saudi arabia": { id: 307, name: "Saudi Pro League", logo: "https://media.api-sports.io/football/leagues/307.png" }
+      "major league soccer": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" },
+      "estados unidos": { id: 253, name: "MLS", logo: "https://media.api-sports.io/football/leagues/253.png" }
     };
 
     function resolveLeagueDetails(rawLeague) {
       const clean = (rawLeague || "")
         .toLowerCase()
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        .replace(/\b(liga|copa|de|division|futbol)\b/gi, "")
+        .replace(/•.*$/g, "")
         .trim();
 
       for (const key in GLOBAL_LEAGUES_CONFIG) {
@@ -815,10 +814,11 @@
         }
       }
 
-      const fallbackLetters = (rawLeague || "PB").replace(/liga/i, "").trim().slice(0, 2).toUpperCase();
+      const cleanTitle = (rawLeague || "Fútbol").split('•')[0].trim();
+      const fallbackLetters = cleanTitle.slice(0, 2).toUpperCase();
       return {
         id: 0,
-        name: rawLeague,
+        name: cleanTitle,
         logo: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" rx="14" fill="%231a1f2c" stroke="%2338bdf8" stroke-width="2.5"/><text x="50%" y="54%" font-family="sans-serif" font-weight="900" font-size="16" fill="%2338bdf8" text-anchor="middle" dominant-baseline="middle">${encodeURIComponent(fallbackLetters)}</text></svg>`
       };
     }
@@ -826,18 +826,33 @@
     const TEAM_BADGES_BACKUP = {
       "milan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/103.png&w=100&h=100",
       "ac milan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/103.png&w=100&h=100",
+      "real madrid": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/86.png&w=100&h=100",
+      "liverpool": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/364.png&w=100&h=100",
+      "leverkusen": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/131.png&w=100&h=100",
+      "bayer leverkusen": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/131.png&w=100&h=100",
       "napoli": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/114.png&w=100&h=100",
       "inter": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=100&h=100",
       "inter de milan": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/110.png&w=100&h=100",
       "juventus": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/111.png&w=100&h=100",
       "atalanta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/107.png&w=100&h=100",
       "manchester city": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/382.png&w=100&h=100",
+      "manchester united": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/360.png&w=100&h=100",
+      "arsenal": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/359.png&w=100&h=100",
+      "psg": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/160.png&w=100&h=100",
+      "paris saint-germain": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/160.png&w=100&h=100",
+      "bayern": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/132.png&w=100&h=100",
+      "bayern munich": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/132.png&w=100&h=100",
+      "barcelona": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/83.png&w=100&h=100",
+      "fc barcelona": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/83.png&w=100&h=100",
       "tottenham": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/367.png&w=100&h=100",
       "chelsea": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/363.png&w=100&h=100",
       "newcastle": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/361.png&w=100&h=100",
       "brentford": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/337.png&w=100&h=100",
       "dortmund": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/124.png&w=100&h=100",
       "borussia dortmund": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/124.png&w=100&h=100",
+      "sporting cp": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/300.png&w=100&h=100",
+      "sporting": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/300.png&w=100&h=100",
+      "benfica": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/298.png&w=100&h=100",
       "inter miami": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/20232.png&w=100&h=100",
       "atlanta": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18418.png&w=100&h=100",
       "columbus crew": "https://a.espncdn.com/combiner/i?img=/i/teamlogos/soccer/500/18267.png&w=100&h=100",
@@ -1174,15 +1189,15 @@
         leagueContainer.className = "rounded-xl border border-bordercolor/80 overflow-hidden bg-innerbg/30 mb-2 shadow-sm";
 
         leagueContainer.innerHTML = `
-          <button onclick="toggleLeagueAccordion('${sectionId}', this)" class="w-full px-3 py-2 bg-[#121622] hover:bg-[#181e2e] flex items-center justify-between text-left transition-colors cursor-pointer border-b border-bordercolor/50">
-            <div class="flex items-center gap-2.5 truncate">
-              <div class="w-6 h-6 rounded-md bg-white/5 p-0.5 flex items-center justify-center shrink-0 border border-white/10">
-                <img src="${leagueInfo.logo}" alt="${leagueInfo.name}" class="w-full h-full object-contain filter drop-shadow">
+          <button onclick="toggleLeagueAccordion('${sectionId}', this)" class="w-full px-2.5 py-2 bg-[#121622] hover:bg-[#181e2e] flex items-center justify-between text-left transition-colors cursor-pointer border-b border-bordercolor/50 gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <div class="w-5 h-5 rounded bg-white/5 p-0.5 flex items-center justify-center shrink-0 border border-white/10">
+                <img src="${leagueInfo.logo}" alt="${leagueInfo.name}" class="w-full h-full object-contain filter drop-shadow" onerror="this.src='https://media.api-sports.io/football/leagues/2.png'">
               </div>
-              <span class="text-[11px] font-bold text-white tracking-wide uppercase font-sans truncate">${leagueInfo.name || leagueName}</span>
-              <span class="text-[9px] font-mono bg-basebg text-emerald-400 px-1.5 py-0.2 rounded border border-bordercolor shrink-0">${matches.length}</span>
+              <span class="text-[11px] font-bold text-slate-100 tracking-wide uppercase font-sans truncate">${leagueInfo.name}</span>
             </div>
-            <div class="flex items-center gap-2 shrink-0">
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[9px] font-mono bg-basebg text-emerald-400 px-1.5 py-0.2 rounded border border-bordercolor">${matches.length}</span>
               ${hasLive ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>' : ''}
               <span class="text-slate-400 text-[10px] font-mono transition-transform duration-200 arrow-icon">▼</span>
             </div>
@@ -1348,18 +1363,18 @@
     function generateAutoParlay(type) {
       if (type === 'safe') {
         activeSlip = [
-          { id: "p1", match: "FC Barcelona vs Espanyol", pick: "Barcelona Hándicap (-1.5)", odds: 1.45 },
-          { id: "p2", match: "Inter de Milán vs Venezia", pick: "Inter ML & Over 1.5", odds: 1.38 }
+          { id: "p1", match: "Dortmund vs Sturm Graz", pick: "Dortmund Hándicap (-1.5)", odds: 1.55 },
+          { id: "p2", match: "Manchester United vs PAOK", pick: "Manchester United Hándicap (-1.5)", odds: 1.65 }
         ];
       } else if (type === 'value') {
         activeSlip = [
-          { id: "p1", match: "Manchester United vs Chelsea", pick: "Ambos Marcan & Over 2.5", odds: 1.65 },
-          { id: "p2", match: "Tottenham vs Aston Villa", pick: "Más de 2.5 Goles", odds: 1.50 }
+          { id: "p1", match: "Real Madrid vs AC Milan", pick: "Real Madrid ML & Over 1.5", odds: 1.65 },
+          { id: "p2", match: "Liverpool vs Bayer Leverkusen", pick: "Más de 2.5 & Ambos Marcan", odds: 1.68 }
         ];
       } else if (type === 'bomba') {
         activeSlip = [
-          { id: "p1", match: "Manchester United vs Chelsea", pick: "Chelsea Gana & Ambos Marcan", odds: 3.60 },
-          { id: "p2", match: "Athletic Club vs Real Betis", pick: "Athletic Gana & Ambos Marcan", odds: 3.80 }
+          { id: "p1", match: "Real Madrid vs AC Milan", pick: "Real Madrid & Ambos Marcan", odds: 2.85 },
+          { id: "p2", match: "Galatasaray vs Tottenham", pick: "Galatasaray ML Directo", odds: 2.45 }
         ];
       }
       renderSlip();
@@ -2270,8 +2285,8 @@
 
     const toastNotifications = [
       { icon: "👑", title: "Nuevo Suscriptor VIP", desc: "Usuario acaba de unirse al Pase Mensual ($9.99/mes en Whop)", color: "text-amber-400", bg: "bg-amber-500/20" },
-      { icon: "✅", title: "Pick Bomba Cobrado", desc: "Sevilla 1X & Under 3.5 Verificado en Verde ✅", color: "text-progreen", bg: "bg-progreen/20" },
-      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Manchester United vs Chelsea • BTTS CONFIRMADO", color: "text-emerald-400", bg: "bg-emerald-500/20" },
+      { icon: "✅", title: "Pick Bomba Cobrado", desc: "Barcelona Hándicap (-1.5) Verificado en Verde ✅", color: "text-progreen", bg: "bg-progreen/20" },
+      { icon: "⚡", title: "Nueva Alerta Cuota con Valor", desc: "Real Madrid vs AC Milan • MADRID ML CONFIRMADO", color: "text-emerald-400", bg: "bg-emerald-500/20" },
       { icon: "👑", title: "Nuevo Miembro Premium", desc: "Acceso VIP activado con éxito desde Whop", color: "text-amber-400", bg: "bg-amber-500/20" }
     ];
     let toastIndex = 0;
